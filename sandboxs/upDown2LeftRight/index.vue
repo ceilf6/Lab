@@ -18,6 +18,15 @@
             <img src="./assets/Django.jpg"/>
         </div>
     </scroll>
+    <div class="image-item">
+        <img src="./assets/Django.jpg"/>
+    </div>
+    <div class="image-item">
+        <img src="./assets/Django.jpg"/>
+    </div>
+    <div class="image-item">
+        <img src="./assets/Django.jpg"/>
+    </div>
 </template>
 
 <script setup>
@@ -29,13 +38,11 @@ import Scroll from './scroll.vue';
     display: inline-block;
     margin-right: 20px;
     height: 100%;
-    /* 限制容器最大高度，当容器高度超过 500px 时等比缩小到 500px */
-    max-height: 500px;
 }
 .image-item img {
     /* 保持等比例缩放：图片按容器高度调整，同时不超过 500px */
     height: 100%;
-    max-height: 500px;
+    /* max-height: 500px; */
     width: auto;
     display: block;
     object-fit: contain;

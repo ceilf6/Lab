@@ -14,6 +14,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+    /* max-height: 500px; */
 }
 .v-scroll {
     /* 宽高分别等于父元素的高宽 - 交换宽高实现旋转效果 */
@@ -43,7 +44,8 @@
 .content {
     height: calc(v-bind('fatherSize.w') * 1px);
     transform-origin: 0 0;
-    transform: rotate(90deg) translateY(-100%);
+    transform: rotate(90deg) translateY(-100%); 
+    /* // 100% 是未旋转前内容高度，抵消 rotate(90deg) 导致的位移，让内容回到容器的左上角位置 */
     /* 反向旋转内容使其恢复正常方向 */
     width: max-content;
     /* 允许内容横向扩展 */
