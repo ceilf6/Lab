@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axios 错误处理示范</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .error {
+            border-left-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .success {
+            border-left-color: #28a745;
+            background: #f0fff4;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: #dc3545;
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Axios 错误处理示范</h1>
+
+        <div class="section">
+            <h2>1. 异步错误捕获对比</h2>
+            <button onclick="testAsyncError('wrong')">❌ 错误方式（无法捕获）</button>
+            <button onclick="testAsyncError('correct')">✅ 正确方式（await）</button>
+            <div id="async-result" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h2>2. 网络错误处理（自动 Toast）</h2>
+            <button onclick="testNetworkError()">模拟网络错误</button>
+            <button onclick="testTimeout()">模拟超时</button>
+            <div id="network-result" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h2>3. 业务错误处理（手动判断 status）</h2>
+            <button onclick="testBusinessError()">模拟业务错误</button>
+            <button onclick="testSuccess()">模拟成功请求</button>
+            <div id="business-result" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h2>4. 多请求聚合（统一 Toast）</h2>
+            <button onclick="testMultipleRequests()">并发多个请求</button>
+            <div id="multiple-result" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h2>5. 请求去重</h2>
+            <button onclick="testDuplicateRequest()">快速点击（防重复）</button>
+            <div id="duplicate-result" class="result"></div>
+        </div>
+    </div>
+
+    <script type="module" src="./main.ts"></script>
+</body>
+
+</html>
