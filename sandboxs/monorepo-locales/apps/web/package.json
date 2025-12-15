@@ -1,0 +1,12 @@
+{
+    "name": "@my-monorepo/web-app",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "dependencies": {
+        "@my-monorepo/locales": "workspace:*"
+    },
+    "scripts": {
+        "dev": "echo 'Use a bundler like Vite or Webpack to run this app'"
+    }
+}

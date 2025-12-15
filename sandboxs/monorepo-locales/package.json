@@ -1,0 +1,7 @@
+{
+    "name": "monorepo-locales-demo",
+    "private": true,
+    "scripts": {
+        "test": "echo 'Run scripts in apps/web to test'"
+    }
+}
