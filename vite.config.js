@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 function getExampleEntries() {
   const sandboxsDir = path.resolve(__dirname, 'sandboxs');
   const folders = globSync('sandboxs/*/index.html');
-  
+
   const entries = {
     main: path.resolve(__dirname, 'index.html'),
   };
@@ -49,18 +49,43 @@ export default defineConfig({
       name: 'sandboxs-auto-entry',
       configureServer(server) {
         server.middlewares.use(async (req, res, next) => {
-          const match = req.url.match(/^\/([^\/\?\.]+)\/?(\?.*)?$/);
-          if (match && match[1] !== '' && match[1] !== 'index') {
+          const url = new URL(req.url, 'http://localhost');
+          const pathname = url.pathname;
+
+          const match = pathname.match(/^\/([^\/\?\.]+)(\/.*)?$/);
+          if (match && match[1] !== '' && match[1] !== 'index' && !match[1].startsWith('@')) {
             const folderName = match[1];
-            const query = match[2] || '';
+            const restPath = match[2] || '';
             const folderPath = path.join(__dirname, 'sandboxs', folderName);
-            
-            // 检查是否存在 index.tsx
+
+            // 让 /<name> 以目录形式访问，保证相对资源路径（./index.js 等）正确解析
+            if (restPath === '' && !pathname.endsWith('/')) {
+              res.statusCode = 302;
+              res.setHeader('Location', `/${folderName}/${url.search}`);
+              res.end();
+              return;
+            }
+
+            // 让 /<name>/* 的资源请求也能命中 sandboxs/<name>/*
+            if (restPath && restPath !== '/') {
+              // 检查是否为入口文件或其他资源
+              const fileName = path.basename(restPath);
+              const localFilePath = path.join(folderPath, restPath.slice(1));
+
+              // 如果是 __entry.* 文件（动态生成）或文件实际存在，都重写路径
+              if (fileName.startsWith('__entry.') || fs.existsSync(localFilePath)) {
+                req.url = `/sandboxs/${folderName}${restPath}${url.search}`;
+              }
+              next();
+              return;
+            }
+
+            // 处理 /<name>/ 主页请求：检查是否存在 index.tsx
             const tsxPath = path.join(folderPath, 'index.tsx');
             const jsxPath = path.join(folderPath, 'index.jsx');
             const vuePath = path.join(folderPath, 'index.vue');
             const htmlPath = path.join(folderPath, 'index.html');
-            
+
             if (fs.existsSync(tsxPath)) {
               // 创建临时入口文件，使用 JSX 语法
               const entryContent = `import React from 'react';
@@ -69,11 +94,11 @@ import App from './index.tsx';
 
 const root = createRoot(document.getElementById('root'));
 root.render(<App />);`;
-              
+
               const entryPath = path.join(folderPath, '__entry.tsx');
               fs.writeFileSync(entryPath, entryContent);
-              
-              // 动态生成 HTML
+
+              // 动态生成 HTML - 使用相对路径，让浏览器基于当前 URL 解析
               const html = `<!doctype html>
 <html lang="zh-CN">
   <head>
@@ -83,11 +108,11 @@ root.render(<App />);`;
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/sandboxs/${folderName}/__entry.tsx"></script>
+    <script type="module" src="./__entry.tsx"></script>
   </body>
 </html>`;
               try {
-                const transformedHtml = await server.transformIndexHtml(req.url, html);
+                const transformedHtml = await server.transformIndexHtml(`/sandboxs/${folderName}/index.html`, html);
                 res.setHeader('Content-Type', 'text/html');
                 res.end(transformedHtml);
               } catch (e) {
@@ -102,11 +127,11 @@ import App from './index.jsx';
 
 const root = createRoot(document.getElementById('root'));
 root.render(<App />);`;
-              
+
               const entryPath = path.join(folderPath, '__entry.jsx');
               fs.writeFileSync(entryPath, entryContent);
-              
-              // 动态生成 HTML
+
+              // 动态生成 HTML - 使用相对路径
               const html = `<!doctype html>
 <html lang="zh-CN">
   <head>
@@ -116,11 +141,11 @@ root.render(<App />);`;
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/sandboxs/${folderName}/__entry.jsx"></script>
+    <script type="module" src="./__entry.jsx"></script>
   </body>
 </html>`;
               try {
-                const transformedHtml = await server.transformIndexHtml(req.url, html);
+                const transformedHtml = await server.transformIndexHtml(`/sandboxs/${folderName}/index.html`, html);
                 res.setHeader('Content-Type', 'text/html');
                 res.end(transformedHtml);
               } catch (e) {
@@ -133,11 +158,11 @@ root.render(<App />);`;
 import App from './index.vue';
 
 createApp(App).mount('#root');`;
-              
+
               const entryPath = path.join(folderPath, '__entry.ts');
               fs.writeFileSync(entryPath, entryContent);
-              
-              // 动态生成 HTML
+
+              // 动态生成 HTML - 使用相对路径
               const html = `<!doctype html>
 <html lang="zh-CN">
   <head>
@@ -147,11 +172,11 @@ createApp(App).mount('#root');`;
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/sandboxs/${folderName}/__entry.ts"></script>
+    <script type="module" src="./__entry.ts"></script>
   </body>
 </html>`;
               try {
-                const transformedHtml = await server.transformIndexHtml(req.url, html);
+                const transformedHtml = await server.transformIndexHtml(`/sandboxs/${folderName}/index.html`, html);
                 res.setHeader('Content-Type', 'text/html');
                 res.end(transformedHtml);
               } catch (e) {
@@ -160,7 +185,7 @@ createApp(App).mount('#root');`;
               return;
             } else if (fs.existsSync(htmlPath)) {
               // 如果有 index.html，使用它
-              req.url = `/sandboxs/${folderName}/index.html${query}`;
+              req.url = `/sandboxs/${folderName}/index.html${url.search}`;
             }
           }
           next();

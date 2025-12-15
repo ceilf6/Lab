@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .container {
+        width: 90%;
+        margin: 0 auto;
+        /* border: 2px solid; */
+        position: relative;
+      }
+
+      .container img {
+        position: absolute;
+        /* css3属性，表示过渡效果， 图片的样式变化在0.3秒内完成，而不是瞬间完成 */
+        transition: 0.3s;
+        width: 220px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="container" class="container"></div>
+    <script src="./index.js"></script>
+  </body>
+</html>
