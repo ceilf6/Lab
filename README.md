@@ -1,4 +1,4 @@
-# Lab
+# 1. sandboxs
 
 一个基于 Vite 的实验场：把每个实验放到 `sandboxs/<name>/` 文件夹下，然后通过 `/sandboxs/<name>/` 路由即可查看效果。
 
@@ -39,3 +39,7 @@ npm run dev
 ✅ 首页自动列出所有可用示例
 
 示例已包含在 `sandboxs/demo`。
+
+# 2. agent
+
+agent 开发实践、效果测验以及优化。
