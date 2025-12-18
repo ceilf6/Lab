@@ -1,6 +1,6 @@
-# UI Playground
+# Lab
 
-一个基于 Vite 的 UI 实验场：把每个实验放到 `sandboxs/<name>/` 文件夹下，然后通过 `/sandboxs/<name>/` 路由即可查看效果。
+一个基于 Vite 的实验场：把每个实验放到 `sandboxs/<name>/` 文件夹下，然后通过 `/sandboxs/<name>/` 路由即可查看效果。
 
 ## 快速开始
 
