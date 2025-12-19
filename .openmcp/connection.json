@@ -9,6 +9,35 @@
           "main.py"
         ],
         "url": "",
+        "cwd": "{workspace}/agent/a_MCP/wordMCP",
+        "oauth": "",
+        "clientName": "openmcp.connect.STDIO",
+        "clientVersion": "0.0.1",
+        "env": {
+          "HOME": "/Users/a86198",
+          "LOGNAME": "a86198",
+          "PATH": "/Users/a86198/.nvm/versions/node/v22.17.1/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Library/Frameworks/Python.framework/Versions/3.13/bin:/opt/local/bin:/opt/local/sbin:/Library/Frameworks/Python.framework/Versions/3.11/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/Users/a86198/Library/Android/sdk/platform-tools:/Users/a86198/Library/Android/sdk/emulator:/Users/a86198/Library/Android/sdk/tools:/Users/a86198/Library/Android/sdk/tools/bin",
+          "SHELL": "/bin/zsh",
+          "TERM": "",
+          "USER": "a86198"
+        },
+        "serverInfo": {
+          "name": "Word Document MCP Server",
+          "version": "1.25.0"
+        },
+        "name": "Word Document MCP Server",
+        "version": "1.25.0"
+      }
+    ],
+    [
+      {
+        "connectionType": "STDIO",
+        "command": "mcp",
+        "args": [
+          "run",
+          "main.py"
+        ],
+        "url": "",
         "cwd": "{workspace}/agent/a_MCP/starter",
         "oauth": "",
         "clientName": "openmcp.connect.STDIO",
