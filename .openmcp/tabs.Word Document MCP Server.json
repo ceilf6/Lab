@@ -1,0 +1,502 @@
+{
+  "clientId": "0d8c5d99-5d99-5c5d99e315b-8c5d99e315b8e0b-b8e0b914",
+  "currentIndex": 0,
+  "tabs": [
+    {
+      "name": "交互测试",
+      "icon": "icon-robot",
+      "type": "blank",
+      "componentIndex": 3,
+      "storage": {
+        "activeNames": [
+          0
+        ],
+        "messages": [
+          {
+            "role": "user",
+            "content": "请帮我写一份前端React框架介绍",
+            "extraInfo": {
+              "created": 1766163379823,
+              "state": "success",
+              "serverName": "deepseek",
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+              {
+                "id": "019b378a7a55b87b0fc373446b987e68",
+                "index": 0,
+                "type": "function",
+                "function": {
+                  "name": "create_word_document",
+                  "arguments": " {\"file_path\": \"react_intro.docx\", \"title\": \"React框架介绍\", \"content\": \"欢迎阅读React框架介绍文档。\"}"
+                }
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163382526,
+              "state": "success",
+              "serverName": "deepseek",
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "tool",
+            "index": 0,
+            "tool_call_id": "019b378a7a55b87b0fc373446b987e68",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"success\": true,\n  \"message\": \"Word document created successfully\",\n  \"file_path\": \"/Users/a86198/Desktop/Lab/agent/a_MCP/wordMCP/word/react_intro.docx\",\n  \"file_size\": 36683,\n  \"created_at\": \"2025-12-20T00:56:22.568516\"\n}"
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163382569,
+              "state": "success",
+              "serverName": "deepseek",
+              "usage": {
+                "prompt_tokens": 1264,
+                "completion_tokens": 44,
+                "total_tokens": 1308
+              },
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+              {
+                "id": "019b378a82ad9c8ce79c20528ef89c14",
+                "index": 0,
+                "type": "function",
+                "function": {
+                  "name": "update_word_document",
+                  "arguments": " {\"file_path\": \"react_intro.docx\", \"action\": \"append\", \"content\": \"## React是什么？\\n\\nReact是Facebook（现Meta）开发并开源的用于构建用户界面的JavaScript库。它主要用于构建单页面应用程序（SPA），通过虚拟DOM（Virtual DOM）和组件化思想，使得开发者能够高效地更新和渲染UI。\"}"
+                }
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163384454,
+              "state": "success",
+              "serverName": "deepseek",
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "tool",
+            "index": 0,
+            "tool_call_id": "019b378a82ad9c8ce79c20528ef89c14",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"success\": true,\n  \"message\": \"Document updated successfully\",\n  \"file_path\": \"/Users/a86198/Desktop/Lab/agent/a_MCP/wordMCP/word/react_intro.docx\",\n  \"action\": \"append\",\n  \"updated_at\": \"2025-12-20T00:56:24.476422\"\n}"
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163384477,
+              "state": "success",
+              "serverName": "deepseek",
+              "usage": {
+                "prompt_tokens": 1433,
+                "completion_tokens": 92,
+                "total_tokens": 1525
+              },
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+              {
+                "id": "019b378a8c37772da47b4c0085069666",
+                "index": 0,
+                "type": "function",
+                "function": {
+                  "name": "update_word_document",
+                  "arguments": " {\"file_path\": \"react_intro.docx\", \"action\": \"append\", \"content\": \"## React的核心特性\\n\\n1. **组件化**：React应用由可复用的组件构成，每个组件负责渲染特定的UI部分。\\n2. **虚拟DOM**：React使用虚拟DOM来提高性能，通过比较虚拟DOM的变化，只更新实际需要更新的部分。\\n3. **JSX语法**：React使用JSX（JavaScript XML）语法，使开发者可以更直观地编写UI代码。\\n4. **单向数据流**：数据从父组件流向子组件，通过props传递，状态管理通常由状态管理库（如Redux）处理。\\n5. **Hooks**：React 16.8+引入Hooks，允许函数组件拥有状态和副作用能力，无需类组件。\"}"
+                }
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163392556,
+              "state": "success",
+              "serverName": "deepseek",
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "tool",
+            "index": 0,
+            "tool_call_id": "019b378a8c37772da47b4c0085069666",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"success\": true,\n  \"message\": \"Document updated successfully\",\n  \"file_path\": \"/Users/a86198/Desktop/Lab/agent/a_MCP/wordMCP/word/react_intro.docx\",\n  \"action\": \"append\",\n  \"updated_at\": \"2025-12-20T00:56:32.591182\"\n}"
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163392592,
+              "state": "success",
+              "serverName": "deepseek",
+              "usage": {
+                "prompt_tokens": 1644,
+                "completion_tokens": 190,
+                "total_tokens": 1834
+              },
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+              {
+                "id": "019b378aadcd70b3d9a3a22563398258",
+                "index": 0,
+                "type": "function",
+                "function": {
+                  "name": "add_table_to_document",
+                  "arguments": " {\"file_path\": \"react_intro.docx\", \"table_data\": [[\"特性\", \"说明\"], [\"组件化\", \"可复用的UI组件\"], [\"虚拟DOM\", \"提高渲染性能\"], [\"JSX\", \"JavaScript XML语法\"], [\"单向数据流\", \"父组件到子组件传递数据\"], [\"Hooks\", \"函数组件的状态和副作用管理\"]], \"title\": \"React核心特性概览\"}"
+                }
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163400768,
+              "state": "success",
+              "serverName": "deepseek",
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "tool",
+            "index": 0,
+            "tool_call_id": "019b378aadcd70b3d9a3a22563398258",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"success\": true,\n  \"message\": \"Table added successfully\",\n  \"file_path\": \"/Users/a86198/Desktop/Lab/agent/a_MCP/wordMCP/word/react_intro.docx\",\n  \"table_rows\": 6,\n  \"table_cols\": 2,\n  \"updated_at\": \"2025-12-20T00:56:40.791281\"\n}"
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163400792,
+              "state": "success",
+              "serverName": "deepseek",
+              "usage": {
+                "prompt_tokens": 1953,
+                "completion_tokens": 102,
+                "total_tokens": 2055
+              },
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+              {
+                "id": "019b378acc457723b338e1e0d2ceb693",
+                "index": 0,
+                "type": "function",
+                "function": {
+                  "name": "update_word_document",
+                  "arguments": " {\"file_path\": \"react_intro.docx\", \"action\": \"append\", \"content\": \"## React生态系统\\n\\nReact拥有丰富的生态系统，包括：\\n\\n- **React Router**：用于实现前端路由，支持单页面应用的多页面导航。\\n- **Redux**：状态管理库，用于管理应用全局状态。\\n- **React Native**：用于构建跨平台移动应用。\\n- **Next.js**：用于构建服务端渲染（SSR）和静态生成（SSG）的React应用。\\n- **Vite**：现代化的前端构建工具，提供快速的开发服务器和构建速度。\\n\\n这些工具和库共同构成了React强大的生态系统，帮助开发者构建高性能、可维护的应用程序。\"}"
+                }
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163410881,
+              "state": "success",
+              "serverName": "deepseek",
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "tool",
+            "index": 0,
+            "tool_call_id": "019b378acc457723b338e1e0d2ceb693",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"success\": true,\n  \"message\": \"Document updated successfully\",\n  \"file_path\": \"/Users/a86198/Desktop/Lab/agent/a_MCP/wordMCP/word/react_intro.docx\",\n  \"action\": \"append\",\n  \"updated_at\": \"2025-12-20T00:56:50.916566\"\n}"
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163410917,
+              "state": "success",
+              "serverName": "deepseek",
+              "usage": {
+                "prompt_tokens": 2184,
+                "completion_tokens": 171,
+                "total_tokens": 2355
+              },
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+              {
+                "id": "019b378af2f820601465aa58b7adf58a",
+                "index": 0,
+                "type": "function",
+                "function": {
+                  "name": "update_word_document",
+                  "arguments": " {\"file_path\": \"react_intro.docx\", \"action\": \"append\", \"content\": \"## 总结\\n\\nReact是一个强大且灵活的前端框架，通过组件化、虚拟DOM和Hooks等特性，使得开发者能够高效构建复杂的用户界面。其丰富的生态系统和活跃的社区支持，使其成为现代Web开发的首选技术之一。无论是构建Web应用还是移动应用，React都能提供卓越的开发体验和性能表现。\"}"
+                }
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163415977,
+              "state": "success",
+              "serverName": "deepseek",
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "tool",
+            "index": 0,
+            "tool_call_id": "019b378af2f820601465aa58b7adf58a",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"success\": true,\n  \"message\": \"Document updated successfully\",\n  \"file_path\": \"/Users/a86198/Desktop/Lab/agent/a_MCP/wordMCP/word/react_intro.docx\",\n  \"action\": \"append\",\n  \"updated_at\": \"2025-12-20T00:56:55.997396\"\n}"
+              }
+            ],
+            "extraInfo": {
+              "created": 1766163415998,
+              "state": "success",
+              "serverName": "deepseek",
+              "usage": {
+                "prompt_tokens": 2474,
+                "completion_tokens": 108,
+                "total_tokens": 2582
+              },
+              "enableXmlWrapper": false
+            }
+          }
+        ],
+        "chatMode": "single-chat",
+        "parallelChats": [],
+        "selectedModels": [],
+        "settings": {
+          "modelIndex": 0,
+          "enableTools": [
+            {
+              "name": "create_word_document",
+              "description": "\nCreate a new Word document (.docx file).\n\nArgs:\n    file_path: File path or filename. If not provided or relative, saves to word/ subdirectory.\n               If just filename provided, saves to word/filename.docx\n    title: Optional title for the document\n    content: Optional initial content for the document\n\nReturns:\n    Dictionary with operation result and file path\n",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "file_path": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "File Path"
+                  },
+                  "title": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Title"
+                  },
+                  "content": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Content"
+                  }
+                },
+                "title": "create_word_documentArguments"
+              },
+              "enabled": true
+            },
+            {
+              "name": "read_word_document",
+              "description": "\nRead content from a Word document.\n\nArgs:\n    file_path: Path to the Word document (.docx file). \n               If relative or just filename, searches in word/ subdirectory first.\n\nReturns:\n    Dictionary containing document content, paragraphs, and metadata\n",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "file_path": {
+                    "title": "File Path",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_path"
+                ],
+                "title": "read_word_documentArguments"
+              },
+              "enabled": true
+            },
+            {
+              "name": "update_word_document",
+              "description": "\nUpdate an existing Word document.\n\nArgs:\n    file_path: Path to the Word document (.docx file).\n               If relative or just filename, searches in word/ subdirectory first.\n    action: Action to perform - \"append\" (add to end), \"insert\" (insert at paragraph_index), \n            \"replace\" (replace paragraph at paragraph_index), \"add_heading\" (add heading)\n    content: Content to add/insert/replace\n    paragraph_index: Index of paragraph for insert/replace operations (0-based)\n    heading_level: Level of heading (1-9) for add_heading action\n\nReturns:\n    Dictionary with operation result\n",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "file_path": {
+                    "title": "File Path",
+                    "type": "string"
+                  },
+                  "action": {
+                    "title": "Action",
+                    "type": "string"
+                  },
+                  "content": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Content"
+                  },
+                  "paragraph_index": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Paragraph Index"
+                  },
+                  "heading_level": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": 1,
+                    "title": "Heading Level"
+                  }
+                },
+                "required": [
+                  "file_path",
+                  "action"
+                ],
+                "title": "update_word_documentArguments"
+              },
+              "enabled": true
+            },
+            {
+              "name": "delete_word_document",
+              "description": "\nDelete a Word document file.\n\nArgs:\n    file_path: Path to the Word document (.docx file) to delete.\n               If relative or just filename, searches in word/ subdirectory first.\n\nReturns:\n    Dictionary with operation result\n",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "file_path": {
+                    "title": "File Path",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_path"
+                ],
+                "title": "delete_word_documentArguments"
+              },
+              "enabled": true
+            },
+            {
+              "name": "list_word_documents",
+              "description": "\nList all Word documents (.docx files) in a directory.\n\nArgs:\n    directory: Directory path to search for Word documents\n\nReturns:\n    Dictionary containing list of Word documents with metadata\n",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "directory": {
+                    "title": "Directory",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "directory"
+                ],
+                "title": "list_word_documentsArguments"
+              },
+              "enabled": true
+            },
+            {
+              "name": "add_table_to_document",
+              "description": "\nAdd a table to a Word document.\n\nArgs:\n    file_path: Path to the Word document (.docx file).\n               If relative or just filename, searches in word/ subdirectory first.\n    table_data: 2D list representing table data (rows and columns)\n    title: Optional title/heading before the table\n\nReturns:\n    Dictionary with operation result\n",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "file_path": {
+                    "title": "File Path",
+                    "type": "string"
+                  },
+                  "table_data": {
+                    "items": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "title": "Table Data",
+                    "type": "array"
+                  },
+                  "title": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Title"
+                  }
+                },
+                "required": [
+                  "file_path",
+                  "table_data"
+                ],
+                "title": "add_table_to_documentArguments"
+              },
+              "enabled": true
+            }
+          ],
+          "enableWebSearch": false,
+          "temperature": 0.6,
+          "contextLength": 100,
+          "systemPrompt": "",
+          "enableXmlWrapper": false,
+          "parallelToolCalls": true
+        }
+      }
+    }
+  ]
+}
