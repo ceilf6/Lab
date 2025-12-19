@@ -43,3 +43,8 @@ npm run dev
 # 2. agent
 
 agent 开发实践、效果测验以及优化。
+
+# 3. monorepo
+
+将 [Reimplementing-Masterpieces](https://github.com/ceilf6/Reimplementing-Masterpieces) 作为子仓库合入（这个目录存放那些精妙工程的底层源码学习与复现）
+方便后面的统一学习管理
