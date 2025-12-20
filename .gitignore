@@ -7,3 +7,6 @@ sandboxs/**/__entry.jsx
 
 # LLM 和工具的 API 配置, 每个目录下自行管理
 APIKEY*
+
+# word MCP 的测试文档
+word/

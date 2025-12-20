@@ -409,6 +409,48 @@ def execute_tool(tool_name: str, arguments: dict) -> dict:
     return handler(**arguments)
 
 
+def parse_qwen_tool_calls(reasoning_content: str) -> list:
+    """
+    解析 Qwen 模型 reasoning_content 中的 <tool_call> 标签
+    格式: <tool_call>\n{"name": "xxx", "arguments": {...}}\n</tool_call>
+    """
+    tool_calls = []
+    
+    # 匹配 <tool_call>...</tool_call> 中的 JSON
+    pattern = r'<tool_call>\s*(\{.*?\})\s*(?:</tool_call>|$)'
+    matches = re.findall(pattern, reasoning_content, re.DOTALL)
+    
+    for idx, json_str in enumerate(matches):
+        try:
+            # 清理 JSON 字符串（处理可能的截断）
+            json_str = json_str.strip()
+            
+            # 尝试修复不完整的 JSON（如果被截断）
+            if not json_str.endswith('}'):
+                # 尝试找到最后一个完整的 }
+                last_brace = json_str.rfind('}')
+                if last_brace > 0:
+                    json_str = json_str[:last_brace + 1]
+            
+            data = json.loads(json_str)
+            tool_name = data.get("name")
+            arguments = data.get("arguments", {})
+            
+            if tool_name and tool_name in TOOL_HANDLERS:
+                tool_calls.append({
+                    "id": f"qwen_call_{idx}",
+                    "function": {
+                        "name": tool_name,
+                        "arguments": json.dumps(arguments, ensure_ascii=False) if isinstance(arguments, dict) else arguments
+                    }
+                })
+        except json.JSONDecodeError as e:
+            logger.warning(f"解析工具调用 JSON 失败: {e}, 原始内容: {json_str[:200]}")
+            continue
+    
+    return tool_calls
+
+
 # ==================== API 端点 ====================
 
 class ToolCallRequest(BaseModel):
@@ -593,11 +635,21 @@ async def sse_agent(request: AgentRequest, http_request: Request):
                 yield f"data: {json.dumps({'type': 'thinking', 'message': f'正在思考 (第 {iteration} 轮)...'}, ensure_ascii=False)}\n\n"
                 
                 llm_response = await call_llm(messages, tools)
+                logger.info(f"LLM 原始响应: {json.dumps(llm_response, ensure_ascii=False)[:500]}")
+
+
                 choice = llm_response.get("choices", [{}])[0]
                 message = choice.get("message", {})
                 
                 # 检查是否有工具调用
                 tool_calls = message.get("tool_calls", [])
+                
+                # Qwen 模型特殊处理：从 reasoning_content 中解析 <tool_call> 标签
+                if not tool_calls:
+                    reasoning_content = message.get("reasoning_content", "")
+                    if reasoning_content and "<tool_call>" in reasoning_content:
+                        tool_calls = parse_qwen_tool_calls(reasoning_content)
+                        logger.info(f"从 reasoning_content 解析出工具调用: {tool_calls}")
                 
                 if tool_calls:
                     # 添加助手消息到历史
@@ -631,6 +683,12 @@ async def sse_agent(request: AgentRequest, http_request: Request):
                 else:
                     # 没有工具调用，LLM 给出了最终回答
                     content = message.get("content", "")
+                    
+                    # Qwen 模型特殊处理：如果 content 为空，使用 reasoning_content
+                    if not content:
+                        reasoning_content = message.get("reasoning_content", "")
+                        if reasoning_content and "<tool_call>" not in reasoning_content:
+                            content = reasoning_content
                     
                     # 处理 Qwen 模型的思考标签
                     if content:
