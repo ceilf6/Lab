@@ -1,19 +1,21 @@
 """
-Word MCP Server with SSE Transport
+Word MCP Server with SSE Transport + LLM Agent
 
 启动方式:
     python server.py
 
 服务器会在 http://localhost:8080 启动 SSE 端点
+使用 mcpconfig.json 中的 defaultLLM 配置调用大模型
 """
 
 import asyncio
 import json
 import logging
-from typing import Optional, List
+from typing import Optional, List, Any
 from pathlib import Path
 from datetime import datetime
 import re
+import httpx
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -44,6 +46,22 @@ app.add_middleware(
 WORD_DIR = Path("word")
 WORD_DIR.mkdir(exist_ok=True)
 
+# ==================== 加载 LLM 配置 ====================
+
+def load_llm_config() -> dict:
+    """从 mcpconfig.json 加载 LLM 配置"""
+    config_path = Path(__file__).parent / "mcpconfig.json"
+    try:
+        with open(config_path, "r", encoding="utf-8") as f:
+            config = json.load(f)
+            return config.get("defaultLLM", {})
+    except Exception as e:
+        logger.error(f"加载 LLM 配置失败: {e}")
+        return {}
+
+LLM_CONFIG = load_llm_config()
+logger.info(f"LLM 配置: baseURL={LLM_CONFIG.get('baseURL')}, model={LLM_CONFIG.get('model')}")
+
 
 # ==================== 工具函数 ====================
 
@@ -57,60 +75,90 @@ def get_file_path(filename: str) -> Path:
     return path
 
 
-# ==================== MCP 工具实现 ====================
+# ==================== MCP 工具定义 ====================
 
 TOOLS = {
     "create_document": {
         "description": "创建新的 Word 文档",
         "parameters": {
-            "filename": {"type": "string", "description": "文件名（可选）"},
-            "title": {"type": "string", "description": "文档标题（可选）"},
-            "content": {"type": "string", "description": "初始内容（可选）"}
+            "type": "object",
+            "properties": {
+                "filename": {"type": "string", "description": "文件名（不含扩展名）"},
+                "title": {"type": "string", "description": "文档标题"},
+                "content": {"type": "string", "description": "初始内容（可包含多行）"}
+            },
+            "required": []
         }
     },
     "read_document": {
         "description": "读取 Word 文档内容",
         "parameters": {
-            "filename": {"type": "string", "description": "文件名", "required": True}
+            "type": "object",
+            "properties": {
+                "filename": {"type": "string", "description": "文件名"}
+            },
+            "required": ["filename"]
         }
     },
     "update_document": {
-        "description": "更新 Word 文档",
+        "description": "更新 Word 文档，支持追加内容、添加标题、插入段落、替换段落",
         "parameters": {
-            "filename": {"type": "string", "required": True},
-            "action": {"type": "string", "enum": ["append", "insert", "replace", "add_heading"], "required": True},
-            "content": {"type": "string"},
-            "paragraph_index": {"type": "integer"}
+            "type": "object",
+            "properties": {
+                "filename": {"type": "string", "description": "文件名"},
+                "action": {"type": "string", "enum": ["append", "insert", "replace", "add_heading"], "description": "操作类型"},
+                "content": {"type": "string", "description": "要写入的内容"},
+                "paragraph_index": {"type": "integer", "description": "段落索引（insert/replace 时使用）"}
+            },
+            "required": ["filename", "action"]
         }
     },
     "delete_document": {
         "description": "删除 Word 文档",
         "parameters": {
-            "filename": {"type": "string", "required": True}
+            "type": "object",
+            "properties": {
+                "filename": {"type": "string", "description": "文件名"}
+            },
+            "required": ["filename"]
         }
     },
     "list_documents": {
         "description": "列出所有 Word 文档",
-        "parameters": {}
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        }
     },
     "add_table": {
         "description": "向文档添加表格",
         "parameters": {
-            "filename": {"type": "string", "required": True},
-            "table_data": {"type": "array", "description": "表格数据（二维数组）", "required": True},
-            "title": {"type": "string"}
+            "type": "object",
+            "properties": {
+                "filename": {"type": "string", "description": "文件名"},
+                "table_data": {"type": "array", "description": "表格数据（二维数组），第一行为表头", "items": {"type": "array", "items": {"type": "string"}}},
+                "title": {"type": "string", "description": "表格标题（可选）"}
+            },
+            "required": ["filename", "table_data"]
         }
     },
     "search_replace": {
-        "description": "搜索并替换文本",
+        "description": "搜索并替换文档中的文本",
         "parameters": {
-            "filename": {"type": "string", "required": True},
-            "search_text": {"type": "string", "required": True},
-            "replace_text": {"type": "string", "required": True}
+            "type": "object",
+            "properties": {
+                "filename": {"type": "string", "description": "文件名"},
+                "search_text": {"type": "string", "description": "要搜索的文本"},
+                "replace_text": {"type": "string", "description": "替换为的文本"}
+            },
+            "required": ["filename", "search_text", "replace_text"]
         }
     }
 }
 
+
+# ==================== 工具实现 ====================
 
 def create_document(filename: str = None, title: str = None, content: str = None) -> dict:
     """创建新文档"""
@@ -298,6 +346,69 @@ TOOL_HANDLERS = {
 }
 
 
+# ==================== LLM 调用 ====================
+
+def get_tools_for_llm() -> list:
+    """将工具定义转换为 OpenAI function calling 格式"""
+    tools = []
+    for name, info in TOOLS.items():
+        tools.append({
+            "type": "function",
+            "function": {
+                "name": name,
+                "description": info["description"],
+                "parameters": info["parameters"]
+            }
+        })
+    return tools
+
+
+async def call_llm(messages: list, tools: list = None) -> dict:
+    """调用 LLM API"""
+    if not LLM_CONFIG:
+        raise ValueError("LLM 配置未加载")
+    
+    base_url = LLM_CONFIG.get("baseURL", "").rstrip("/")
+    api_token = LLM_CONFIG.get("apiToken")
+    model = LLM_CONFIG.get("model")
+    
+    if not all([base_url, api_token, model]):
+        raise ValueError("LLM 配置不完整")
+    
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json"
+    }
+    
+    payload = {
+        "model": model,
+        "messages": messages,
+        "temperature": 0.7,
+    }
+    
+    if tools:
+        payload["tools"] = tools
+        payload["tool_choice"] = "auto"
+    
+    async with httpx.AsyncClient(timeout=60.0) as client:
+        response = await client.post(
+            f"{base_url}/chat/completions",
+            headers=headers,
+            json=payload
+        )
+        response.raise_for_status()
+        return response.json()
+
+
+def execute_tool(tool_name: str, arguments: dict) -> dict:
+    """执行工具调用"""
+    if tool_name not in TOOL_HANDLERS:
+        return {"success": False, "error": f"未知工具: {tool_name}"}
+    
+    handler = TOOL_HANDLERS[tool_name]
+    return handler(**arguments)
+
+
 # ==================== API 端点 ====================
 
 class ToolCallRequest(BaseModel):
@@ -305,29 +416,37 @@ class ToolCallRequest(BaseModel):
     tool: str
     params: dict = {}
 
+
 class AgentRequest(BaseModel):
-    """编排请求：一次 SSE 流里执行多步工具调用"""
+    """Agent 请求"""
     query: str
     title: Optional[str] = None
     filename: Optional[str] = None
 
+
 def _sanitize_filename(name: str) -> str:
-    # 保留中英文、数字、下划线、短横线；空白转下划线
+    """清理文件名"""
     s = re.sub(r"\s+", "_", name.strip())
     s = re.sub(r"[^\w\u4e00-\u9fa5_-]+", "", s)
     return s[:40] if s else ""
+
 
 @app.get("/")
 async def root():
     """服务器状态"""
     return {
         "name": "Word MCP Server",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "running",
+        "llm": {
+            "baseURL": LLM_CONFIG.get("baseURL"),
+            "model": LLM_CONFIG.get("model")
+        },
         "endpoints": {
             "tools": "/tools",
             "call": "/call (POST)",
             "sse": "/sse",
+            "sse_agent": "/sse/agent (POST)",
             "documents": "/documents"
         }
     }
@@ -341,7 +460,7 @@ async def get_tools():
 
 @app.post("/call")
 async def call_tool(request: ToolCallRequest):
-    """调用工具"""
+    """直接调用工具（不经过 LLM）"""
     tool_name = request.tool
     params = request.params
     
@@ -366,18 +485,12 @@ async def sse_endpoint(request: Request):
     """SSE 端点 - 用于实时事件流"""
     
     async def event_generator():
-        # 发送连接确认
         yield f"data: {json.dumps({'type': 'connected', 'message': 'SSE 连接成功'})}\n\n"
-        
-        # 发送可用工具列表
         yield f"data: {json.dumps({'type': 'tools', 'tools': list(TOOLS.keys())})}\n\n"
         
-        # 保持连接
         while True:
             if await request.is_disconnected():
                 break
-            
-            # 发送心跳
             yield f"data: {json.dumps({'type': 'heartbeat', 'time': datetime.now().isoformat()})}\n\n"
             await asyncio.sleep(30)
     
@@ -394,30 +507,22 @@ async def sse_endpoint(request: Request):
 
 @app.post("/sse/call")
 async def sse_call_tool(request: ToolCallRequest):
-    """
-    SSE 方式调用工具
-    返回 SSE 流式响应
-    """
+    """SSE 方式调用工具"""
     
     async def stream_response():
         tool_name = request.tool
         params = request.params
         
-        # 发送开始事件
         yield f"data: {json.dumps({'type': 'start', 'tool': tool_name})}\n\n"
         
         if tool_name not in TOOL_HANDLERS:
             yield f"data: {json.dumps({'type': 'error', 'error': f'未知工具: {tool_name}'})}\n\n"
             return
         
-        # 执行工具
         handler = TOOL_HANDLERS[tool_name]
         result = handler(**params)
         
-        # 发送结果
         yield f"data: {json.dumps({'type': 'result', 'data': result})}\n\n"
-        
-        # 发送完成事件
         yield f"data: {json.dumps({'type': 'done'})}\n\n"
     
     return StreamingResponse(
@@ -429,52 +534,127 @@ async def sse_call_tool(request: ToolCallRequest):
         }
     )
 
+
 @app.post("/sse/agent")
 async def sse_agent(request: AgentRequest, http_request: Request):
     """
-    真·多步 SSE：在同一条 SSE 响应里，按计划连续调用多个工具并持续推送进度。
+    LLM Agent SSE 端点
+    
+    1. 接收用户的自然语言查询
+    2. 调用 LLM 理解意图并决定调用哪些工具
+    3. 执行工具调用
+    4. 将结果返回给 LLM 继续处理
+    5. 循环直到 LLM 给出最终答案
     """
 
     async def stream_response():
-        # 解析标题/文件名
+        query = request.query
         title = (request.title or "").strip()
-        if not title:
-            # 极简兜底：从 query 里提取（不做复杂 NLP）
-            title = request.query.strip() or "新文档"
+        filename_hint = (request.filename or "").strip()
+        
+        # 构建系统提示
+        system_prompt = """你是一个专业的 Word 文档助手。你可以使用以下工具来帮助用户操作 Word 文档：
 
-        base_name = _sanitize_filename(request.filename or title)
-        if not base_name or len(base_name) < 3:
-            base_name = f"doc_{int(datetime.now().timestamp())}"
-        filename = f"{base_name}_{int(datetime.now().timestamp() * 1000)}"
+可用工具：
+1. create_document: 创建新文档（可指定 filename, title, content）
+2. read_document: 读取文档内容（需要 filename）
+3. update_document: 更新文档（需要 filename, action, content）
+4. delete_document: 删除文档（需要 filename）
+5. list_documents: 列出所有文档
+6. add_table: 添加表格（需要 filename, table_data）
+7. search_replace: 搜索替换文本（需要 filename, search_text, replace_text）
 
-        # 发送编排开始事件
-        yield f"data: {json.dumps({'type': 'start', 'tool': 'agent', 'message': '开始多步生成文档'})}\n\n"
+请根据用户的请求，决定需要调用哪些工具。如果用户想创建文档，请生成合适的内容。
+如果需要多步操作，请逐步执行。完成后，给出简洁的总结。"""
+
+        # 初始化消息历史
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": f"用户请求: {query}" + (f"\n建议标题: {title}" if title else "") + (f"\n建议文件名: {filename_hint}" if filename_hint else "")}
+        ]
+        
+        tools = get_tools_for_llm()
+        
+        yield f"data: {json.dumps({'type': 'start', 'message': '正在理解您的需求...'}, ensure_ascii=False)}\n\n"
         await asyncio.sleep(0)
-
-        # 这里先对 React 做一个高质量模板；其他主题也能复用（只是内容更通用）
-        plan = _react_doc_plan(title=title, filename=filename)
-
-        for idx, step in enumerate(plan, start=1):
+        
+        max_iterations = 10  # 防止无限循环
+        iteration = 0
+        
+        while iteration < max_iterations:
             if await http_request.is_disconnected():
+                logger.info("客户端断开连接")
                 break
-
-            tool_name = step["tool"]
-            params = step["params"]
-            label = step.get("label") or tool_name
-
-            yield f"data: {json.dumps({'type': 'progress', 'message': f'[{idx}/{len(plan)}] {label}'})}\n\n"
-            yield f"data: {json.dumps({'type': 'start', 'tool': tool_name, 'step': idx, 'label': label})}\n\n"
-
-            if tool_name not in TOOL_HANDLERS:
-                yield f"data: {json.dumps({'type': 'error', 'error': f'未知工具: {tool_name}', 'step': idx})}\n\n"
-                return
-
-            handler = TOOL_HANDLERS[tool_name]
-            result = handler(**params)
-            yield f"data: {json.dumps({'type': 'result', 'data': result, 'tool': tool_name, 'step': idx, 'label': label})}\n\n"
-            await asyncio.sleep(0)
-
-        yield f"data: {json.dumps({'type': 'done', 'data': {'filename': filename, 'title': title}})}\n\n"
+            
+            iteration += 1
+            
+            try:
+                # 调用 LLM
+                yield f"data: {json.dumps({'type': 'thinking', 'message': f'正在思考 (第 {iteration} 轮)...'}, ensure_ascii=False)}\n\n"
+                
+                llm_response = await call_llm(messages, tools)
+                choice = llm_response.get("choices", [{}])[0]
+                message = choice.get("message", {})
+                
+                # 检查是否有工具调用
+                tool_calls = message.get("tool_calls", [])
+                
+                if tool_calls:
+                    # 添加助手消息到历史
+                    messages.append(message)
+                    
+                    # 执行每个工具调用
+                    for tool_call in tool_calls:
+                        tool_name = tool_call["function"]["name"]
+                        tool_id = tool_call["id"]
+                        
+                        try:
+                            arguments = json.loads(tool_call["function"]["arguments"])
+                        except json.JSONDecodeError:
+                            arguments = {}
+                        
+                        yield f"data: {json.dumps({'type': 'tool_call', 'tool': tool_name, 'arguments': arguments}, ensure_ascii=False)}\n\n"
+                        
+                        # 执行工具
+                        result = execute_tool(tool_name, arguments)
+                        
+                        yield f"data: {json.dumps({'type': 'tool_result', 'tool': tool_name, 'result': result}, ensure_ascii=False)}\n\n"
+                        
+                        # 添加工具结果到消息历史
+                        messages.append({
+                            "role": "tool",
+                            "tool_call_id": tool_id,
+                            "content": json.dumps(result, ensure_ascii=False)
+                        })
+                        
+                        await asyncio.sleep(0)
+                else:
+                    # 没有工具调用，LLM 给出了最终回答
+                    content = message.get("content", "")
+                    
+                    # 处理 Qwen 模型的思考标签
+                    if content:
+                        # 移除 <think>...</think> 标签内容
+                        content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL).strip()
+                    
+                    yield f"data: {json.dumps({'type': 'response', 'content': content}, ensure_ascii=False)}\n\n"
+                    break
+                    
+            except httpx.HTTPStatusError as e:
+                error_msg = f"LLM API 错误: {e.response.status_code}"
+                logger.error(f"{error_msg}: {e.response.text}")
+                yield f"data: {json.dumps({'type': 'error', 'error': error_msg}, ensure_ascii=False)}\n\n"
+                break
+            except Exception as e:
+                error_msg = f"处理错误: {str(e)}"
+                logger.exception(error_msg)
+                yield f"data: {json.dumps({'type': 'error', 'error': error_msg}, ensure_ascii=False)}\n\n"
+                break
+        
+        if iteration >= max_iterations:
+            yield f"data: {json.dumps({'type': 'warning', 'message': '达到最大迭代次数限制'}, ensure_ascii=False)}\n\n"
+        
+        yield f"data: {json.dumps({'type': 'done'}, ensure_ascii=False)}\n\n"
 
     return StreamingResponse(
         stream_response(),
@@ -487,24 +667,89 @@ async def sse_agent(request: AgentRequest, http_request: Request):
     )
 
 
+@app.post("/chat")
+async def chat(request: AgentRequest):
+    """
+    非流式 Chat 端点（用于简单请求）
+    """
+    query = request.query
+    title = (request.title or "").strip()
+    filename_hint = (request.filename or "").strip()
+    
+    system_prompt = """你是一个专业的 Word 文档助手。请根据用户的请求，决定需要调用哪些工具并执行。"""
+    
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": f"用户请求: {query}" + (f"\n建议标题: {title}" if title else "") + (f"\n建议文件名: {filename_hint}" if filename_hint else "")}
+    ]
+    
+    tools = get_tools_for_llm()
+    results = []
+    
+    max_iterations = 10
+    for _ in range(max_iterations):
+        try:
+            llm_response = await call_llm(messages, tools)
+            choice = llm_response.get("choices", [{}])[0]
+            message = choice.get("message", {})
+            
+            tool_calls = message.get("tool_calls", [])
+            
+            if tool_calls:
+                messages.append(message)
+                
+                for tool_call in tool_calls:
+                    tool_name = tool_call["function"]["name"]
+                    tool_id = tool_call["id"]
+                    
+                    try:
+                        arguments = json.loads(tool_call["function"]["arguments"])
+                    except json.JSONDecodeError:
+                        arguments = {}
+                    
+                    result = execute_tool(tool_name, arguments)
+                    results.append({"tool": tool_name, "arguments": arguments, "result": result})
+                    
+                    messages.append({
+                        "role": "tool",
+                        "tool_call_id": tool_id,
+                        "content": json.dumps(result, ensure_ascii=False)
+                    })
+            else:
+                content = message.get("content", "")
+                if content:
+                    content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL).strip()
+                return {
+                    "success": True,
+                    "response": content,
+                    "tool_calls": results
+                }
+                
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+    
+    return {"success": False, "error": "达到最大迭代次数"}
+
+
 if __name__ == "__main__":
     import uvicorn
     
     print("=" * 50)
-    print("Word MCP Server (SSE)")
+    print("Word MCP Server (SSE + LLM Agent)")
     print("=" * 50)
     print(f"文档目录: {WORD_DIR.absolute()}")
     print(f"服务地址: http://localhost:8080")
+    print(f"LLM: {LLM_CONFIG.get('model')} @ {LLM_CONFIG.get('baseURL')}")
     print("=" * 50)
     print("\n可用端点:")
-    print("  GET  /          - 服务器状态")
-    print("  GET  /tools     - 工具列表")
-    print("  POST /call      - 调用工具")
-    print("  GET  /sse       - SSE 连接")
-    print("  POST /sse/call  - SSE 调用工具")
-    print("  POST /sse/agent - SSE 多步编排（真·流式）")
-    print("  GET  /documents - 文档列表")
+    print("  GET  /           - 服务器状态")
+    print("  GET  /tools      - 工具列表")
+    print("  POST /call       - 直接调用工具")
+    print("  GET  /sse        - SSE 连接")
+    print("  POST /sse/call   - SSE 调用工具")
+    print("  POST /sse/agent  - LLM Agent (SSE 流式)")
+    print("  POST /chat       - LLM Agent (非流式)")
+    print("  GET  /documents  - 文档列表")
     print("=" * 50)
     
     uvicorn.run(app, host="0.0.0.0", port=8080)
-
