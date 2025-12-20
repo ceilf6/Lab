@@ -25,19 +25,31 @@ interface SSEMessage {
   time?: string;
 }
 
+interface Message {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
+
 // 主组件
 export default function WordMCPClient() {
   const [connected, setConnected] = useState(false);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [tools, setTools] = useState<Record<string, Tool>>({});
+  const [messages, setMessages] = useState<Message[]>([]);
   const [logs, setLogs] = useState<string[]>([]);
-  const [logsCollapsed, setLogsCollapsed] = useState(false);
-
   const [userInput, setUserInput] = useState('');
 
   const eventSourceRef = useRef<EventSource | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const logsEndRef = useRef<HTMLDivElement>(null);
+
+  // 滚动消息到底部
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   // 滚动日志到底部
   useEffect(() => {
@@ -47,29 +59,19 @@ export default function WordMCPClient() {
   // 添加日志
   const addLog = useCallback((message: string, type: 'info' | 'success' | 'error' | 'agent' = 'info') => {
     const timestamp = new Date().toLocaleTimeString();
-    const logPrefix = {
-      info: 'ℹ️',
-      success: '✅',
-      error: '❌',
-      agent: '🤖'
-    }[type];
-    setLogs(prev => [...prev.slice(-99), `${logPrefix} [${timestamp}] ${message}`]);
+    const prefix = { info: '●', success: '✓', error: '✗', agent: '◆' }[type];
+    setLogs(prev => [...prev.slice(-199), `[${timestamp}] ${prefix} ${message}`]);
   }, []);
 
-  // 清空日志
-  const clearLogs = useCallback(() => {
-    setLogs([]);
+  // 添加消息
+  const addMessage = useCallback((role: 'user' | 'assistant', content: string) => {
+    setMessages(prev => [...prev, {
+      id: Date.now().toString(),
+      role,
+      content,
+      timestamp: new Date()
+    }]);
   }, []);
-
-  // 复制日志到剪贴板
-  const copyLogs = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(logs.join('\n'));
-      addLog('日志已复制到剪贴板', 'success');
-    } catch (e) {
-      addLog('复制失败', 'error');
-    }
-  }, [logs, addLog]);
 
   // 建立 SSE 连接
   const connectSSE = useCallback(() => {
@@ -77,27 +79,25 @@ export default function WordMCPClient() {
       eventSourceRef.current.close();
     }
 
-    addLog('正在连接 SSE...');
+    addLog('正在连接 MCP 服务器...', 'info');
     const es = new EventSource(`${MCP_SERVER}/sse`);
 
     es.onopen = () => {
       setConnected(true);
-      addLog('SSE 连接已建立');
+      addLog('SSE 连接已建立', 'success');
     };
 
     es.onmessage = (event) => {
       try {
         const data: SSEMessage = JSON.parse(event.data);
-
         switch (data.type) {
           case 'connected':
-            addLog(`服务器: ${data.message}`);
+            addLog(`服务器: ${data.message}`, 'info');
             break;
           case 'tools':
-            addLog(`可用工具: ${data.tools?.join(', ')}`);
+            addLog(`可用工具: ${data.tools?.join(', ')}`, 'info');
             break;
           case 'heartbeat':
-            // 静默处理心跳
             break;
         }
       } catch (e) {
@@ -107,7 +107,7 @@ export default function WordMCPClient() {
 
     es.onerror = () => {
       setConnected(false);
-      addLog('SSE 连接断开');
+      addLog('SSE 连接断开', 'error');
       es.close();
     };
 
@@ -143,8 +143,7 @@ export default function WordMCPClient() {
   // 调用工具 (SSE 方式)
   const callTool = useCallback(async (tool: string, params: Record<string, any>) => {
     setLoading(true);
-    setResult(null);
-    addLog(`Agent 正在执行: ${tool}...`, 'agent');
+    addLog(`正在执行: ${tool}`, 'agent');
 
     try {
       const res = await fetch(`${MCP_SERVER}/sse/call`, {
@@ -160,6 +159,8 @@ export default function WordMCPClient() {
         throw new Error('无法读取响应流');
       }
 
+      let resultContent = '';
+
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -174,21 +175,23 @@ export default function WordMCPClient() {
 
               switch (data.type) {
                 case 'start':
-                  addLog(`开始执行工具: ${tool}`, 'info');
+                  addLog(`开始执行: ${tool}`, 'info');
                   break;
                 case 'result':
-                  setResult(data.data);
                   if (data.data?.success) {
                     addLog(`执行成功: ${data.data?.message || '操作完成'}`, 'success');
+                    resultContent = data.data?.message || JSON.stringify(data.data, null, 2);
                   } else {
                     addLog(`执行失败: ${data.data?.error || '未知错误'}`, 'error');
+                    resultContent = `错误: ${data.data?.error || '未知错误'}`;
                   }
                   break;
                 case 'error':
-                  addLog(`Agent 报错: ${data.error}`, 'error');
+                  addLog(`错误: ${data.error}`, 'error');
+                  resultContent = `错误: ${data.error}`;
                   break;
                 case 'done':
-                  addLog('工具执行结束', 'info');
+                  addLog('执行完成', 'info');
                   break;
               }
             } catch (e) {
@@ -198,15 +201,19 @@ export default function WordMCPClient() {
         }
       }
 
-      // 刷新文档列表
+      if (resultContent) {
+        addMessage('assistant', resultContent);
+      }
+
       await fetchDocuments();
     } catch (e) {
       const errorMsg = e instanceof Error ? e.message : String(e);
       addLog(`调用失败: ${errorMsg}`, 'error');
+      addMessage('assistant', `抱歉，执行出错: ${errorMsg}`);
     } finally {
       setLoading(false);
     }
-  }, [addLog, fetchDocuments]);
+  }, [addLog, addMessage, fetchDocuments]);
 
   // 处理聊天输入
   const handleChat = async () => {
@@ -214,9 +221,10 @@ export default function WordMCPClient() {
 
     const query = userInput.trim();
     setUserInput('');
-    addLog(`用户: ${query}`, 'info');
+    addMessage('user', query);
+    addLog(`用户输入: ${query}`, 'info');
 
-    // 简单的关键词匹配 (作为临时 Agent 逻辑)
+    // 简单的关键词匹配
     if (query.toLowerCase().includes('列出') || query.toLowerCase().includes('list')) {
       await callTool('list_documents', {});
     } else if (query.toLowerCase().startsWith('读取') || query.toLowerCase().startsWith('read')) {
@@ -224,14 +232,14 @@ export default function WordMCPClient() {
       if (filename) {
         await callTool('read_document', { filename });
       } else {
-        addLog('请指定文件名，例如: 读取 my_doc', 'error');
+        addMessage('assistant', '请指定文件名，例如: 读取 my_doc');
       }
     } else if (query.toLowerCase().startsWith('删除') || query.toLowerCase().startsWith('delete')) {
       const filename = query.split(' ')[1];
       if (filename) {
         await callTool('delete_document', { filename });
       } else {
-        addLog('请指定文件名，例如: 删除 my_doc', 'error');
+        addMessage('assistant', '请指定文件名，例如: 删除 my_doc');
       }
     } else if (query.toLowerCase().startsWith('创建') || query.toLowerCase().startsWith('create')) {
       const parts = query.split(' ');
@@ -242,7 +250,7 @@ export default function WordMCPClient() {
         content: content || '新文档内容'
       });
     } else {
-      addLog('目前支持指令: [列出], [读取 文件名], [创建 文件名 内容], [删除 文件名]', 'info');
+      addMessage('assistant', '支持的指令:\n• 列出 - 查看所有文档\n• 读取 [文件名] - 读取文档内容\n• 创建 [文件名] [内容] - 创建新文档\n• 删除 [文件名] - 删除文档');
     }
   };
 
@@ -258,230 +266,438 @@ export default function WordMCPClient() {
   }, [connectSSE, fetchTools, fetchDocuments]);
 
   return (
-    <div className="min-h-dvh bg-[#0a0a0a] text-slate-200 selection:bg-blue-500/30">
-      {/* 顶部状态栏 */}
-      <header className="sticky top-0 z-50 border-b border-white/5 bg-black/40 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-violet-600 shadow-lg shadow-blue-500/20">
-              <span className="text-sm font-bold text-white">W</span>
-            </div>
-            <div>
-              <h1 className="text-sm font-semibold tracking-tight text-slate-100">Word Agent</h1>
-              <div className="flex items-center gap-2">
-                <span className={`h-1.5 w-1.5 rounded-full ${connected ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]'}`} />
-                <span className="text-[10px] uppercase tracking-wider text-slate-500">{connected ? 'Online' : 'Offline'}</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={connectSSE}
-              className="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-slate-400 transition hover:bg-white/10 hover:text-slate-200"
-            >
-              重连
-            </button>
+    <div style={styles.container}>
+      {/* 主内容区 */}
+      <div style={styles.main}>
+        {/* 头部标题 */}
+        <div style={styles.header}>
+          <h1 style={styles.title}>Word Agent</h1>
+          <div style={styles.status}>
+            <span style={{
+              ...styles.statusDot,
+              backgroundColor: connected ? '#10b981' : '#ef4444',
+              boxShadow: connected ? '0 0 8px #10b981' : '0 0 8px #ef4444'
+            }} />
+            <span style={styles.statusText}>{connected ? '已连接' : '未连接'}</span>
           </div>
         </div>
-      </header>
 
-      <div className="mx-auto flex max-w-7xl">
-        {/* 主交互区 */}
-        <main className="flex-1 px-4 py-6 sm:px-6">
-          <div className="flex flex-col gap-6">
-
-            {/* 交互输入框 (ChatGPT 风格) */}
-            <div className="relative z-10 mx-auto w-full max-w-3xl">
-              <div className="group relative overflow-hidden rounded-2xl border border-white/8 bg-white/5 p-1 shadow-2xl transition-all focus-within:border-blue-500/50 focus-within:ring-4 focus-within:ring-blue-500/10">
-                <div className="flex items-end gap-2 p-2">
-                  <label className="sr-only">输入指令</label>
-                  <textarea
-                    rows={1}
-                    aria-label="输入指令"
-                    value={userInput}
-                    onChange={(e) => {
-                      setUserInput(e.target.value);
-                      e.target.style.height = 'auto';
-                      e.target.style.height = e.target.scrollHeight + 'px';
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        handleChat();
-                      }
-                    }}
-                    placeholder="问问 Agent 想要做什么？ 例如：列出文档、创建 doc1 内容..."
-                    className="max-h-60 w-full resize-none rounded-xl border border-transparent bg-transparent px-3 py-2 text-base text-slate-100 placeholder:text-slate-500 focus:border-blue-400 focus:bg-white/2 focus:outline-none"
-                  />
-                  <button
-                    onClick={handleChat}
-                    disabled={!userInput.trim() || loading}
-                    title="发送"
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white transition hover:bg-blue-500 disabled:bg-slate-800 disabled:text-slate-600"
-                  >
-                    {loading ? (
-                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-                    ) : (
-                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                      </svg>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* 快捷标签 */}
-              <div className="mt-3 flex flex-wrap gap-2 px-2">
-                {['列出文档', '创建测试文档', '读取 my_intro'].map((cmd) => (
-                  <button
-                    key={cmd}
-                    onClick={() => {
-                      setUserInput(cmd === '创建测试文档' ? '创建 test_doc 这里是文档内容' : cmd);
-                    }}
-                    className="rounded-full border border-white/5 bg-white/5 px-3 py-1 text-[11px] text-slate-400 transition hover:border-white/20 hover:bg-white/10 hover:text-slate-200"
-                  >
-                    {cmd}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Agent 日志框 */}
-            <div className="mx-auto w-full max-w-3xl">
-              <div className="flex items-center justify-between px-2 py-2">
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-medium uppercase tracking-wider text-slate-500">Agent Operations</span>
-                  <span className="text-[10px] text-slate-600">{logs.length} events</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={copyLogs} className="rounded-md bg-white/5 px-2 py-1 text-[11px] text-slate-300 hover:bg-white/10">复制</button>
-                  <button onClick={() => setLogsCollapsed(!logsCollapsed)} className="rounded-md bg-white/5 px-2 py-1 text-[11px] text-slate-300 hover:bg-white/10">{logsCollapsed ? '展开' : '收起'}</button>
-                  <button onClick={clearLogs} className="rounded-md bg-rose-600/10 px-2 py-1 text-[11px] text-rose-300 hover:bg-rose-600/20">清空</button>
-                </div>
-              </div>
-              {!logsCollapsed && (
-                <div className="h-[420px] overflow-y-auto rounded-2xl border border-white/5 bg-[#0d0d0d] p-4 shadow-inner custom-scrollbar" role="log" aria-live="polite">
-                  <div className="space-y-4">
-                    {logs.length === 0 ? (
-                      <div className="flex h-[260px] flex-col items-center justify-center text-center opacity-40">
-                        <div className="mb-4 rounded-full bg-white/5 p-4 text-3xl">🤖</div>
-                        <p className="text-sm">Agent 等待指令中...</p>
-                      </div>
-                    ) : (
-                      logs.map((log, i) => {
-                        const isUser = log.includes('ℹ️ [') && log.includes('用户:');
-                        const iconMatch = log.match(/^(.+?)\s/);
-                        const icon = iconMatch ? iconMatch[1] : '';
-                        const time = log.match(/\[(.*?)\]/)?.[1];
-                        const message = log.split('] ').slice(1).join('] ');
-                        return (
-                          <div key={i} className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
-                            <div
-                              className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm shadow-sm flex flex-col ${isUser
-                                  ? 'bg-blue-600 text-white'
-                                  : log.includes('❌')
-                                    ? 'bg-rose-500/10 text-rose-300 border border-rose-500/20'
-                                    : log.includes('✅')
-                                      ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20'
-                                      : 'bg-white/5 text-slate-300 border border-white/5'
-                                }`}
-                            >
-                              <div className="flex items-start gap-3">
-                                <div className="text-lg leading-none">{icon}</div>
-                                <div className="whitespace-pre-wrap leading-relaxed">{message}</div>
-                              </div>
-                              <div className={`mt-1 text-[9px] ${isUser ? 'text-blue-200' : 'text-slate-500'}`}>
-                                {time}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })
-                    )}
-                    <div ref={logsEndRef} />
-                  </div>
-                </div>
-              )}
-
-              {/* 执行结果卡片 (如果是 JSON 对象且存在时显示) */}
-              {result && (
-                <div className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/50">
-                  <div className="flex items-center justify-between border-b border-white/5 bg-white/5 px-4 py-2">
-                    <span className="text-xs font-medium text-slate-400">执行详情 (JSON)</span>
-                    <button onClick={() => setResult(null)} className="text-slate-500 hover:text-white">
-                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
+        {/* 对话区域 */}
+        <div style={styles.chatContainer}>
+          <div style={styles.messagesWrapper} className="messages-scroll">
+            {messages.length === 0 ? (
+              <div style={styles.emptyState}>
+                <div style={styles.emptyIcon}>📄</div>
+                <p style={styles.emptyTitle}>Word 文档助手</p>
+                <p style={styles.emptySubtitle}>输入指令来管理你的 Word 文档</p>
+                <div style={styles.suggestions}>
+                  {['列出文档', '创建 test 测试内容', '读取 my_intro'].map((cmd) => (
+                    <button
+                      key={cmd}
+                      onClick={() => setUserInput(cmd)}
+                      style={styles.suggestionBtn}
+                    >
+                      {cmd}
                     </button>
-                  </div>
-                  <pre className="max-h-60 overflow-auto p-4 text-[11px] leading-relaxed text-blue-300 custom-scrollbar">
-                    {JSON.stringify(result, null, 2)}
-                  </pre>
+                  ))}
                 </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div style={styles.messagesList}>
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    style={{
+                      ...styles.messageRow,
+                      justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start'
+                    }}
+                  >
+                    <div
+                      style={{
+                        ...styles.messageBubble,
+                        ...(msg.role === 'user' ? styles.userBubble : styles.assistantBubble)
+                      }}
+                    >
+                      <div style={styles.messageContent}>{msg.content}</div>
+                    </div>
+                  </div>
+                ))}
+                {loading && (
+                  <div style={{ ...styles.messageRow, justifyContent: 'flex-start' }}>
+                    <div style={{ ...styles.messageBubble, ...styles.assistantBubble }}>
+                      <div style={styles.typingIndicator}>
+                        <span style={styles.typingDot} />
+                        <span style={{ ...styles.typingDot, animationDelay: '0.2s' }} />
+                        <span style={{ ...styles.typingDot, animationDelay: '0.4s' }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+            )}
           </div>
-        </main>
 
-        {/* 右侧文档侧边栏 */}
-        <aside className="hidden w-80 shrink-0 border-l border-white/5 bg-[#0a0a0a] py-6 lg:block">
-          <div className="px-6">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-500">Documents</h2>
+          {/* 输入框 */}
+          <div style={styles.inputWrapper}>
+            <div style={styles.inputContainer}>
+              <textarea
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleChat();
+                  }
+                }}
+                placeholder="输入指令..."
+                style={styles.textarea}
+                rows={1}
+              />
               <button
-                onClick={fetchDocuments}
-                className="rounded-lg p-1 text-slate-500 transition hover:bg-white/5 hover:text-slate-300"
+                onClick={handleChat}
+                disabled={!userInput.trim() || loading}
+                style={{
+                  ...styles.sendBtn,
+                  opacity: (!userInput.trim() || loading) ? 0.5 : 1,
+                  cursor: (!userInput.trim() || loading) ? 'not-allowed' : 'pointer'
+                }}
               >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
                 </svg>
               </button>
             </div>
-
-            <div className="space-y-2">
-              {documents.length === 0 ? (
-                <div className="rounded-xl border border-dashed border-white/10 p-8 text-center">
-                  <p className="text-xs text-slate-600">No documents found</p>
-                </div>
-              ) : (
-                documents.map((doc) => (
-                  <button
-                    key={doc.path}
-                    onClick={() => {
-                      setUserInput(`读取 ${doc.name.replace('.docx', '')}`);
-                    }}
-                    className="group flex w-full flex-col gap-1 rounded-xl border border-transparent bg-white/5 p-3 text-left transition hover:border-white/10 hover:bg-white/10"
-                  >
-                    <span className="truncate text-sm font-medium text-slate-300 group-hover:text-white">{doc.name}</span>
-                    <div className="flex items-center justify-between text-[10px] text-slate-500">
-                      <span>{(doc.size / 1024).toFixed(1)} KB</span>
-                      <span>{new Date(doc.modified).toLocaleDateString()}</span>
-                    </div>
-                  </button>
-                ))
-              )}
-            </div>
           </div>
-        </aside>
+        </div>
+
+        {/* 工具日志区域 */}
+        <div style={styles.logsContainer}>
+          <div style={styles.logsHeader}>
+            <span style={styles.logsTitle}>工具日志</span>
+            <span style={styles.logsCount}>{logs.length} 条</span>
+          </div>
+          <div style={styles.logsContent} className="logs-scroll">
+            {logs.length === 0 ? (
+              <div style={styles.logsEmpty}>暂无日志</div>
+            ) : (
+              logs.map((log, i) => (
+                <div key={i} style={styles.logItem}>
+                  <span style={{
+                    ...styles.logText,
+                    color: log.includes('✓') ? '#10b981' :
+                           log.includes('✗') ? '#ef4444' :
+                           log.includes('◆') ? '#8b5cf6' : '#9ca3af'
+                  }}>
+                    {log}
+                  </span>
+                </div>
+              ))
+            )}
+            <div ref={logsEndRef} />
+          </div>
+        </div>
       </div>
 
-      <style dangerouslySetInnerHTML={{
-        __html: `
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
+      {/* 全局样式 */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes typing {
+          0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+          30% { opacity: 1; transform: translateY(-4px); }
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
+        
+        .logs-scroll::-webkit-scrollbar {
+          width: 4px;
+        }
+        .logs-scroll::-webkit-scrollbar-track {
           background: transparent;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #222;
-          border-radius: 10px;
+        .logs-scroll::-webkit-scrollbar-thumb {
+          background: #374151;
+          border-radius: 4px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #333;
+        .logs-scroll::-webkit-scrollbar-thumb:hover {
+          background: #4b5563;
         }
-      ` }} />
+        
+        .messages-scroll::-webkit-scrollbar {
+          width: 6px;
+        }
+        .messages-scroll::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .messages-scroll::-webkit-scrollbar-thumb {
+          background: #374151;
+          border-radius: 6px;
+        }
+        
+        textarea:focus {
+          outline: none;
+        }
+        
+        button:hover:not(:disabled) {
+          filter: brightness(1.1);
+        }
+      `}} />
     </div>
   );
 }
 
+// 样式定义
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    minHeight: '100dvh',
+    backgroundColor: '#212121',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '24px',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  },
+  
+  main: {
+    width: '100%',
+    maxWidth: '680px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '0 4px',
+  },
+  
+  title: {
+    fontSize: '20px',
+    fontWeight: 600,
+    color: '#ffffff',
+    margin: 0,
+    letterSpacing: '-0.02em',
+  },
+  
+  status: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  },
+  
+  statusDot: {
+    width: '8px',
+    height: '8px',
+    borderRadius: '50%',
+  },
+  
+  statusText: {
+    fontSize: '13px',
+    color: '#9ca3af',
+  },
+  
+  chatContainer: {
+    backgroundColor: '#2f2f2f',
+    borderRadius: '16px',
+    border: '1px solid #424242',
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  
+  messagesWrapper: {
+    height: '420px',
+    overflowY: 'auto',
+    padding: '24px',
+  },
+  
+  emptyState: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+  
+  emptyIcon: {
+    fontSize: '48px',
+    marginBottom: '16px',
+  },
+  
+  emptyTitle: {
+    fontSize: '18px',
+    fontWeight: 600,
+    color: '#ffffff',
+    margin: '0 0 8px 0',
+  },
+  
+  emptySubtitle: {
+    fontSize: '14px',
+    color: '#9ca3af',
+    margin: '0 0 24px 0',
+  },
+  
+  suggestions: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '8px',
+    justifyContent: 'center',
+  },
+  
+  suggestionBtn: {
+    padding: '8px 16px',
+    fontSize: '13px',
+    color: '#d1d5db',
+    backgroundColor: '#424242',
+    border: '1px solid #525252',
+    borderRadius: '20px',
+    cursor: 'pointer',
+    transition: 'all 0.15s',
+  },
+  
+  messagesList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  
+  messageRow: {
+    display: 'flex',
+    width: '100%',
+  },
+  
+  messageBubble: {
+    maxWidth: '85%',
+    padding: '12px 16px',
+    borderRadius: '18px',
+    fontSize: '14px',
+    lineHeight: 1.5,
+  },
+  
+  userBubble: {
+    backgroundColor: '#10a37f',
+    color: '#ffffff',
+    borderBottomRightRadius: '4px',
+  },
+  
+  assistantBubble: {
+    backgroundColor: '#424242',
+    color: '#ececec',
+    borderBottomLeftRadius: '4px',
+  },
+  
+  messageContent: {
+    whiteSpace: 'pre-wrap',
+    wordBreak: 'break-word',
+  },
+  
+  typingIndicator: {
+    display: 'flex',
+    gap: '4px',
+    padding: '4px 0',
+  },
+  
+  typingDot: {
+    width: '8px',
+    height: '8px',
+    borderRadius: '50%',
+    backgroundColor: '#9ca3af',
+    animation: 'typing 1s infinite',
+  },
+  
+  inputWrapper: {
+    padding: '16px',
+    borderTop: '1px solid #424242',
+    backgroundColor: '#2f2f2f',
+  },
+  
+  inputContainer: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    gap: '12px',
+    backgroundColor: '#424242',
+    borderRadius: '12px',
+    padding: '12px 16px',
+    border: '1px solid #525252',
+  },
+  
+  textarea: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    border: 'none',
+    color: '#ffffff',
+    fontSize: '14px',
+    lineHeight: 1.5,
+    resize: 'none',
+    minHeight: '24px',
+    maxHeight: '120px',
+  },
+  
+  sendBtn: {
+    width: '36px',
+    height: '36px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#10a37f',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '8px',
+    transition: 'all 0.15s',
+    flexShrink: 0,
+  },
+  
+  logsContainer: {
+    backgroundColor: '#2f2f2f',
+    borderRadius: '12px',
+    border: '1px solid #424242',
+    overflow: 'hidden',
+  },
+  
+  logsHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '12px 16px',
+    borderBottom: '1px solid #424242',
+    backgroundColor: '#353535',
+  },
+  
+  logsTitle: {
+    fontSize: '12px',
+    fontWeight: 600,
+    color: '#9ca3af',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+  },
+  
+  logsCount: {
+    fontSize: '11px',
+    color: '#6b7280',
+  },
+  
+  logsContent: {
+    height: '120px',
+    overflowY: 'auto',
+    padding: '8px 16px',
+  },
+  
+  logsEmpty: {
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#6b7280',
+    fontSize: '13px',
+  },
+  
+  logItem: {
+    padding: '4px 0',
+  },
+  
+  logText: {
+    fontSize: '12px',
+    fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace',
+    lineHeight: 1.5,
+  },
+};
