@@ -17,12 +17,15 @@ interface Document {
 }
 
 interface SSEMessage {
-  type: 'connected' | 'tools' | 'heartbeat' | 'start' | 'result' | 'done' | 'error';
+  type: 'connected' | 'tools' | 'heartbeat' | 'start' | 'result' | 'done' | 'error' | 'progress';
   message?: string;
   tools?: string[];
   data?: any;
   error?: string;
   time?: string;
+  tool?: string;
+  step?: number;
+  label?: string;
 }
 
 // 消息类型：用户消息、助手回复、系统日志
@@ -142,16 +145,39 @@ export default function WordMCPClient() {
       'list_documents': '列出文档',
       'read_document': '读取文档',
       'create_document': '创建文档',
+      'update_document': '更新文档',
+      'add_table': '添加表格',
+      'search_replace': '搜索替换',
       'delete_document': '删除文档'
     };
     addLog(`正在调用工具: ${toolNames[tool] || tool}`, 'working');
 
     try {
-      const res = await fetch(`${MCP_SERVER}/sse/call`, {
+      const url = `${MCP_SERVER}/sse/call`;
+      const requestBody = { tool, params };
+      
+      console.log('[WordMCP] 发送请求:', { url, tool, params });
+      
+      const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tool, params })
+        body: JSON.stringify(requestBody)
       });
+
+      console.log('[WordMCP] 响应状态:', res.status, res.statusText);
+
+      // 检查 HTTP 响应状态
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('[WordMCP] 请求失败:', res.status, errorText);
+        throw new Error(`服务器错误: ${res.status} ${res.statusText}${errorText ? ` - ${errorText}` : ''}`);
+      }
+
+      // 检查响应类型
+      const contentType = res.headers.get('content-type');
+      if (!contentType || !contentType.includes('text/event-stream')) {
+        console.warn('[WordMCP] 意外的响应类型:', contentType);
+      }
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
@@ -161,6 +187,7 @@ export default function WordMCPClient() {
       }
 
       let resultContent = '';
+      let currentToolName = tool; // 保存工具名称用于格式化结果（支持后端多步 start 里切换）
 
       while (true) {
         const { done, value } = await reader.read();
@@ -172,31 +199,80 @@ export default function WordMCPClient() {
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             try {
-              const data: SSEMessage = JSON.parse(line.slice(6));
+              const jsonStr = line.slice(6);
+              console.log('[WordMCP] 收到 SSE 数据:', jsonStr);
+              const data: SSEMessage = JSON.parse(jsonStr);
+              console.log('[WordMCP] 解析后的数据:', data);
 
               switch (data.type) {
                 case 'start':
-                  addLog('开始执行...', 'info');
+                  if (data.tool) currentToolName = data.tool;
+                  addLog(data.label ? `开始：${data.label}` : '开始执行...', 'info');
+                  break;
+                case 'progress':
+                  if (data.message) addLog(data.message, 'working');
                   break;
                 case 'result':
                   if (data.data?.success) {
                     addLog('执行成功', 'success');
-                    resultContent = data.data?.message || JSON.stringify(data.data, null, 2);
+                    
+                    // 根据不同工具类型，格式化显示结果
+                    const toolName = currentToolName;
+                    const appendResult = (text: string) => {
+                      resultContent = resultContent
+                        ? `${resultContent}\n\n---\n\n${text}`
+                        : text;
+                    };
+                    if (toolName === 'create_document') {
+                      // 创建文档：显示文件名和路径
+                      const filePath = data.data?.file_path || '';
+                      const fileName = filePath.split('/').pop() || filePath.split('\\').pop() || '未知文件';
+                      appendResult(`✅ 文档创建成功！\n\n文件名：${fileName}\n路径：${filePath}${data.data?.file_size ? `\n大小：${(data.data.file_size / 1024).toFixed(2)} KB` : ''}`);
+                    } else if (toolName === 'list_documents') {
+                      // 列出文档：格式化显示文档列表
+                      const docs = data.data?.documents || [];
+                      if (docs.length === 0) {
+                        appendResult('📋 当前没有文档');
+                      } else {
+                        appendResult(`📋 共找到 ${docs.length} 个文档：\n\n${docs.map((doc: any, index: number) => 
+                          `${index + 1}. ${doc.name} (${(doc.size / 1024).toFixed(2)} KB)`
+                        ).join('\n')}`);
+                      }
+                    } else if (toolName === 'read_document') {
+                      // 读取文档：显示文档内容
+                      const fullText = data.data?.full_text || '';
+                      const paragraphs = data.data?.paragraphs || [];
+                      if (fullText) {
+                        appendResult(`📖 文档内容：\n\n${fullText}`);
+                      } else if (paragraphs.length > 0) {
+                        appendResult(`📖 文档内容：\n\n${paragraphs.join('\n\n')}`);
+                      } else {
+                        appendResult(data.data?.message || '文档读取成功，但内容为空');
+                      }
+                    } else if (toolName === 'delete_document') {
+                      appendResult(`✅ ${data.data?.message || '文档删除成功'}`);
+                    } else if (toolName === 'update_document') {
+                      appendResult(`✅ ${data.data?.message || '文档更新成功'}`);
+                    } else if (toolName === 'add_table') {
+                      appendResult(`✅ ${data.data?.message || '表格添加成功'}`);
+                    } else {
+                      appendResult(data.data?.message || JSON.stringify(data.data, null, 2));
+                    }
                   } else {
                     addLog(`执行失败: ${data.data?.error || '未知错误'}`, 'error');
-                    resultContent = `错误: ${data.data?.error || '未知错误'}`;
+                    resultContent = `❌ 错误：${data.data?.error || '未知错误'}`;
                   }
                   break;
                 case 'error':
                   addLog(`错误: ${data.error}`, 'error');
-                  resultContent = `错误: ${data.error}`;
+                  resultContent = `❌ 错误：${data.error}`;
                   break;
                 case 'done':
-                  // 静默处理
+                  console.log('[WordMCP] 执行完成');
                   break;
               }
             } catch (e) {
-              // 忽略解析错误
+              console.error('[WordMCP] 解析 SSE 数据失败:', e, '原始行:', line);
             }
           }
         }
@@ -209,6 +285,115 @@ export default function WordMCPClient() {
       await fetchDocuments();
     } catch (e) {
       const errorMsg = e instanceof Error ? e.message : String(e);
+      console.error('[WordMCP] 调用工具失败:', e);
+      addLog(`调用失败: ${errorMsg}`, 'error');
+      addMessage('assistant', `抱歉，执行出错: ${errorMsg}`);
+    } finally {
+      setLoading(false);
+    }
+  }, [addLog, addMessage, fetchDocuments]);
+
+  // 多步编排（真·SSE）
+  const callAgent = useCallback(async (payload: { query: string; title?: string; filename?: string }) => {
+    setLoading(true);
+    addLog('正在启动多步生成（SSE）...', 'working');
+
+    try {
+      const url = `${MCP_SERVER}/sse/agent`;
+      console.log('[WordMCP] 发送 Agent 请求:', { url, payload });
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      console.log('[WordMCP] Agent 响应状态:', res.status, res.statusText);
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`服务器错误: ${res.status} ${res.statusText}${errorText ? ` - ${errorText}` : ''}`);
+      }
+
+      const reader = res.body?.getReader();
+      const decoder = new TextDecoder();
+      if (!reader) throw new Error('无法读取响应流');
+
+      let resultContent = '';
+      let lastCreatedFilePath = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const text = decoder.decode(value);
+        const lines = text.split('\n');
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const jsonStr = line.slice(6);
+          console.log('[WordMCP] 收到 Agent SSE 数据:', jsonStr);
+
+          let data: SSEMessage;
+          try {
+            data = JSON.parse(jsonStr);
+          } catch (e) {
+            console.error('[WordMCP] 解析 Agent SSE 失败:', e, '原始行:', line);
+            continue;
+          }
+
+          if (data.type === 'progress' && data.message) {
+            addLog(data.message, 'working');
+            continue;
+          }
+
+          if (data.type === 'start') {
+            addLog(data.label ? `开始：${data.label}` : (data.message || '开始执行...'), 'info');
+            continue;
+          }
+
+          if (data.type === 'result') {
+            if (data.data?.success) {
+              addLog('执行成功', 'success');
+
+              // 把 create_document 的 file_path 记住，便于最终提示
+              if (data.data?.file_path) lastCreatedFilePath = data.data.file_path;
+
+              const summary = data.label
+                ? `✅ ${data.label}`
+                : `✅ 步骤完成`;
+              resultContent = resultContent
+                ? `${resultContent}\n${summary}`
+                : summary;
+            } else {
+              addLog(`执行失败: ${data.data?.error || '未知错误'}`, 'error');
+              resultContent = `❌ 错误：${data.data?.error || '未知错误'}`;
+            }
+            continue;
+          }
+
+          if (data.type === 'error') {
+            addLog(`错误: ${data.error}`, 'error');
+            resultContent = `❌ 错误：${data.error}`;
+            continue;
+          }
+
+          if (data.type === 'done') {
+            addLog('多步生成完成', 'success');
+            break;
+          }
+        }
+      }
+
+      const finalMessage = lastCreatedFilePath
+        ? `✅ 多步生成完成！\n\n已生成文件：${lastCreatedFilePath}\n\n执行摘要：\n${resultContent || '（无）'}`
+        : `✅ 多步生成完成！\n\n执行摘要：\n${resultContent || '（无）'}`;
+
+      addMessage('assistant', finalMessage);
+      await fetchDocuments();
+    } catch (e) {
+      const errorMsg = e instanceof Error ? e.message : String(e);
+      console.error('[WordMCP] Agent 调用失败:', e);
       addLog(`调用失败: ${errorMsg}`, 'error');
       addMessage('assistant', `抱歉，执行出错: ${errorMsg}`);
     } finally {
@@ -220,37 +405,160 @@ export default function WordMCPClient() {
   const handleChat = async () => {
     if (!userInput.trim() || loading) return;
 
-    const query = userInput.trim();
+    // 规范化输入：去除首尾空格，统一空格字符
+    const query = userInput.trim().replace(/\s+/g, ' ');
     setUserInput('');
     addMessage('user', query);
 
-    // 简单的关键词匹配
-    if (query.toLowerCase().includes('列出') || query.toLowerCase().includes('list')) {
+    console.log('[WordMCP] 处理用户输入:', query);
+    console.log('[WordMCP] 服务器连接状态:', connected);
+
+    const lowerQuery = query.toLowerCase();
+    
+    // 提取参数的辅助函数
+    const extractParams = (q: string) => {
+      const parts = q.split(/\s+/);
+      return {
+        filename: parts[1] || '',
+        content: parts.slice(2).join(' ')
+      };
+    };
+
+    // 列出文档
+    if (/列出|查看|显示|list|show|ls|文档列表|所有文档/.test(lowerQuery)) {
+      console.log('[WordMCP] 匹配到: 列出文档');
       await callTool('list_documents', {});
-    } else if (query.toLowerCase().startsWith('读取') || query.toLowerCase().startsWith('read')) {
-      const filename = query.split(' ')[1];
+    }
+    // 读取文档
+    else if (/读取|打开|查看|read|open|get/.test(lowerQuery) && !lowerQuery.includes('列出') && !lowerQuery.includes('所有')) {
+      console.log('[WordMCP] 匹配到: 读取文档');
+      const { filename } = extractParams(query);
       if (filename) {
         await callTool('read_document', { filename });
       } else {
         addMessage('assistant', '请指定文件名，例如: 读取 my_doc');
       }
-    } else if (query.toLowerCase().startsWith('删除') || query.toLowerCase().startsWith('delete')) {
-      const filename = query.split(' ')[1];
+    }
+    // 创建文档 - 支持自然语言请求
+    else if (/创建|新建|写入|create|new|write|给我|生成|制作|一份|一个/.test(lowerQuery) || 
+             /介绍|说明|文档|document|介绍文档|说明文档/.test(lowerQuery)) {
+      console.log('[WordMCP] 匹配到: 创建文档（自然语言）');
+
+      // 显式命令：创建 <filename> <content...> 走单步工具，避免误走 Agent
+      const explicitCreate = query.match(/^创建\s+(\S+)\s+(.+)$/);
+      if (explicitCreate) {
+        const { filename, content } = extractParams(query);
+        await callTool('create_document', {
+          filename,
+          title: filename,
+          content
+        });
+        return;
+      }
+      
+      // 尝试从自然语言中提取信息
+      let title = '';
+      let filename = '';
+      let content = '';
+      
+      // 匹配模式："给我一份XXX的介绍/文档" 或 "请给我一份XXX的介绍文档"
+      // 更精确的匹配：捕获"给我"后面的主题部分
+      const match1 = query.match(/(?:请)?(?:给我|生成|制作|创建)(?:一份|一个)?(.+?)(?:的)?(?:介绍|说明)?(?:文档|document)?$/);
+      if (match1 && match1[1].trim()) {
+        title = match1[1].trim();
+      }
+      
+      // 匹配模式："XXX的介绍文档" 或 "XXX介绍文档"（当没有"给我"等动词时）
+      if (!title || title.length < 2) {
+        const match2 = query.match(/(.+?)(?:的)?(?:介绍|说明)?(?:文档|document|介绍文档|说明文档)$/);
+        if (match2 && match2[1].trim() && match2[1].trim().length >= 2) {
+          title = match2[1].trim();
+        }
+      }
+      
+      // 如果还是没有匹配到，使用整个查询作为标题（去掉常见前缀）
+      if (!title || title.length < 2) {
+        title = query
+          .replace(/^(?:请)?(?:给我|生成|制作|创建)(?:一份|一个)?/g, '')
+          .replace(/(?:的)?(?:介绍|说明)?(?:文档|document)?\s*$/g, '')
+          .trim();
+      }
+      
+      // 清理标题中的常见后缀词（如果前面没有匹配到）
+      if (title && title.length >= 2) {
+        title = title.replace(/(?:的)?(?:介绍|说明)?(?:文档|document)?\s*$/, '').trim();
+      }
+      
+      // 如果标题为空，使用默认值
+      if (!title) {
+        title = '新文档';
+      }
+      
+      // 生成文件名：将中文转换为拼音式文件名，或使用英文/数字
+      // 简单处理：保留中文和英文字母数字，用下划线替换空格和其他字符
+      filename = title
+        .replace(/\s+/g, '_')
+        .replace(/[^\w\u4e00-\u9fa5_-]/g, '')
+        .substring(0, 40); // 限制长度
+      
+      // 如果文件名仍然为空或太短，添加时间戳
+      if (!filename || filename.length < 3) {
+        filename = `doc_${Date.now()}`;
+      } else {
+        // 添加时间戳确保唯一性
+        filename = `${filename}_${Date.now()}`;
+      }
+      
+      // 设置默认内容（可以根据标题生成更具体的内容）
+      content = `这是关于"${title}"的介绍文档。\n\n请在此处添加详细内容。`;
+      
+      console.log('[WordMCP] 提取的信息:', { title, filename, content });
+      
+      // 走“真·多步 SSE 编排”
+      await callAgent({
+        query,
+        title,
+        filename
+      });
+    }
+    // 删除文档
+    else if (/删除|移除|delete|remove|rm/.test(lowerQuery)) {
+      console.log('[WordMCP] 匹配到: 删除文档');
+      const { filename } = extractParams(query);
       if (filename) {
         await callTool('delete_document', { filename });
       } else {
         addMessage('assistant', '请指定文件名，例如: 删除 my_doc');
       }
-    } else if (query.toLowerCase().startsWith('创建') || query.toLowerCase().startsWith('create')) {
-      const parts = query.split(' ');
-      const filename = parts[1];
-      const content = parts.slice(2).join(' ');
-      await callTool('create_document', {
-        filename: filename || `doc_${Date.now()}`,
-        content: content || '新文档内容'
-      });
-    } else {
-      addMessage('assistant', '支持的指令:\n• 列出 - 查看所有文档\n• 读取 [文件名] - 读取文档内容\n• 创建 [文件名] [内容] - 创建新文档\n• 删除 [文件名] - 删除文档');
+    }
+    // 未识别的指令
+    else {
+      console.log('[WordMCP] 未匹配到任何指令，尝试作为创建文档请求处理');
+      
+      // 如果查询看起来像是想要创建文档，尝试处理
+      if (query.length > 5 && !query.includes('?') && !query.includes('？')) {
+        const title = query.trim();
+        let filename = title
+          .replace(/\s+/g, '_')
+          .replace(/[^\w\u4e00-\u9fa5_-]/g, '')
+          .substring(0, 40);
+        
+        if (!filename || filename.length < 3) {
+          filename = `doc_${Date.now()}`;
+        } else {
+          filename = `${filename}_${Date.now()}`;
+        }
+        
+        console.log('[WordMCP] 作为创建文档处理:', { title, filename });
+        
+        await callTool('create_document', {
+          filename: filename,
+          title: title,
+          content: `这是关于"${title}"的文档。\n\n请在此处添加详细内容。`
+        });
+      } else {
+        addMessage('assistant', '支持的指令:\n• 列出 / 查看文档 - 查看所有文档\n• 读取 [文件名] - 读取文档内容\n• 创建 [文件名] [内容] - 创建新文档\n• 给我一份XXX的介绍文档 - 创建介绍文档\n• 删除 [文件名] - 删除文档');
+      }
     }
   };
 
@@ -345,13 +653,17 @@ export default function WordMCPClient() {
                 <p style={styles.emptyTitle}>Word 文档助手</p>
                 <p style={styles.emptySubtitle}>输入指令来管理你的 Word 文档</p>
                 <div style={styles.suggestions}>
-                  {['列出文档', '创建 test 测试内容', '读取 my_intro'].map((cmd) => (
+                  {[
+                    { label: '📋 列出文档', cmd: '列出' },
+                    { label: '📝 创建文档', cmd: '创建 test 这是测试内容' },
+                    { label: '📖 读取文档', cmd: '读取 my_introduction' }
+                  ].map(({ label, cmd }) => (
                     <button
                       key={cmd}
                       onClick={() => setUserInput(cmd)}
                       style={styles.suggestionBtn}
                     >
-                      {cmd}
+                      {label}
                     </button>
                   ))}
                 </div>
