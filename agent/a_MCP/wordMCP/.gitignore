@@ -4,25 +4,54 @@ __pycache__/
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
 # Virtual Environment
 .venv/
 venv/
-env/
 ENV/
+env/
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
-# Distribution / packaging
-dist/
-build/
-*.egg-info/
+# Logs
+logs/
+*.log
 
-# Word documents (optional - uncomment if you don't want to track test documents)
-# *.docx
-word/
+# Test
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
 
+# OS
+.DS_Store
+Thumbs.db
+
+# Word documents (development)
+word/*.docx
+!word/.gitkeep
+
+# Temporary files
+*.tmp
+*.bak
+*_backup.py
