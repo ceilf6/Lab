@@ -47,7 +47,7 @@ pip install -e .
 
 # 或手动运行
 source .venv/bin/activate
-python main_simple.py
+python main.py
 ```
 
 ## 使用示例
