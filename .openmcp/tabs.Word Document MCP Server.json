@@ -153,6 +153,135 @@
               },
               "enableXmlWrapper": false
             }
+          },
+          {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+              {
+                "id": "019b3b17f68f51239f8c82836c67b07d",
+                "index": 0,
+                "type": "function",
+                "function": {
+                  "name": "add_table",
+                  "arguments": " {\"filename\": \"my_introduction.docx\", \"table_data\": [[\"技能\", \"描述\"], [\"文档处理\", \"创建、编辑、格式化文档\"], [\"数据管理\", \"添加表格和图片\"], [\"信息检索\", \"搜索和替换文本\"]], \"title\": \"我的主要技能\"}"
+                }
+              }
+            ],
+            "extraInfo": {
+              "created": 1766222992513,
+              "state": "success",
+              "serverName": "deepseek",
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "tool",
+            "index": 0,
+            "tool_call_id": "019b3b17f68f51239f8c82836c67b07d",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"success\": true,\n  \"message\": \"Table added successfully\"\n}"
+              }
+            ],
+            "extraInfo": {
+              "created": 1766222992567,
+              "state": "success",
+              "serverName": "deepseek",
+              "usage": {
+                "prompt_tokens": 1837,
+                "completion_tokens": 75,
+                "total_tokens": 1912
+              },
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+              {
+                "id": "019b3b181a8f00b91a86b6860bbb1d2d",
+                "index": 0,
+                "type": "function",
+                "function": {
+                  "name": "insert_image",
+                  "arguments": " {\"filename\": \"my_introduction.docx\", \"image_path\": \"images/ai_assistant.png\", \"width\": 3}"
+                }
+              }
+            ],
+            "extraInfo": {
+              "created": 1766222995899,
+              "state": "success",
+              "serverName": "deepseek",
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "tool",
+            "index": 0,
+            "tool_call_id": "019b3b181a8f00b91a86b6860bbb1d2d",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"success\": false,\n  \"error\": \"Image not found: images/ai_assistant.png\"\n}"
+              }
+            ],
+            "extraInfo": {
+              "created": 1766222995916,
+              "state": "success",
+              "serverName": "deepseek",
+              "usage": {
+                "prompt_tokens": 1955,
+                "completion_tokens": 41,
+                "total_tokens": 1996
+              },
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+              {
+                "id": "019b3b186b861698589a85e50b20d09c",
+                "index": 0,
+                "type": "function",
+                "function": {
+                  "name": "search_replace",
+                  "arguments": " {\"filename\": \"my_introduction.docx\", \"search_text\": \"我是一个AI助手\", \"replace_text\": \"我是一个智能AI助手\"}"
+                }
+              }
+            ],
+            "extraInfo": {
+              "created": 1766223019630,
+              "state": "success",
+              "serverName": "deepseek",
+              "enableXmlWrapper": false
+            }
+          },
+          {
+            "role": "tool",
+            "index": 0,
+            "tool_call_id": "019b3b186b861698589a85e50b20d09c",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"success\": true,\n  \"message\": \"Replaced 1 occurrences\",\n  \"replacement_count\": 1\n}"
+              }
+            ],
+            "extraInfo": {
+              "created": 1766223019670,
+              "state": "success",
+              "serverName": "deepseek",
+              "usage": {
+                "prompt_tokens": 2046,
+                "completion_tokens": 44,
+                "total_tokens": 2090
+              },
+              "enableXmlWrapper": false
+            }
           }
         ],
         "chatMode": "single-chat",
