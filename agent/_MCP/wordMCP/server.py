@@ -25,6 +25,19 @@ from pydantic import BaseModel
 from docx import Document
 from docx.shared import Inches, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml.ns import qn
+
+# 默认字体设置
+DEFAULT_FONT_NAME = "宋体"
+DEFAULT_FONT_SIZE = Pt(12)
+
+
+def set_run_font(run, font_name: str = DEFAULT_FONT_NAME, font_size=DEFAULT_FONT_SIZE):
+    """设置 run 的字体为宋体"""
+    run.font.name = font_name
+    run.font.size = font_size
+    # 设置中文字体（东亚字体）
+    run._element.rPr.rFonts.set(qn('w:eastAsia'), font_name)
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
@@ -161,7 +174,7 @@ TOOLS = {
 # ==================== 工具实现 ====================
 
 def create_document(filename: str = None, title: str = None, content: str = None) -> dict:
-    """创建新文档"""
+    """创建新文档（默认使用宋体）"""
     try:
         if not filename:
             filename = f"document_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx"
@@ -172,10 +185,15 @@ def create_document(filename: str = None, title: str = None, content: str = None
         if title:
             heading = doc.add_heading(title, level=1)
             heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            # 设置标题字体为宋体
+            for run in heading.runs:
+                set_run_font(run, font_size=Pt(18))
         
         if content:
             for line in content.split('\n'):
-                doc.add_paragraph(line.strip() if line.strip() else "")
+                para = doc.add_paragraph()
+                run = para.add_run(line.strip() if line.strip() else "")
+                set_run_font(run)
         
         doc.save(str(file_path))
         
@@ -219,7 +237,7 @@ def read_document(filename: str) -> dict:
 
 
 def update_document(filename: str, action: str, content: str = None, paragraph_index: int = None) -> dict:
-    """更新文档"""
+    """更新文档（默认使用宋体）"""
     try:
         file_path = get_file_path(filename)
         
@@ -230,17 +248,24 @@ def update_document(filename: str, action: str, content: str = None, paragraph_i
         
         if action == "append" and content:
             for line in content.split('\n'):
-                doc.add_paragraph(line)
+                para = doc.add_paragraph()
+                run = para.add_run(line)
+                set_run_font(run)
         elif action == "add_heading" and content:
-            doc.add_heading(content, level=2)
+            heading = doc.add_heading(content, level=2)
+            for run in heading.runs:
+                set_run_font(run, font_size=Pt(16))
         elif action == "insert" and content and paragraph_index is not None:
             if paragraph_index < len(doc.paragraphs):
-                doc.paragraphs[paragraph_index].insert_paragraph_before(content)
+                new_para = doc.paragraphs[paragraph_index].insert_paragraph_before()
+                run = new_para.add_run(content)
+                set_run_font(run)
         elif action == "replace" and paragraph_index is not None:
             if paragraph_index < len(doc.paragraphs):
                 para = doc.paragraphs[paragraph_index]
                 para.clear()
-                para.add_run(content or "")
+                run = para.add_run(content or "")
+                set_run_font(run)
         else:
             return {"success": False, "error": "无效的操作或缺少参数"}
         
@@ -282,7 +307,7 @@ def list_documents() -> dict:
 
 
 def add_table(filename: str, table_data: list, title: str = None) -> dict:
-    """添加表格"""
+    """添加表格（默认使用宋体）"""
     try:
         file_path = get_file_path(filename)
         
@@ -292,7 +317,9 @@ def add_table(filename: str, table_data: list, title: str = None) -> dict:
         doc = Document(str(file_path))
         
         if title:
-            doc.add_heading(title, level=2)
+            heading = doc.add_heading(title, level=2)
+            for run in heading.runs:
+                set_run_font(run, font_size=Pt(16))
         
         if table_data:
             rows = len(table_data)
@@ -303,7 +330,11 @@ def add_table(filename: str, table_data: list, title: str = None) -> dict:
             for i, row_data in enumerate(table_data):
                 for j, cell_data in enumerate(row_data):
                     if j < cols:
-                        table.rows[i].cells[j].text = str(cell_data)
+                        cell = table.rows[i].cells[j]
+                        cell.text = ""  # 清空默认文本
+                        para = cell.paragraphs[0]
+                        run = para.add_run(str(cell_data))
+                        set_run_font(run)
         
         doc.save(str(file_path))
         return {"success": True, "message": "表格添加成功"}
@@ -595,19 +626,29 @@ async def sse_agent(request: AgentRequest, http_request: Request):
         filename_hint = (request.filename or "").strip()
         
         # 构建系统提示
-        system_prompt = """你是一个专业的 Word 文档助手。你可以使用以下工具来帮助用户操作 Word 文档：
+        system_prompt = """你是一个 Word 文档操作助手。你必须通过调用工具来完成用户的请求。
 
-可用工具：
-1. create_document: 创建新文档（可指定 filename, title, content）
-2. read_document: 读取文档内容（需要 filename）
-3. update_document: 更新文档（需要 filename, action, content）
-4. delete_document: 删除文档（需要 filename）
-5. list_documents: 列出所有文档
-6. add_table: 添加表格（需要 filename, table_data）
-7. search_replace: 搜索替换文本（需要 filename, search_text, replace_text）
+【重要规则】
+1. 必须直接调用工具，不要描述步骤或解释如何操作
+2. 用户让你创建文档，你就调用 create_document 工具
+3. 用户让你读取文档，你就调用 read_document 工具
+4. 用户让你列出文档，你就调用 list_documents 工具
+5. 不要输出 HTML、代码块或步骤说明，直接调用工具
 
-请根据用户的请求，决定需要调用哪些工具。如果用户想创建文档，请生成合适的内容。
-如果需要多步操作，请逐步执行。完成后，给出简洁的总结。"""
+【工具说明】
+- create_document(filename, title, content): 创建新文档。filename 是文件名，title 是标题，content 是正文内容（纯文本，支持换行）
+- read_document(filename): 读取文档内容
+- update_document(filename, action, content): 更新文档。action 可以是 append/insert/replace/add_heading
+- delete_document(filename): 删除文档
+- list_documents(): 列出所有文档
+- add_table(filename, table_data, title): 添加表格
+- search_replace(filename, search_text, replace_text): 搜索替换
+
+【示例】
+用户说"帮我写一份生日祝福"，你应该直接调用：
+create_document(filename="生日祝福", title="生日祝福", content="亲爱的朋友，祝你生日快乐！...")
+
+现在，请直接调用工具来完成用户的请求。"""
 
         # 初始化消息历史
         messages = [
