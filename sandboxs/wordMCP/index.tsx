@@ -478,73 +478,18 @@ export default function WordMCPClient() {
     }
   }, [addLog, addMessage, fetchDocuments, clearLastWorkingLog, clearAllWorkingLogs]);
 
-  // 处理聊天输入
+  // 处理聊天输入 - 全部交给 LLM Agent 处理
   const handleChat = async () => {
     if (!userInput.trim() || loading) return;
 
-    // 规范化输入：去除首尾空格，统一空格字符
-    const query = userInput.trim().replace(/\s+/g, ' ');
+    const query = userInput.trim();
     setUserInput('');
     addMessage('user', query);
 
-    console.log('[WordMCP] 处理用户输入:', query);
-    console.log('[WordMCP] 服务器连接状态:', connected);
-
-    const lowerQuery = query.toLowerCase();
+    console.log('[WordMCP] 交给 LLM Agent 处理:', query);
     
-    // 提取参数的辅助函数
-    const extractParams = (q: string) => {
-      const parts = q.split(/\s+/);
-      return {
-        filename: parts[1] || '',
-        content: parts.slice(2).join(' ')
-      };
-    };
-
-    // 列出文档
-    if (/列出|查看|显示|list|show|ls|文档列表|所有文档/.test(lowerQuery)) {
-      console.log('[WordMCP] 匹配到: 列出文档');
-      await callTool('list_documents', {});
-    }
-    // 读取文档
-    else if (/读取|打开|查看|read|open|get/.test(lowerQuery) && !lowerQuery.includes('列出') && !lowerQuery.includes('所有')) {
-      console.log('[WordMCP] 匹配到: 读取文档');
-      const { filename } = extractParams(query);
-      if (filename) {
-        await callTool('read_document', { filename });
-      } else {
-        addMessage('assistant', '请指定文件名，例如: 读取 my_doc');
-      }
-    }
-    // 创建文档 - 支持自然语言请求，让 LLM 决定文件名和内容
-    else if (/创建|新建|写入|create|new|write|给我|生成|制作|一份|一个/.test(lowerQuery) || 
-             /介绍|说明|文档|document|介绍文档|说明文档|报告|方案|计划/.test(lowerQuery)) {
-      console.log('[WordMCP] 匹配到: 创建文档（交给 LLM Agent）');
-      
-      // 直接把用户请求交给 LLM Agent，让它决定文件名、标题和内容
-      await callAgent({ query });
-    }
-    // 删除文档
-    else if (/删除|移除|delete|remove|rm/.test(lowerQuery)) {
-      console.log('[WordMCP] 匹配到: 删除文档');
-      const { filename } = extractParams(query);
-      if (filename) {
-        await callTool('delete_document', { filename });
-      } else {
-        addMessage('assistant', '请指定文件名，例如: 删除 my_doc');
-      }
-    }
-    // 未识别的指令 - 交给 LLM Agent 处理
-    else {
-      console.log('[WordMCP] 未匹配到特定指令，交给 LLM Agent 处理');
-      
-      // 如果查询足够长，交给 LLM Agent
-      if (query.length > 3) {
-        await callAgent({ query });
-      } else {
-        addMessage('assistant', '支持的指令:\n• 列出 / 查看文档 - 查看所有文档\n• 读取 [文件名] - 读取文档内容\n• 删除 [文件名] - 删除文档\n• 或者直接输入您的需求，如"帮我写一份辞职报告"');
-      }
-    }
+    // 直接交给 LLM Agent，让它决定调用哪些工具
+    await callAgent({ query });
   };
 
   // 初始化
@@ -656,12 +601,12 @@ export default function WordMCPClient() {
             ) : (
               <div style={styles.messagesList}>
                 {messages.map(renderMessage)}
-                {loading && (
+                {/* {loading && (
                   <div style={styles.systemMessage}>
                     <span style={{ ...styles.systemIcon, color: '#f59e0b', animation: 'pulse 1.5s infinite' }}>◎</span>
                     <span style={{ ...styles.systemText, color: '#f59e0b' }}>思考中...</span>
                   </div>
-                )}
+                )} */}
                 <div ref={messagesEndRef} />
               </div>
             )}
