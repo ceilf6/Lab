@@ -483,87 +483,13 @@ export default function WordMCPClient() {
         addMessage('assistant', '请指定文件名，例如: 读取 my_doc');
       }
     }
-    // 创建文档 - 支持自然语言请求
+    // 创建文档 - 支持自然语言请求，让 LLM 决定文件名和内容
     else if (/创建|新建|写入|create|new|write|给我|生成|制作|一份|一个/.test(lowerQuery) || 
-             /介绍|说明|文档|document|介绍文档|说明文档/.test(lowerQuery)) {
-      console.log('[WordMCP] 匹配到: 创建文档（自然语言）');
-
-      // 显式命令：创建 <filename> <content...> 走单步工具，避免误走 Agent
-      const explicitCreate = query.match(/^创建\s+(\S+)\s+(.+)$/);
-      if (explicitCreate) {
-        const { filename, content } = extractParams(query);
-        await callTool('create_document', {
-          filename,
-          title: filename,
-          content
-        });
-        return;
-      }
+             /介绍|说明|文档|document|介绍文档|说明文档|报告|方案|计划/.test(lowerQuery)) {
+      console.log('[WordMCP] 匹配到: 创建文档（交给 LLM Agent）');
       
-      // 尝试从自然语言中提取信息
-      let title = '';
-      let filename = '';
-      let content = '';
-      
-      // 匹配模式："给我一份XXX的介绍/文档" 或 "请给我一份XXX的介绍文档"
-      // 更精确的匹配：捕获"给我"后面的主题部分
-      const match1 = query.match(/(?:请)?(?:给我|生成|制作|创建)(?:一份|一个)?(.+?)(?:的)?(?:介绍|说明)?(?:文档|document)?$/);
-      if (match1 && match1[1].trim()) {
-        title = match1[1].trim();
-      }
-      
-      // 匹配模式："XXX的介绍文档" 或 "XXX介绍文档"（当没有"给我"等动词时）
-      if (!title || title.length < 2) {
-        const match2 = query.match(/(.+?)(?:的)?(?:介绍|说明)?(?:文档|document|介绍文档|说明文档)$/);
-        if (match2 && match2[1].trim() && match2[1].trim().length >= 2) {
-          title = match2[1].trim();
-        }
-      }
-      
-      // 如果还是没有匹配到，使用整个查询作为标题（去掉常见前缀）
-      if (!title || title.length < 2) {
-        title = query
-          .replace(/^(?:请)?(?:给我|生成|制作|创建)(?:一份|一个)?/g, '')
-          .replace(/(?:的)?(?:介绍|说明)?(?:文档|document)?\s*$/g, '')
-          .trim();
-      }
-      
-      // 清理标题中的常见后缀词（如果前面没有匹配到）
-      if (title && title.length >= 2) {
-        title = title.replace(/(?:的)?(?:介绍|说明)?(?:文档|document)?\s*$/, '').trim();
-      }
-      
-      // 如果标题为空，使用默认值
-      if (!title) {
-        title = '新文档';
-      }
-      
-      // 生成文件名：将中文转换为拼音式文件名，或使用英文/数字
-      // 简单处理：保留中文和英文字母数字，用下划线替换空格和其他字符
-      filename = title
-        .replace(/\s+/g, '_')
-        .replace(/[^\w\u4e00-\u9fa5_-]/g, '')
-        .substring(0, 40); // 限制长度
-      
-      // 如果文件名仍然为空或太短，添加时间戳
-      if (!filename || filename.length < 3) {
-        filename = `doc_${Date.now()}`;
-      } else {
-        // 添加时间戳确保唯一性
-        filename = `${filename}_${Date.now()}`;
-      }
-      
-      // 设置默认内容（可以根据标题生成更具体的内容）
-      content = `这是关于"${title}"的介绍文档。\n\n请在此处添加详细内容。`;
-      
-      console.log('[WordMCP] 提取的信息:', { title, filename, content });
-      
-      // 走“真·多步 SSE 编排”
-      await callAgent({
-        query,
-        title,
-        filename
-      });
+      // 直接把用户请求交给 LLM Agent，让它决定文件名、标题和内容
+      await callAgent({ query });
     }
     // 删除文档
     else if (/删除|移除|delete|remove|rm/.test(lowerQuery)) {
@@ -575,33 +501,15 @@ export default function WordMCPClient() {
         addMessage('assistant', '请指定文件名，例如: 删除 my_doc');
       }
     }
-    // 未识别的指令
+    // 未识别的指令 - 交给 LLM Agent 处理
     else {
-      console.log('[WordMCP] 未匹配到任何指令，尝试作为创建文档请求处理');
+      console.log('[WordMCP] 未匹配到特定指令，交给 LLM Agent 处理');
       
-      // 如果查询看起来像是想要创建文档，尝试处理
-      if (query.length > 5 && !query.includes('?') && !query.includes('？')) {
-        const title = query.trim();
-        let filename = title
-          .replace(/\s+/g, '_')
-          .replace(/[^\w\u4e00-\u9fa5_-]/g, '')
-          .substring(0, 40);
-        
-        if (!filename || filename.length < 3) {
-          filename = `doc_${Date.now()}`;
-        } else {
-          filename = `${filename}_${Date.now()}`;
-        }
-        
-        console.log('[WordMCP] 作为创建文档处理:', { title, filename });
-        
-        await callTool('create_document', {
-          filename: filename,
-          title: title,
-          content: `这是关于"${title}"的文档。\n\n请在此处添加详细内容。`
-        });
+      // 如果查询足够长，交给 LLM Agent
+      if (query.length > 3) {
+        await callAgent({ query });
       } else {
-        addMessage('assistant', '支持的指令:\n• 列出 / 查看文档 - 查看所有文档\n• 读取 [文件名] - 读取文档内容\n• 创建 [文件名] [内容] - 创建新文档\n• 给我一份XXX的介绍文档 - 创建介绍文档\n• 删除 [文件名] - 删除文档');
+        addMessage('assistant', '支持的指令:\n• 列出 / 查看文档 - 查看所有文档\n• 读取 [文件名] - 读取文档内容\n• 删除 [文件名] - 删除文档\n• 或者直接输入您的需求，如"帮我写一份辞职报告"');
       }
     }
   };

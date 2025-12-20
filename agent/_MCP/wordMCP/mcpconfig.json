@@ -24,6 +24,6 @@
     "defaultLLM": {
       "baseURL": "https://api.siliconflow.cn/v1",
       "apiToken": "sk-nqrcnmqfxlizdvhvzaeyjgycnikrksrolwahbhnnheazuikr",
-      "model": "Qwen/Qwen3-VL-8B-Instruct"
+      "model": "THUDM/GLM-Z1-9B-0414"
     }
   }
