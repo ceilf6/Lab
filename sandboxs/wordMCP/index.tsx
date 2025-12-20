@@ -74,6 +74,26 @@ export default function WordMCPClient() {
     addMessage('system', message, type);
   }, [addMessage]);
 
+  // 清除最后一个 working 状态的日志（每个步骤完成时调用）
+  const clearLastWorkingLog = useCallback(() => {
+    setMessages(prev => {
+      // 从后往前找到最后一个 working 日志并移除
+      const lastWorkingIndex = prev.map((msg, i) => ({ msg, i }))
+        .reverse()
+        .find(({ msg }) => msg.role === 'system' && msg.logType === 'working')?.i;
+      
+      if (lastWorkingIndex !== undefined) {
+        return prev.filter((_, i) => i !== lastWorkingIndex);
+      }
+      return prev;
+    });
+  }, []);
+
+  // 清除所有 working 状态的日志
+  const clearAllWorkingLogs = useCallback(() => {
+    setMessages(prev => prev.filter(msg => !(msg.role === 'system' && msg.logType === 'working')));
+  }, []);
+
   // 建立 SSE 连接
   const connectSSE = useCallback(() => {
     if (eventSourceRef.current) {
@@ -289,9 +309,11 @@ export default function WordMCPClient() {
       addLog(`调用失败: ${errorMsg}`, 'error');
       addMessage('assistant', `抱歉，执行出错: ${errorMsg}`);
     } finally {
+      // 清除所有剩余的 working 状态日志
+      clearAllWorkingLogs();
       setLoading(false);
     }
-  }, [addLog, addMessage, fetchDocuments]);
+  }, [addLog, addMessage, fetchDocuments, clearAllWorkingLogs]);
 
   // 多步编排（真·SSE）- 支持 LLM Agent 的完整流程
   const callAgent = useCallback(async (payload: { query: string; title?: string; filename?: string }) => {
@@ -363,7 +385,9 @@ export default function WordMCPClient() {
               break;
 
             case 'tool_call':
-              // 显示正在调用的工具和参数
+              // 先清除上一个 working 日志（如 thinking）
+              clearLastWorkingLog();
+              // 显示正在调用的工具
               addLog(`🔧 调用工具: ${toolNames[data.tool] || data.tool}`, 'working');
               
               // 显示工具参数摘要
@@ -379,6 +403,8 @@ export default function WordMCPClient() {
               break;
 
             case 'tool_result':
+              // 先清除上一个 working 日志（如 tool_call）
+              clearLastWorkingLog();
               if (data.result?.success) {
                 addLog(`✅ ${toolNames[data.tool] || data.tool} 成功`, 'success');
                 
@@ -393,6 +419,8 @@ export default function WordMCPClient() {
               break;
 
             case 'response':
+              // 先清除上一个 working 日志
+              clearLastWorkingLog();
               // LLM 的最终回复
               if (data.content) {
                 finalResponse = data.content;
@@ -400,6 +428,7 @@ export default function WordMCPClient() {
               break;
 
             case 'error':
+              clearLastWorkingLog();
               addLog(`❌ 错误: ${data.error}`, 'error');
               addMessage('assistant', `❌ 错误：${data.error}`);
               break;
@@ -409,7 +438,8 @@ export default function WordMCPClient() {
               break;
 
             case 'done':
-              addLog('✨ 执行完成', 'success');
+              // 清除所有剩余的 working 日志
+              clearAllWorkingLogs();
               break;
 
             case 'progress':
@@ -418,6 +448,7 @@ export default function WordMCPClient() {
 
             case 'result':
               // 旧格式兼容
+              clearLastWorkingLog();
               if (data.data?.success) {
                 addLog('执行成功', 'success');
                 if (data.data?.file_path) lastCreatedFilePath = data.data.file_path;
@@ -441,9 +472,11 @@ export default function WordMCPClient() {
       addLog(`调用失败: ${errorMsg}`, 'error');
       addMessage('assistant', `抱歉，执行出错: ${errorMsg}`);
     } finally {
+      // 清除所有剩余的 working 状态日志
+      clearAllWorkingLogs();
       setLoading(false);
     }
-  }, [addLog, addMessage, fetchDocuments]);
+  }, [addLog, addMessage, fetchDocuments, clearLastWorkingLog, clearAllWorkingLogs]);
 
   // 处理聊天输入
   const handleChat = async () => {
@@ -606,9 +639,9 @@ export default function WordMCPClient() {
                 <p style={styles.emptySubtitle}>输入指令来管理你的 Word 文档</p>
                 <div style={styles.suggestions}>
                   {[
-                    { label: '📋 列出文档', cmd: '列出' },
-                    { label: '📝 创建文档', cmd: '创建 test 这是测试内容' },
-                    { label: '📖 读取文档', cmd: '读取 my_introduction' }
+                    { label: '📋 列出文档', cmd: '列出该目录下有哪些文档' },
+                    { label: '📝 创建文档', cmd: '创建文档' },
+                    { label: '📖 读取文档', cmd: '读取文档' }
                   ].map(({ label, cmd }) => (
                     <button
                       key={cmd}
