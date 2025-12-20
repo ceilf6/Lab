@@ -25,11 +25,13 @@ interface SSEMessage {
   time?: string;
 }
 
+// 消息类型：用户消息、助手回复、系统日志
 interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: Date;
+  logType?: 'info' | 'success' | 'error' | 'working';
 }
 
 // 主组件
@@ -39,39 +41,35 @@ export default function WordMCPClient() {
   const [loading, setLoading] = useState(false);
   const [tools, setTools] = useState<Record<string, Tool>>({});
   const [messages, setMessages] = useState<Message[]>([]);
-  const [logs, setLogs] = useState<string[]>([]);
   const [userInput, setUserInput] = useState('');
 
   const eventSourceRef = useRef<EventSource | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const logsEndRef = useRef<HTMLDivElement>(null);
 
   // 滚动消息到底部
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // 滚动日志到底部
-  useEffect(() => {
-    logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [logs]);
-
-  // 添加日志
-  const addLog = useCallback((message: string, type: 'info' | 'success' | 'error' | 'agent' = 'info') => {
-    const timestamp = new Date().toLocaleTimeString();
-    const prefix = { info: '●', success: '✓', error: '✗', agent: '◆' }[type];
-    setLogs(prev => [...prev.slice(-199), `[${timestamp}] ${prefix} ${message}`]);
-  }, []);
-
-  // 添加消息
-  const addMessage = useCallback((role: 'user' | 'assistant', content: string) => {
+  // 添加消息（支持用户、助手、系统日志）
+  const addMessage = useCallback((
+    role: 'user' | 'assistant' | 'system',
+    content: string,
+    logType?: 'info' | 'success' | 'error' | 'working'
+  ) => {
     setMessages(prev => [...prev, {
-      id: Date.now().toString(),
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
       role,
       content,
-      timestamp: new Date()
+      timestamp: new Date(),
+      logType
     }]);
   }, []);
+
+  // 添加系统日志（显示在对话中）
+  const addLog = useCallback((message: string, type: 'info' | 'success' | 'error' | 'working' = 'info') => {
+    addMessage('system', message, type);
+  }, [addMessage]);
 
   // 建立 SSE 连接
   const connectSSE = useCallback(() => {
@@ -79,12 +77,10 @@ export default function WordMCPClient() {
       eventSourceRef.current.close();
     }
 
-    addLog('正在连接 MCP 服务器...', 'info');
     const es = new EventSource(`${MCP_SERVER}/sse`);
 
     es.onopen = () => {
       setConnected(true);
-      addLog('SSE 连接已建立', 'success');
     };
 
     es.onmessage = (event) => {
@@ -92,10 +88,10 @@ export default function WordMCPClient() {
         const data: SSEMessage = JSON.parse(event.data);
         switch (data.type) {
           case 'connected':
-            addLog(`服务器: ${data.message}`, 'info');
+            // 静默处理
             break;
           case 'tools':
-            addLog(`可用工具: ${data.tools?.join(', ')}`, 'info');
+            // 静默处理
             break;
           case 'heartbeat':
             break;
@@ -107,12 +103,11 @@ export default function WordMCPClient() {
 
     es.onerror = () => {
       setConnected(false);
-      addLog('SSE 连接断开', 'error');
       es.close();
     };
 
     eventSourceRef.current = es;
-  }, [addLog]);
+  }, []);
 
   // 获取工具列表
   const fetchTools = useCallback(async () => {
@@ -120,11 +115,10 @@ export default function WordMCPClient() {
       const res = await fetch(`${MCP_SERVER}/tools`);
       const data = await res.json();
       setTools(data.tools || {});
-      addLog(`获取到 ${Object.keys(data.tools || {}).length} 个工具`, 'info');
     } catch (e) {
-      addLog(`获取工具列表失败: ${e}`, 'error');
+      // 静默处理
     }
-  }, [addLog]);
+  }, []);
 
   // 获取文档列表
   const fetchDocuments = useCallback(async () => {
@@ -133,17 +127,24 @@ export default function WordMCPClient() {
       const data = await res.json();
       if (data.success) {
         setDocuments(data.documents || []);
-        addLog(`获取到 ${data.count} 个文档`, 'info');
       }
     } catch (e) {
-      addLog(`获取文档列表失败: ${e}`, 'error');
+      // 静默处理
     }
-  }, [addLog]);
+  }, []);
 
   // 调用工具 (SSE 方式)
   const callTool = useCallback(async (tool: string, params: Record<string, any>) => {
     setLoading(true);
-    addLog(`正在执行: ${tool}`, 'agent');
+    
+    // 显示正在执行的工具
+    const toolNames: Record<string, string> = {
+      'list_documents': '列出文档',
+      'read_document': '读取文档',
+      'create_document': '创建文档',
+      'delete_document': '删除文档'
+    };
+    addLog(`正在调用工具: ${toolNames[tool] || tool}`, 'working');
 
     try {
       const res = await fetch(`${MCP_SERVER}/sse/call`, {
@@ -175,11 +176,11 @@ export default function WordMCPClient() {
 
               switch (data.type) {
                 case 'start':
-                  addLog(`开始执行: ${tool}`, 'info');
+                  addLog('开始执行...', 'info');
                   break;
                 case 'result':
                   if (data.data?.success) {
-                    addLog(`执行成功: ${data.data?.message || '操作完成'}`, 'success');
+                    addLog('执行成功', 'success');
                     resultContent = data.data?.message || JSON.stringify(data.data, null, 2);
                   } else {
                     addLog(`执行失败: ${data.data?.error || '未知错误'}`, 'error');
@@ -191,7 +192,7 @@ export default function WordMCPClient() {
                   resultContent = `错误: ${data.error}`;
                   break;
                 case 'done':
-                  addLog('执行完成', 'info');
+                  // 静默处理
                   break;
               }
             } catch (e) {
@@ -222,7 +223,6 @@ export default function WordMCPClient() {
     const query = userInput.trim();
     setUserInput('');
     addMessage('user', query);
-    addLog(`用户输入: ${query}`, 'info');
 
     // 简单的关键词匹配
     if (query.toLowerCase().includes('列出') || query.toLowerCase().includes('list')) {
@@ -265,6 +265,60 @@ export default function WordMCPClient() {
     };
   }, [connectSSE, fetchTools, fetchDocuments]);
 
+  // 渲染消息
+  const renderMessage = (msg: Message) => {
+    // 系统日志消息
+    if (msg.role === 'system') {
+      const icons: Record<string, string> = {
+        info: '○',
+        success: '✓',
+        error: '✗',
+        working: '◎'
+      };
+      const colors: Record<string, string> = {
+        info: '#6b7280',
+        success: '#10b981',
+        error: '#ef4444',
+        working: '#f59e0b'
+      };
+      
+      return (
+        <div key={msg.id} style={styles.systemMessage}>
+          <span style={{ 
+            ...styles.systemIcon, 
+            color: colors[msg.logType || 'info'],
+            animation: msg.logType === 'working' ? 'pulse 1.5s infinite' : 'none'
+          }}>
+            {icons[msg.logType || 'info']}
+          </span>
+          <span style={{ ...styles.systemText, color: colors[msg.logType || 'info'] }}>
+            {msg.content}
+          </span>
+        </div>
+      );
+    }
+
+    // 用户/助手消息
+    return (
+      <div
+        key={msg.id}
+        style={{
+          ...styles.messageRow,
+          justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start'
+        }}
+      >
+        <div
+          style={{
+            ...styles.messageBubble,
+            ...(msg.role === 'user' ? styles.userBubble : styles.assistantBubble)
+          }}
+        >
+          <div style={styles.messageContent}>{msg.content}</div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div style={styles.container}>
       {/* 主内容区 */}
@@ -304,33 +358,11 @@ export default function WordMCPClient() {
               </div>
             ) : (
               <div style={styles.messagesList}>
-                {messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    style={{
-                      ...styles.messageRow,
-                      justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start'
-                    }}
-                  >
-                    <div
-                      style={{
-                        ...styles.messageBubble,
-                        ...(msg.role === 'user' ? styles.userBubble : styles.assistantBubble)
-                      }}
-                    >
-                      <div style={styles.messageContent}>{msg.content}</div>
-                    </div>
-                  </div>
-                ))}
+                {messages.map(renderMessage)}
                 {loading && (
-                  <div style={{ ...styles.messageRow, justifyContent: 'flex-start' }}>
-                    <div style={{ ...styles.messageBubble, ...styles.assistantBubble }}>
-                      <div style={styles.typingIndicator}>
-                        <span style={styles.typingDot} />
-                        <span style={{ ...styles.typingDot, animationDelay: '0.2s' }} />
-                        <span style={{ ...styles.typingDot, animationDelay: '0.4s' }} />
-                      </div>
-                    </div>
+                  <div style={styles.systemMessage}>
+                    <span style={{ ...styles.systemIcon, color: '#f59e0b', animation: 'pulse 1.5s infinite' }}>◎</span>
+                    <span style={{ ...styles.systemText, color: '#f59e0b' }}>思考中...</span>
                   </div>
                 )}
                 <div ref={messagesEndRef} />
@@ -370,33 +402,6 @@ export default function WordMCPClient() {
             </div>
           </div>
         </div>
-
-        {/* 工具日志区域 */}
-        <div style={styles.logsContainer}>
-          <div style={styles.logsHeader}>
-            <span style={styles.logsTitle}>工具日志</span>
-            <span style={styles.logsCount}>{logs.length} 条</span>
-          </div>
-          <div style={styles.logsContent} className="logs-scroll">
-            {logs.length === 0 ? (
-              <div style={styles.logsEmpty}>暂无日志</div>
-            ) : (
-              logs.map((log, i) => (
-                <div key={i} style={styles.logItem}>
-                  <span style={{
-                    ...styles.logText,
-                    color: log.includes('✓') ? '#10b981' :
-                           log.includes('✗') ? '#ef4444' :
-                           log.includes('◆') ? '#8b5cf6' : '#9ca3af'
-                  }}>
-                    {log}
-                  </span>
-                </div>
-              ))
-            )}
-            <div ref={logsEndRef} />
-          </div>
-        </div>
       </div>
 
       {/* 全局样式 */}
@@ -406,18 +411,9 @@ export default function WordMCPClient() {
           30% { opacity: 1; transform: translateY(-4px); }
         }
         
-        .logs-scroll::-webkit-scrollbar {
-          width: 4px;
-        }
-        .logs-scroll::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .logs-scroll::-webkit-scrollbar-thumb {
-          background: #374151;
-          border-radius: 4px;
-        }
-        .logs-scroll::-webkit-scrollbar-thumb:hover {
-          background: #4b5563;
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.4; }
         }
         
         .messages-scroll::-webkit-scrollbar {
@@ -505,7 +501,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   
   messagesWrapper: {
-    height: '420px',
+    height: '520px',
     overflowY: 'auto',
     padding: '24px',
   },
@@ -558,7 +554,7 @@ const styles: Record<string, React.CSSProperties> = {
   messagesList: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
+    gap: '12px',
   },
   
   messageRow: {
@@ -591,18 +587,23 @@ const styles: Record<string, React.CSSProperties> = {
     wordBreak: 'break-word',
   },
   
-  typingIndicator: {
+  // 系统日志样式
+  systemMessage: {
     display: 'flex',
-    gap: '4px',
-    padding: '4px 0',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '6px 12px',
+    marginLeft: '8px',
   },
   
-  typingDot: {
-    width: '8px',
-    height: '8px',
-    borderRadius: '50%',
-    backgroundColor: '#9ca3af',
-    animation: 'typing 1s infinite',
+  systemIcon: {
+    fontSize: '12px',
+    fontWeight: 700,
+  },
+  
+  systemText: {
+    fontSize: '12px',
+    fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace',
   },
   
   inputWrapper: {
@@ -645,59 +646,5 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '8px',
     transition: 'all 0.15s',
     flexShrink: 0,
-  },
-  
-  logsContainer: {
-    backgroundColor: '#2f2f2f',
-    borderRadius: '12px',
-    border: '1px solid #424242',
-    overflow: 'hidden',
-  },
-  
-  logsHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '12px 16px',
-    borderBottom: '1px solid #424242',
-    backgroundColor: '#353535',
-  },
-  
-  logsTitle: {
-    fontSize: '12px',
-    fontWeight: 600,
-    color: '#9ca3af',
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-  },
-  
-  logsCount: {
-    fontSize: '11px',
-    color: '#6b7280',
-  },
-  
-  logsContent: {
-    height: '120px',
-    overflowY: 'auto',
-    padding: '8px 16px',
-  },
-  
-  logsEmpty: {
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#6b7280',
-    fontSize: '13px',
-  },
-  
-  logItem: {
-    padding: '4px 0',
-  },
-  
-  logText: {
-    fontSize: '12px',
-    fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace',
-    lineHeight: 1.5,
   },
 };
