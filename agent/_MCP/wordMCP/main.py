@@ -14,6 +14,7 @@ from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 import os
 import json
+import httpx
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, List
@@ -24,6 +25,19 @@ mcp = FastMCP("Word Document MCP Server")
 # Default word directory
 WORD_DIR = Path("word")
 WORD_DIR.mkdir(exist_ok=True)
+
+# Load config
+def load_config() -> dict:
+    """Load configuration from mcpconfig.json"""
+    config_path = Path(__file__).parent / "mcpconfig.json"
+    try:
+        with open(config_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+CONFIG = load_config()
+GOOGLE_API_KEY = CONFIG.get("google", "")
 
 
 # ==================== Helper Functions ====================
@@ -431,6 +445,200 @@ def search_replace(
         }
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+
+@mcp.tool()
+def download_image(
+    url: str,
+    filename: Optional[str] = None
+) -> dict:
+    """
+    从 URL 下载图片到本地。下载后可使用 insert_image 工具将图片插入文档。
+    
+    Args:
+        url: 图片的 URL 地址
+        filename: 保存的文件名（可选，不含扩展名，自动根据 URL 生成）
+    
+    Returns:
+        包含本地图片路径的结果
+    """
+    try:
+        # 创建图片目录
+        images_dir = WORD_DIR / "images"
+        images_dir.mkdir(exist_ok=True)
+        
+        # 生成文件名
+        if not filename:
+            # 从 URL 提取文件名或生成时间戳文件名
+            url_filename = url.split("/")[-1].split("?")[0]
+            if url_filename and "." in url_filename:
+                filename = url_filename
+            else:
+                filename = f"image_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
+        else:
+            # 确保有扩展名
+            if not any(filename.lower().endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp']):
+                filename = f"{filename}.jpg"
+        
+        file_path = images_dir / filename
+        
+        # 下载图片
+        with httpx.Client(timeout=30.0, follow_redirects=True) as client:
+            response = client.get(url)
+            response.raise_for_status()
+            
+            # 检查是否是图片
+            content_type = response.headers.get("content-type", "")
+            if not content_type.startswith("image/"):
+                return {"success": False, "error": f"URL 不是图片: {content_type}"}
+            
+            # 保存图片
+            with open(file_path, "wb") as f:
+                f.write(response.content)
+        
+        return {
+            "success": True,
+            "message": "图片下载成功",
+            "local_path": str(file_path),
+            "filename": filename,
+            "size": file_path.stat().st_size
+        }
+        
+    except httpx.HTTPStatusError as e:
+        return {"success": False, "error": f"下载失败: HTTP {e.response.status_code}"}
+    except Exception as e:
+        return {"success": False, "error": f"下载出错: {str(e)}"}
+
+
+@mcp.tool()
+def google_image_search(
+    query: str,
+    num_results: int = 5
+) -> dict:
+    """
+    使用 Google 搜索图片。返回图片的 URL 列表，可配合 download_image 下载后插入文档。
+    
+    Args:
+        query: 搜索关键词
+        num_results: 返回结果数量，默认5条
+    
+    Returns:
+        图片搜索结果，包含图片 URL、标题和来源
+    """
+    if not GOOGLE_API_KEY:
+        return {"success": False, "error": "Google API Key 未配置"}
+    
+    try:
+        # 使用 Serper.dev 图片搜索 API
+        url = "https://google.serper.dev/images"
+        headers = {
+            "X-API-KEY": GOOGLE_API_KEY,
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "q": query,
+            "num": num_results,
+            "hl": "zh-CN"
+        }
+        
+        with httpx.Client(timeout=30.0) as client:
+            response = client.post(url, headers=headers, json=payload)
+            response.raise_for_status()
+            data = response.json()
+        
+        results = []
+        images_results = data.get("images", [])
+        
+        for item in images_results[:num_results]:
+            results.append({
+                "title": item.get("title", ""),
+                "image_url": item.get("imageUrl", ""),
+                "thumbnail": item.get("thumbnailUrl", ""),
+                "source": item.get("source", ""),
+                "link": item.get("link", "")
+            })
+        
+        return {
+            "success": True,
+            "query": query,
+            "count": len(results),
+            "images": results
+        }
+        
+    except httpx.HTTPStatusError as e:
+        return {"success": False, "error": f"搜索请求失败: {e.response.status_code}"}
+    except Exception as e:
+        return {"success": False, "error": f"搜索出错: {str(e)}"}
+
+
+@mcp.tool()
+def google_search(
+    query: str,
+    num_results: int = 5
+) -> dict:
+    """
+    使用 Google 搜索获取信息。当需要查询最新资讯、获取某个主题的详细信息时使用此工具。
+    
+    Args:
+        query: 搜索关键词
+        num_results: 返回结果数量，默认5条
+    
+    Returns:
+        搜索结果列表，包含标题、链接和摘要
+    """
+    if not GOOGLE_API_KEY:
+        return {"success": False, "error": "Google API Key 未配置"}
+    
+    try:
+        # 使用 Serper.dev API
+        url = "https://google.serper.dev/search"
+        headers = {
+            "X-API-KEY": GOOGLE_API_KEY,
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "q": query,
+            "num": num_results,
+            "hl": "zh-CN",
+            "gl": "cn"
+        }
+        
+        with httpx.Client(timeout=30.0) as client:
+            response = client.post(url, headers=headers, json=payload)
+            response.raise_for_status()
+            data = response.json()
+        
+        results = []
+        
+        # 提取有机搜索结果
+        organic_results = data.get("organic", [])
+        for item in organic_results[:num_results]:
+            results.append({
+                "title": item.get("title", ""),
+                "link": item.get("link", ""),
+                "snippet": item.get("snippet", "")
+            })
+        
+        # 如果有答案框
+        if "answerBox" in data:
+            answer = data["answerBox"]
+            results.insert(0, {
+                "title": answer.get("title", "答案"),
+                "link": answer.get("link", ""),
+                "snippet": answer.get("answer", answer.get("snippet", ""))
+            })
+        
+        return {
+            "success": True,
+            "query": query,
+            "count": len(results),
+            "results": results
+        }
+        
+    except httpx.HTTPStatusError as e:
+        return {"success": False, "error": f"搜索请求失败: {e.response.status_code}"}
+    except Exception as e:
+        return {"success": False, "error": f"搜索出错: {str(e)}"}
 
 
 # ==================== Resources ====================

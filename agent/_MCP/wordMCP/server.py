@@ -59,21 +59,24 @@ app.add_middleware(
 WORD_DIR = Path("word")
 WORD_DIR.mkdir(exist_ok=True)
 
-# ==================== 加载 LLM 配置 ====================
+# ==================== 加载配置 ====================
 
-def load_llm_config() -> dict:
-    """从 mcpconfig.json 加载 LLM 配置"""
+def load_config() -> dict:
+    """从 mcpconfig.json 加载所有配置"""
     config_path = Path(__file__).parent / "mcpconfig.json"
     try:
         with open(config_path, "r", encoding="utf-8") as f:
-            config = json.load(f)
-            return config.get("defaultLLM", {})
+            return json.load(f)
     except Exception as e:
-        logger.error(f"加载 LLM 配置失败: {e}")
+        logger.error(f"加载配置失败: {e}")
         return {}
 
-LLM_CONFIG = load_llm_config()
+CONFIG = load_config()
+LLM_CONFIG = CONFIG.get("defaultLLM", {})
+GOOGLE_API_KEY = CONFIG.get("google", "")
+
 logger.info(f"LLM 配置: baseURL={LLM_CONFIG.get('baseURL')}, model={LLM_CONFIG.get('model')}")
+logger.info(f"Google API Key: {'已配置' if GOOGLE_API_KEY else '未配置'}")
 
 
 # ==================== 工具函数 ====================
@@ -166,6 +169,51 @@ TOOLS = {
                 "replace_text": {"type": "string", "description": "替换为的文本"}
             },
             "required": ["filename", "search_text", "replace_text"]
+        }
+    },
+    "google_search": {
+        "description": "使用 Google 搜索获取信息。当需要查询最新资讯、获取某个主题的详细信息时使用此工具。",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "搜索关键词"},
+                "num_results": {"type": "integer", "description": "返回结果数量，默认5条", "default": 5}
+            },
+            "required": ["query"]
+        }
+    },
+    "google_image_search": {
+        "description": "使用 Google 搜索图片。返回图片 URL 列表，可配合 download_image 下载后用 insert_image 插入文档。",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "图片搜索关键词"},
+                "num_results": {"type": "integer", "description": "返回结果数量，默认5条", "default": 5}
+            },
+            "required": ["query"]
+        }
+    },
+    "download_image": {
+        "description": "从 URL 下载图片到本地。下载后可使用 insert_image 工具将图片插入文档。",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "url": {"type": "string", "description": "图片的 URL 地址"},
+                "filename": {"type": "string", "description": "保存的文件名（可选）"}
+            },
+            "required": ["url"]
+        }
+    },
+    "insert_image": {
+        "description": "将本地图片插入到 Word 文档中。需要先用 download_image 下载图片。",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "filename": {"type": "string", "description": "Word 文档文件名"},
+                "image_path": {"type": "string", "description": "图片的本地路径"},
+                "width": {"type": "number", "description": "图片宽度（英寸），可选"}
+            },
+            "required": ["filename", "image_path"]
         }
     }
 }
@@ -365,6 +413,214 @@ def search_replace(filename: str, search_text: str, replace_text: str) -> dict:
         return {"success": False, "error": str(e)}
 
 
+async def google_search_async(query: str, num_results: int = 5) -> dict:
+    """
+    使用 Serper.dev API 进行 Google 搜索（异步版本）
+    需要 GOOGLE_API_KEY 配置（从 serper.dev 获取）
+    """
+    if not GOOGLE_API_KEY:
+        return {"success": False, "error": "Google API Key 未配置"}
+    
+    try:
+        # 使用 Serper.dev API
+        url = "https://google.serper.dev/search"
+        headers = {
+            "X-API-KEY": GOOGLE_API_KEY,
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "q": query,
+            "num": num_results,
+            "hl": "zh-CN",
+            "gl": "cn"
+        }
+        
+        async with httpx.AsyncClient(timeout=30.0, proxy=None) as client:
+            response = await client.post(url, headers=headers, json=payload)
+            response.raise_for_status()
+            data = response.json()
+        
+        # 解析搜索结果
+        results = []
+        
+        # 提取有机搜索结果
+        organic_results = data.get("organic", [])
+        for item in organic_results[:num_results]:
+            results.append({
+                "title": item.get("title", ""),
+                "link": item.get("link", ""),
+                "snippet": item.get("snippet", "")
+            })
+        
+        # 如果有答案框
+        if "answerBox" in data:
+            answer = data["answerBox"]
+            results.insert(0, {
+                "title": answer.get("title", "答案"),
+                "link": answer.get("link", ""),
+                "snippet": answer.get("answer", answer.get("snippet", ""))
+            })
+        
+        return {
+            "success": True,
+            "query": query,
+            "count": len(results),
+            "results": results
+        }
+        
+    except httpx.HTTPStatusError as e:
+        return {"success": False, "error": f"搜索请求失败: {e.response.status_code}"}
+    except Exception as e:
+        return {"success": False, "error": f"搜索出错: {str(e)}"}
+
+
+def google_search(query: str, num_results: int = 5) -> dict:
+    """
+    使用 Google 搜索（同步包装器）
+    """
+    import asyncio
+    try:
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            import concurrent.futures
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                future = executor.submit(asyncio.run, google_search_async(query, num_results))
+                return future.result()
+        else:
+            return asyncio.run(google_search_async(query, num_results))
+    except Exception as e:
+        return {"success": False, "error": f"搜索执行失败: {str(e)}"}
+
+
+def google_image_search(query: str, num_results: int = 5) -> dict:
+    """
+    使用 Serper.dev API 搜索图片
+    """
+    if not GOOGLE_API_KEY:
+        return {"success": False, "error": "Google API Key 未配置"}
+    
+    try:
+        # 使用 Serper.dev 图片搜索 API
+        url = "https://google.serper.dev/images"
+        headers = {
+            "X-API-KEY": GOOGLE_API_KEY,
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "q": query,
+            "num": num_results,
+            "hl": "zh-CN"
+        }
+        
+        with httpx.Client(timeout=30.0, proxy=None) as client:
+            response = client.post(url, headers=headers, json=payload)
+            response.raise_for_status()
+            data = response.json()
+        
+        results = []
+        images_results = data.get("images", [])
+        
+        for item in images_results[:num_results]:
+            results.append({
+                "title": item.get("title", ""),
+                "image_url": item.get("imageUrl", ""),
+                "thumbnail": item.get("thumbnailUrl", ""),
+                "source": item.get("source", ""),
+                "link": item.get("link", "")
+            })
+        
+        return {
+            "success": True,
+            "query": query,
+            "count": len(results),
+            "images": results
+        }
+        
+    except httpx.HTTPStatusError as e:
+        return {"success": False, "error": f"搜索请求失败: {e.response.status_code}"}
+    except Exception as e:
+        return {"success": False, "error": f"搜索出错: {str(e)}"}
+
+
+def download_image(url: str, filename: str = None) -> dict:
+    """
+    从 URL 下载图片到本地
+    """
+    try:
+        # 创建图片目录
+        images_dir = WORD_DIR / "images"
+        images_dir.mkdir(exist_ok=True)
+        
+        # 生成文件名
+        if not filename:
+            url_filename = url.split("/")[-1].split("?")[0]
+            if url_filename and "." in url_filename:
+                filename = url_filename
+            else:
+                filename = f"image_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
+        else:
+            if not any(filename.lower().endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp']):
+                filename = f"{filename}.jpg"
+        
+        file_path = images_dir / filename
+        
+        # 下载图片
+        with httpx.Client(timeout=30.0, follow_redirects=True, proxy=None) as client:
+            response = client.get(url)
+            response.raise_for_status()
+            
+            content_type = response.headers.get("content-type", "")
+            if not content_type.startswith("image/"):
+                return {"success": False, "error": f"URL 不是图片: {content_type}"}
+            
+            with open(file_path, "wb") as f:
+                f.write(response.content)
+        
+        return {
+            "success": True,
+            "message": "图片下载成功",
+            "local_path": str(file_path),
+            "filename": filename,
+            "size": file_path.stat().st_size
+        }
+        
+    except httpx.HTTPStatusError as e:
+        return {"success": False, "error": f"下载失败: HTTP {e.response.status_code}"}
+    except Exception as e:
+        return {"success": False, "error": f"下载出错: {str(e)}"}
+
+
+def insert_image(filename: str, image_path: str, width: float = None) -> dict:
+    """
+    将图片插入到 Word 文档中
+    """
+    try:
+        file_path = get_file_path(filename)
+        
+        if not file_path.exists():
+            return {"success": False, "error": f"文档不存在: {filename}"}
+        
+        if not Path(image_path).exists():
+            return {"success": False, "error": f"图片不存在: {image_path}"}
+        
+        doc = Document(str(file_path))
+        
+        if width:
+            doc.add_picture(image_path, width=Inches(width))
+        else:
+            doc.add_picture(image_path, width=Inches(4))  # 默认宽度 4 英寸
+        
+        doc.save(str(file_path))
+        
+        return {
+            "success": True,
+            "message": "图片插入成功",
+            "image_path": image_path
+        }
+    except Exception as e:
+        return {"success": False, "error": f"插入图片失败: {str(e)}"}
+
+
 # 工具映射
 TOOL_HANDLERS = {
     "create_document": create_document,
@@ -374,6 +630,10 @@ TOOL_HANDLERS = {
     "list_documents": list_documents,
     "add_table": add_table,
     "search_replace": search_replace,
+    "google_search": google_search,
+    "google_image_search": google_image_search,
+    "download_image": download_image,
+    "insert_image": insert_image,
 }
 
 
@@ -626,27 +886,39 @@ async def sse_agent(request: AgentRequest, http_request: Request):
         filename_hint = (request.filename or "").strip()
         
         # 构建系统提示
-        system_prompt = """你是一个 Word 文档操作助手。你必须通过调用工具来完成用户的请求。
+        system_prompt = """你是一个智能文档助手。你必须通过调用工具来完成用户的请求。
 
 【重要规则】
 1. 必须直接调用工具，不要描述步骤或解释如何操作
 2. 用户让你创建文档，你就调用 create_document 工具
 3. 用户让你读取文档，你就调用 read_document 工具
 4. 用户让你列出文档，你就调用 list_documents 工具
-5. 不要输出 HTML、代码块或步骤说明，直接调用工具
+5. 如果需要查询信息来写文档，先调用 google_search 搜索，再根据搜索结果创建文档
+6. 如果需要插入图片，按顺序：google_image_search → download_image → insert_image
+7. 不要输出 HTML、代码块或步骤说明，直接调用工具
 
 【工具说明】
-- create_document(filename, title, content): 创建新文档。filename 是文件名，title 是标题，content 是正文内容（纯文本，支持换行）
+文档操作：
+- create_document(filename, title, content): 创建新文档
 - read_document(filename): 读取文档内容
-- update_document(filename, action, content): 更新文档。action 可以是 append/insert/replace/add_heading
+- update_document(filename, action, content): 更新文档
 - delete_document(filename): 删除文档
 - list_documents(): 列出所有文档
 - add_table(filename, table_data, title): 添加表格
 - search_replace(filename, search_text, replace_text): 搜索替换
 
-【示例】
-用户说"帮我写一份生日祝福"，你应该直接调用：
-create_document(filename="生日祝福", title="生日祝福", content="亲爱的朋友，祝你生日快乐！...")
+搜索功能：
+- google_search(query, num_results): 搜索文字信息
+- google_image_search(query, num_results): 搜索图片，返回图片URL列表
+
+图片操作：
+- download_image(url, filename): 从URL下载图片到本地，返回本地路径
+- insert_image(filename, image_path, width): 将本地图片插入文档
+
+【图片插入流程示例】
+1. google_image_search(query="可爱猫咪") → 获取图片URL
+2. download_image(url="图片URL") → 下载到本地，获取 local_path
+3. insert_image(filename="文档名", image_path="local_path") → 插入文档
 
 现在，请直接调用工具来完成用户的请求。"""
 
