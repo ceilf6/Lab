@@ -293,10 +293,9 @@ export default function WordMCPClient() {
     }
   }, [addLog, addMessage, fetchDocuments]);
 
-  // 多步编排（真·SSE）
+  // 多步编排（真·SSE）- 支持 LLM Agent 的完整流程
   const callAgent = useCallback(async (payload: { query: string; title?: string; filename?: string }) => {
     setLoading(true);
-    addLog('正在启动多步生成（SSE）...', 'working');
 
     try {
       const url = `${MCP_SERVER}/sse/agent`;
@@ -319,8 +318,8 @@ export default function WordMCPClient() {
       const decoder = new TextDecoder();
       if (!reader) throw new Error('无法读取响应流');
 
-      let resultContent = '';
       let lastCreatedFilePath = '';
+      let finalResponse = '';
 
       while (true) {
         const { done, value } = await reader.read();
@@ -334,7 +333,7 @@ export default function WordMCPClient() {
           const jsonStr = line.slice(6);
           console.log('[WordMCP] 收到 Agent SSE 数据:', jsonStr);
 
-          let data: SSEMessage;
+          let data: any;
           try {
             data = JSON.parse(jsonStr);
           } catch (e) {
@@ -342,54 +341,99 @@ export default function WordMCPClient() {
             continue;
           }
 
-          if (data.type === 'progress' && data.message) {
-            addLog(data.message, 'working');
-            continue;
-          }
+          // 工具名称映射
+          const toolNames: Record<string, string> = {
+            'create_document': '创建文档',
+            'read_document': '读取文档',
+            'update_document': '更新文档',
+            'delete_document': '删除文档',
+            'list_documents': '列出文档',
+            'add_table': '添加表格',
+            'search_replace': '搜索替换'
+          };
 
-          if (data.type === 'start') {
-            addLog(data.label ? `开始：${data.label}` : (data.message || '开始执行...'), 'info');
-            continue;
-          }
+          // 处理不同类型的 SSE 消息
+          switch (data.type) {
+            case 'start':
+              addLog(data.message || '开始执行...', 'info');
+              break;
 
-          if (data.type === 'result') {
-            if (data.data?.success) {
-              addLog('执行成功', 'success');
+            case 'thinking':
+              addLog(data.message || '正在思考...', 'working');
+              break;
 
-              // 把 create_document 的 file_path 记住，便于最终提示
-              if (data.data?.file_path) lastCreatedFilePath = data.data.file_path;
+            case 'tool_call':
+              // 显示正在调用的工具和参数
+              addLog(`🔧 调用工具: ${toolNames[data.tool] || data.tool}`, 'working');
+              
+              // 显示工具参数摘要
+              if (data.arguments) {
+                const args = data.arguments;
+                if (args.title) {
+                  addLog(`  📝 标题: ${args.title}`, 'info');
+                }
+                if (args.filename) {
+                  addLog(`  📄 文件: ${args.filename}`, 'info');
+                }
+              }
+              break;
 
-              const summary = data.label
-                ? `✅ ${data.label}`
-                : `✅ 步骤完成`;
-              resultContent = resultContent
-                ? `${resultContent}\n${summary}`
-                : summary;
-            } else {
-              addLog(`执行失败: ${data.data?.error || '未知错误'}`, 'error');
-              resultContent = `❌ 错误：${data.data?.error || '未知错误'}`;
-            }
-            continue;
-          }
+            case 'tool_result':
+              if (data.result?.success) {
+                addLog(`✅ ${toolNames[data.tool] || data.tool} 成功`, 'success');
+                
+                // 记录创建的文件路径
+                if (data.result?.file_path) {
+                  lastCreatedFilePath = data.result.file_path;
+                  addLog(`  📁 文件: ${data.result.file_path}`, 'info');
+                }
+              } else {
+                addLog(`❌ ${data.tool} 失败: ${data.result?.error || '未知错误'}`, 'error');
+              }
+              break;
 
-          if (data.type === 'error') {
-            addLog(`错误: ${data.error}`, 'error');
-            resultContent = `❌ 错误：${data.error}`;
-            continue;
-          }
+            case 'response':
+              // LLM 的最终回复
+              if (data.content) {
+                finalResponse = data.content;
+              }
+              break;
 
-          if (data.type === 'done') {
-            addLog('多步生成完成', 'success');
-            break;
+            case 'error':
+              addLog(`❌ 错误: ${data.error}`, 'error');
+              addMessage('assistant', `❌ 错误：${data.error}`);
+              break;
+
+            case 'warning':
+              addLog(`⚠️ ${data.message}`, 'info');
+              break;
+
+            case 'done':
+              addLog('✨ 执行完成', 'success');
+              break;
+
+            case 'progress':
+              if (data.message) addLog(data.message, 'working');
+              break;
+
+            case 'result':
+              // 旧格式兼容
+              if (data.data?.success) {
+                addLog('执行成功', 'success');
+                if (data.data?.file_path) lastCreatedFilePath = data.data.file_path;
+              }
+              break;
           }
         }
       }
 
-      const finalMessage = lastCreatedFilePath
-        ? `✅ 多步生成完成！\n\n已生成文件：${lastCreatedFilePath}\n\n执行摘要：\n${resultContent || '（无）'}`
-        : `✅ 多步生成完成！\n\n执行摘要：\n${resultContent || '（无）'}`;
+      // 显示最终结果
+      if (finalResponse) {
+        addMessage('assistant', finalResponse);
+      } else if (lastCreatedFilePath) {
+        addMessage('assistant', `✅ 文档已创建！\n\n📁 文件路径: ${lastCreatedFilePath}`);
+      }
 
-      addMessage('assistant', finalMessage);
       await fetchDocuments();
     } catch (e) {
       const errorMsg = e instanceof Error ? e.message : String(e);
