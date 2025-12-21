@@ -1,0 +1,41 @@
+<!-- 用于实践：交互队列优先级高于延时队列 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>用于实践：交互队列优先级高于延时队列</title>
+</head>
+<body>
+    <button id="begin">开始检测（自动优先添加延时任务）</button>
+    <button id="interact">添加交互任务</button>
+    <script>
+        // 通过死循环实现同步阻塞
+        function delay(t){
+            const start = Date.now();
+            while(Date.now()-start<t){}
+        }
+
+        function addDelay() {
+            console.log('添加延迟任务');
+            setTimeout(() => {
+                console.log('延迟任务执行');
+            },100);
+            delay(2000);
+        }
+
+        function addInteract(){
+            console.log('添加交互队列');
+            interact.onclick = () => {
+                console.log('交互任务执行');
+            };
+            delay(2000);
+        }
+
+        begin.onclick = function(){
+            addDelay();
+            addInteract();
+            console.log('====== 结果 ======');
+        }
+    </script>
+</body>
+</html>
