@@ -123,7 +123,7 @@ class UI {
     };
     this.jumpTarget = jumpTarget;
 
-    this.createHTML(); // 当代码臃肿的时候需要解耦外提函数/文件
+    this.createHTML(); // 当代码臃肿的时候需要解耦分离外提函数/文件
     this.updateFooter();
     this.listenEvent();
   }
@@ -136,6 +136,10 @@ class UI {
   }
 
   // 根据商品数据创建商品列表元素
+  /*
+  1. 生成汇总 HTML 字符串，然后给 container 父元素进行赋值 - 直观开发效率高、但是执行效率低：字符串得 parse html 转换为DOM结构
+  2. 一个一个创建元素 - 直接创建 DOM元素
+  */
   createHTML() {
     var html = '';
     for (var i = 0; i < this.uiData.uiGoods.length; i++) {
