@@ -11,8 +11,9 @@ class UIGoods {
   constructor(g) {
     this.data = g;
     this.choose = 0;
+    // this.totalPrice = 0; // 这个总价 = choose * data.单价 ， 所以是冗余的、最好是通过方法实现；数据冗余可能会导致数据不一致
   }
-  // 获取总价
+  // 获取总价；但是没有银弹：添加方法会影响效率；但是开始开发先不用管效率，尽量确保代码简洁：可维护性、可拓展性，优化是后面的事情
   getTotalPrice() {
     return this.data.price * this.choose;
   }
