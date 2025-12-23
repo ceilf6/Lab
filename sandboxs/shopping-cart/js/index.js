@@ -358,7 +358,7 @@ class UI {
 
 var ui = new UI();
 
-// 事件
+// 事件 - 一般最后挂载事件
 ui.doms.goodsContainer.addEventListener('click', function (e) {
   if (e.target.classList.contains('i-jiajianzujianjiahao')) {
     var index = +e.target.getAttribute('index');
