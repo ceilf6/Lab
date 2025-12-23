@@ -1,3 +1,5 @@
+// 数据驱动UI：第一步，先进行数据管理的逻辑实现
+
 // function createUIGoods(g){
 //   return {
 //     data: g,
