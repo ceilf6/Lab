@@ -11,6 +11,7 @@
   left: 0;
   top: 0;
   transition: 0.5s linear;
+  /* ease 会加速；linear 匀速-抛物线横向匀速 */
   /* transition 添加中间过渡效果 */
 }
 
@@ -21,4 +22,5 @@
   border-radius: 50%;
   display: block;
   transition: 0.5s cubic-bezier(0.5, -0.5, 1, 1);
+  /* i 元素纵向通过 cubic-bezier 实现抛物线 - 矩阵贝塞尔曲线*/
 }
