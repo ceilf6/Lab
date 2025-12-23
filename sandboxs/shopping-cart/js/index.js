@@ -141,33 +141,122 @@ class UI {
   2. 一个一个创建元素 - 直接创建 DOM元素
   */
   createHTML() {
-    var html = '';
+    // var html = '';
+    // for (var i = 0; i < this.uiData.uiGoods.length; i++) {
+    //   var g = this.uiData.uiGoods[i];
+    //   html += `<div class="goods-item">
+    //   <img src="${g.data.pic}" alt="" class="goods-pic">
+    //   <div class="goods-info">
+    //     <h2 class="goods-title">${g.data.title}</h2>
+    //     <p class="goods-desc">${g.data.desc}</p>
+    //     <p class="goods-sell">
+    //       <span>月售 ${g.data.sellNumber}</span>
+    //       <span>好评率${g.data.favorRate}%</span>
+    //     </p>
+    //     <div class="goods-confirm">
+    //       <p class="goods-price">
+    //         <span class="goods-price-unit">￥</span>
+    //         <span>${g.data.price}</span>
+    //       </p>
+    //       <div class="goods-btns">
+    //         <i index="${i}" class="iconfont i-jianhao"></i>
+    //         <span>${g.choose}</span>
+    //         <i index="${i}" class="iconfont i-jiajianzujianjiahao"></i>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>`; // 用模版字符串 ` ` 就无须进行 \n 转义且动态替换
+    // }
+    // this.doms.goodsContainer.innerHTML = html;
+
+    // 方法二：通过一个一个创建 DOM 元素的方式
     for (var i = 0; i < this.uiData.uiGoods.length; i++) {
       var g = this.uiData.uiGoods[i];
-      html += `<div class="goods-item">
-      <img src="${g.data.pic}" alt="" class="goods-pic">
-      <div class="goods-info">
-        <h2 class="goods-title">${g.data.title}</h2>
-        <p class="goods-desc">${g.data.desc}</p>
-        <p class="goods-sell">
-          <span>月售 ${g.data.sellNumber}</span>
-          <span>好评率${g.data.favorRate}%</span>
-        </p>
-        <div class="goods-confirm">
-          <p class="goods-price">
-            <span class="goods-price-unit">￥</span>
-            <span>${g.data.price}</span>
-          </p>
-          <div class="goods-btns">
-            <i index="${i}" class="iconfont i-jianhao"></i>
-            <span>${g.choose}</span>
-            <i index="${i}" class="iconfont i-jiajianzujianjiahao"></i>
-          </div>
-        </div>
-      </div>
-    </div>`; // 用模版字符串 ` ` 就无须进行 \n 转义
+
+      // 创建最外层的商品容器
+      var goodsItem = document.createElement('div');
+      goodsItem.className = 'goods-item';
+
+      // 创建商品图片
+      var goodsPic = document.createElement('img');
+      goodsPic.src = g.data.pic;
+      goodsPic.alt = 'picture for ' + g.data.title;
+      goodsPic.className = 'goods-pic';
+
+      // 创建商品信息容器
+      var goodsInfo = document.createElement('div');
+      goodsInfo.className = 'goods-info';
+
+      // 创建商品标题
+      var goodsTitle = document.createElement('h2');
+      goodsTitle.className = 'goods-title';
+      goodsTitle.textContent = g.data.title;
+
+      // 创建商品描述
+      var goodsDesc = document.createElement('p');
+      goodsDesc.className = 'goods-desc';
+      goodsDesc.textContent = g.data.desc;
+
+      // 创建销售信息
+      var goodsSell = document.createElement('p');
+      goodsSell.className = 'goods-sell';
+      var sellNumberSpan = document.createElement('span');
+      sellNumberSpan.textContent = '月售 ' + g.data.sellNumber;
+      var favorRateSpan = document.createElement('span');
+      favorRateSpan.textContent = '好评率' + g.data.favorRate + '%';
+      goodsSell.appendChild(sellNumberSpan);
+      goodsSell.appendChild(favorRateSpan);
+
+      // 创建确认区域容器
+      var goodsConfirm = document.createElement('div');
+      goodsConfirm.className = 'goods-confirm';
+
+      // 创建价格区域
+      var goodsPrice = document.createElement('p');
+      goodsPrice.className = 'goods-price';
+      var priceUnitSpan = document.createElement('span');
+      priceUnitSpan.className = 'goods-price-unit';
+      priceUnitSpan.textContent = '￥';
+      var priceValueSpan = document.createElement('span');
+      priceValueSpan.textContent = g.data.price;
+      goodsPrice.appendChild(priceUnitSpan);
+      goodsPrice.appendChild(priceValueSpan);
+
+      // 创建按钮区域
+      var goodsBtns = document.createElement('div');
+      goodsBtns.className = 'goods-btns';
+      // 减号按钮
+      var minusBtn = document.createElement('i');
+      minusBtn.className = 'iconfont i-jianhao';
+      minusBtn.setAttribute('index', i);
+      // 数量显示
+      var chooseSpan = document.createElement('span');
+      chooseSpan.textContent = g.choose;
+      // 加号按钮
+      var plusBtn = document.createElement('i');
+      plusBtn.className = 'iconfont i-jiajianzujianjiahao';
+      plusBtn.setAttribute('index', i);
+      goodsBtns.appendChild(minusBtn);
+      goodsBtns.appendChild(chooseSpan);
+      goodsBtns.appendChild(plusBtn);
+
+      // 组装确认区域
+      goodsConfirm.appendChild(goodsPrice);
+      goodsConfirm.appendChild(goodsBtns);
+
+      // 组装商品信息
+      goodsInfo.appendChild(goodsTitle);
+      goodsInfo.appendChild(goodsDesc);
+      goodsInfo.appendChild(goodsSell);
+      goodsInfo.appendChild(goodsConfirm);
+
+      // 组装商品项
+      goodsItem.appendChild(goodsPic);
+      goodsItem.appendChild(goodsInfo);
+
+      // 添加到商品列表容器
+      this.doms.goodsContainer.appendChild(goodsItem);
     }
-    this.doms.goodsContainer.innerHTML = html;
   }
 
   increase(index) {
