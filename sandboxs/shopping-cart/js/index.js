@@ -123,7 +123,7 @@ class UI {
     };
     this.jumpTarget = jumpTarget;
 
-    this.createHTML();
+    this.createHTML(); // 当代码臃肿的时候需要解耦外提函数/文件
     this.updateFooter();
     this.listenEvent();
   }
