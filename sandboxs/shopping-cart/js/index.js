@@ -346,7 +346,10 @@ class UI {
     // div.clientWidth;
     // 用 rAF 等待下一帧渲染后再设置结束位置
     requestAnimationFrame(() => {
-      // 有时需要双重 rAF 确保初始状态已渲染
+      /*
+      第一个 rAF：在本帧渲染前执行
+      第二个 rAF：在下一帧渲染前执行
+      */
       requestAnimationFrame(() => {
         div.style.transform = `translateX(${this.jumpTarget.x}px)`;
         i.style.transform = `translateY(${this.jumpTarget.y}px)`;
@@ -354,8 +357,8 @@ class UI {
     });
 
     // 设置结束位置
-    div.style.transform = `translateX(${this.jumpTarget.x}px)`;
-    i.style.transform = `translateY(${this.jumpTarget.y}px)`;
+    // div.style.transform = `translateX(${this.jumpTarget.x}px)`;
+    // i.style.transform = `translateY(${this.jumpTarget.y}px)`;
     var that = this;
     div.addEventListener(
       'transitionend',
