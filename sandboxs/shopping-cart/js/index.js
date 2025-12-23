@@ -271,7 +271,7 @@ class UI {
     this.updateGoodsItem(index);
     this.updateFooter();
   }
-  // 更新某个商品元素的显示状态
+  // 更新某个商品元素的显示状态 - active
   updateGoodsItem(index) {
     var goodsDom = this.doms.goodsContainer.children[index];
     if (this.uiData.isChoose(index)) {
@@ -279,10 +279,10 @@ class UI {
     } else {
       goodsDom.classList.remove('active');
     }
-    var span = goodsDom.querySelector('.goods-btns span');
+    var span = goodsDom.querySelector('.goods-btns span'); // 根据DOM的id选择目标后通过uiData更新数据
     span.textContent = this.uiData.uiGoods[index].choose;
   }
-  // 更新页脚
+  // 更新页脚 - 购物车
   updateFooter() {
     // 得到总价数据
     var total = this.uiData.getTotalPrice();
@@ -358,7 +358,7 @@ class UI {
 
 var ui = new UI();
 
-// 事件 - 一般最后挂载事件
+// 事件 - 一般先写完功能，最后挂载事件
 ui.doms.goodsContainer.addEventListener('click', function (e) {
   if (e.target.classList.contains('i-jiajianzujianjiahao')) {
     var index = +e.target.getAttribute('index');
