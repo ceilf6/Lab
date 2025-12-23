@@ -63,6 +63,10 @@ class UIData {
     return this.uiGoods.reduce((sum, g) => sum + g.getTotalPrice(), 0); // 通过 reduce 进行归一
   }
 
+  /*
+  面向对象封装：面向对象设计
+  把类管理的数据需要操作的都向外暴露
+  */
   // 增加某件商品的选中数量
   increase(index) {
     this.uiGoods[index].increase();
