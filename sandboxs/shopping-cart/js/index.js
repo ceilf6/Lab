@@ -21,6 +21,10 @@ class UIGoods {
   isChoose() {
     return this.choose > 0;
   }
+  /* 
+  增加和删减应该聚焦在商品内部，因为以后可能会需要判断库存容量等等，如果由使用者去维护的话就会导致关注点分离
+  所以需要在类内部实现然后向外暴露
+  */
   // 选择的数量+1
   increase() {
     this.choose++;
