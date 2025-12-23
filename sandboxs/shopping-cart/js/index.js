@@ -43,11 +43,12 @@ class UIGoods {
 // 整个界面的数据
 class UIData {
   constructor() {
-    const uiGoods = []; // 用 const 可以防止 var 的多次赋值、变量提升
-    for (var i = 0; i < goods.length; i++) {
-      var uig = new UIGoods(goods[i]);
-      uiGoods.push(uig);
-    }
+    // const uiGoods = []; // 用 const 可以防止 var 的多次赋值、变量提升
+    const uiGoods = goods.map(g => new UIGoods(g)); // 用 map 语法糖可以更加语义化
+    // for (var i = 0; i < goods.length; i++) {
+    //   var uig = new UIGoods(goods[i]);
+    //   uiGoods.push(uig);
+    // }
     this.uiGoods = uiGoods;
     this.deliveryThreshold = 30;
     this.deliveryPrice = 5;
