@@ -165,7 +165,7 @@ class UI {
           </div>
         </div>
       </div>
-    </div>`;
+    </div>`; // 用模版字符串 ` ` 就无须进行 \n 转义
     }
     this.doms.goodsContainer.innerHTML = html;
   }
