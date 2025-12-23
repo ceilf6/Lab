@@ -358,3 +358,23 @@ const AnimationPractice = () => {
 };
 
 export default AnimationPractice;
+
+/* rAF 时机
+1. 同步代码
+1.5 同步代码结束
+2. 微任务 Promise
+3. 微任务 queueMicrotask
+4. rAF
+5. 宏任务 setTimeout
+*/
+console.log('1. 同步代码');
+
+setTimeout(() => console.log('5. 宏任务 setTimeout'), 0);
+
+Promise.resolve().then(() => console.log('2. 微任务 Promise'));
+
+queueMicrotask(() => console.log('3. 微任务 queueMicrotask'));
+
+requestAnimationFrame(() => console.log('4. rAF'));
+
+console.log('1.5 同步代码结束');
