@@ -1,6 +1,6 @@
 // 数据驱动UI：第一步，先进行数据管理的逻辑实现
 
-// 数据 → HTML → CSS → 事件
+// 数据(对象数据逻辑的封装 → 整个界面的数据逻辑封装) → HTML → CSS → 事件
 
 // function createUIGoods(g){
 //   return {
@@ -378,9 +378,10 @@ class UI {
 var ui = new UI();
 
 // 事件 - 一般先写完功能，最后挂载事件
+// 通过事件委托，在父元素容器上进行统一处理即可
 ui.doms.goodsContainer.addEventListener('click', function (e) {
-  if (e.target.classList.contains('i-jiajianzujianjiahao')) {
-    var index = +e.target.getAttribute('index');
+  if (e.target.classList.contains('i-jiajianzujianjiahao')) { // 触发事件中包含加号
+    var index = +e.target.getAttribute('index'); // 通过目标的自定义属性拿到（加减号上的index
     ui.increase(index);
   } else if (e.target.classList.contains('i-jianhao')) {
     var index = +e.target.getAttribute('index');
@@ -388,6 +389,7 @@ ui.doms.goodsContainer.addEventListener('click', function (e) {
   }
 });
 
+// 可拓展性
 window.addEventListener('keypress', function (e) {
   if (e.code === 'Equal') {
     ui.increase(0);
