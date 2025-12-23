@@ -1,3 +1,11 @@
+// function createUIGoods(g){
+//   return {
+//     data: g,
+//     choose: 0, // 已经选择的数量
+//   }
+// }
+// 用于创建对象 -> 构造函数
+
 // 单件商品的数据
 class UIGoods {
   constructor(g) {
