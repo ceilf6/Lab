@@ -33,6 +33,7 @@
   overflow: hidden;
 }
 .menu-item.active {
+  /* 通过 active 实现状态切换 */
   font-weight: bold;
   background: #fff;
 }
