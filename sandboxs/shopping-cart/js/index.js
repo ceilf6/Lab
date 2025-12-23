@@ -77,7 +77,7 @@ class UIData {
   }
 
   // 每写完一个函数就直接关闭其，因为已经封装好了，不需要再关注
-  // 得到总共的选择数量
+  // 得到总共的选择数量 // 界面逻辑和数据逻辑分离
   getTotalChooseNumber() {
     var sum = 0;
     for (var i = 0; i < this.uiGoods.length; i++) {
@@ -104,9 +104,10 @@ class UIData {
 // 整个界面
 class UI {
   constructor() {
-    this.uiData = new UIData();
+    this.uiData = new UIData(); // 数据
+    // 用对象收纳管理 DOM元素
     this.doms = {
-      goodsContainer: document.querySelector('.goods-list'),
+      goodsContainer: document.querySelector('.goods-list'), // 动态的商品列表
       deliveryPrice: document.querySelector('.footer-car-tip'),
       footerPay: document.querySelector('.footer-pay'),
       footerPayInnerSpan: document.querySelector('.footer-pay span'),
