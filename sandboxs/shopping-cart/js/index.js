@@ -69,13 +69,14 @@ class UIData {
   */
   // 增加某件商品的选中数量
   increase(index) {
-    this.uiGoods[index].increase();
+    this.uiGoods[index].increase(); // 调用对象上的方法，关注点分离，前者是一个对象数据的管理，当前是需要对所有对象进行管理
   }
   // 减少某件商品的选中数量
   decrease(index) {
     this.uiGoods[index].decrease();
   }
 
+  // 每写完一个函数就直接关闭其，因为已经封装好了，不需要再关注
   // 得到总共的选择数量
   getTotalChooseNumber() {
     var sum = 0;
