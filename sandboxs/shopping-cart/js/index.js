@@ -43,7 +43,7 @@ class UIGoods {
 // 整个界面的数据
 class UIData {
   constructor() {
-    var uiGoods = [];
+    const uiGoods = []; // 用 const 可以防止 var 的多次赋值、变量提升
     for (var i = 0; i < goods.length; i++) {
       var uig = new UIGoods(goods[i]);
       uiGoods.push(uig);
