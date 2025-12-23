@@ -50,6 +50,7 @@
 }
 .footer-car.animate {
   animation: footer-car-animate 500ms ease-in-out;
+  /* 缩小放大缩小放大的循环动画: transform: scale() */
 }
 
 @keyframes footer-car-animate {
