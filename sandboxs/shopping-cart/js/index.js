@@ -343,7 +343,15 @@ class UI {
     document.body.appendChild(div);
     // 由于浏览器为了优化性能会批量合并 DOM操作（先加到任务队列然后会合并），所以如果中间不强行渲染的话就会合并成最终状态
     // 读属性就会立即reflow强行渲染
-    div.clientWidth;
+    // div.clientWidth;
+    // 用 rAF 等待下一帧渲染后再设置结束位置
+    requestAnimationFrame(() => {
+      // 有时需要双重 rAF 确保初始状态已渲染
+      requestAnimationFrame(() => {
+        div.style.transform = `translateX(${this.jumpTarget.x}px)`;
+        i.style.transform = `translateY(${this.jumpTarget.y}px)`;
+      });
+    });
 
     // 设置结束位置
     div.style.transform = `translateX(${this.jumpTarget.x}px)`;
