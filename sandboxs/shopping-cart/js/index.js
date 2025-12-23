@@ -296,7 +296,7 @@ class UI {
       this.doms.footerPay.classList.remove('active');
       // 更新还差多少钱
       var dis = this.uiData.deliveryThreshold - total;
-      dis = Math.round(dis);
+      dis = Math.round(dis); // 别忘记四舍五入，否则会造成小数点后两位丢失，导致数据不准确
       this.doms.footerPayInnerSpan.textContent = `还差￥${dis}元起送`;
     }
     // 设置总价
