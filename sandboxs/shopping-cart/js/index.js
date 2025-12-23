@@ -345,7 +345,7 @@ class UI {
     // 读属性就会立即reflow强行渲染
     // div.clientWidth;
     // 用 rAF 等待下一帧渲染后再设置结束位置
-    requestAnimationFrame(() => {
+    requestAnimationFrame(() => { // （确保了不会合并DOM操作，且不需要像读属性那样reflow，其本质就是等操作完成后）
       /*
       第一个 rAF：在本帧渲染前执行
       第二个 rAF：在下一帧渲染前执行
@@ -353,6 +353,7 @@ class UI {
       requestAnimationFrame(() => {
         div.style.transform = `translateX(${this.jumpTarget.x}px)`;
         i.style.transform = `translateY(${this.jumpTarget.y}px)`;
+        // i 元素用于控制纵向
       });
     });
 
