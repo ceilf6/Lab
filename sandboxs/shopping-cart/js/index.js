@@ -44,23 +44,23 @@ class UIGoods {
 class UIData {
   constructor() {
     // const uiGoods = []; // 用 const 可以防止 var 的多次赋值、变量提升
-    const uiGoods = goods.map(g => new UIGoods(g)); // 用 map 语法糖可以更加语义化
+    const uiGoods = goods.map(g => new UIGoods(g)); // 用 map 语法糖（得到新数组）可以更加语义化
     // for (var i = 0; i < goods.length; i++) {
     //   var uig = new UIGoods(goods[i]);
     //   uiGoods.push(uig);
     // }
     this.uiGoods = uiGoods;
-    this.deliveryThreshold = 30;
+    this.deliveryThreshold = 30; // 起送门槛（来自后端配置
     this.deliveryPrice = 5;
   }
 
   getTotalPrice() {
-    var sum = 0;
-    for (var i = 0; i < this.uiGoods.length; i++) {
-      var g = this.uiGoods[i];
-      sum += g.getTotalPrice();
-    }
-    return sum;
+    // let sum = 0;
+    // for (var i = 0; i < this.uiGoods.length; i++) {
+    //   var g = this.uiGoods[i];
+    //   sum += g.getTotalPrice();
+    // }
+    return this.uiGoods.reduce((sum, g) => sum + g.getTotalPrice(), 0); // 通过 reduce 进行归一
   }
 
   // 增加某件商品的选中数量
