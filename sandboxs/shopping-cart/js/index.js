@@ -134,7 +134,7 @@ class UI {
   // 监听各种事件
   listenEvent() {
     this.doms.car.addEventListener('animationend', function () {
-      this.classList.remove('animate');
+      this.classList.remove('animate'); // 隐式规则: this指向注册这个事件的元素
     });
   }
 
