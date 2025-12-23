@@ -368,6 +368,7 @@ class UI {
         that.carAnimate();
       },
       {
+        // 原先会因为 i 元素冒泡加上自身触发两次
         once: true, // 事件仅触发一次
       }
     );
