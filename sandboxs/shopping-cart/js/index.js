@@ -1,5 +1,7 @@
 // 数据驱动UI：第一步，先进行数据管理的逻辑实现
 
+// 数据 → HTML → CSS → 事件
+
 // function createUIGoods(g){
 //   return {
 //     data: g,
@@ -106,6 +108,7 @@ class UI {
   constructor() {
     this.uiData = new UIData(); // 数据
     // 用对象收纳管理 DOM元素
+    // 需要用到了就来收纳表里面找/加
     this.doms = {
       goodsContainer: document.querySelector('.goods-list'), // 动态的商品列表
       deliveryPrice: document.querySelector('.footer-car-tip'),
