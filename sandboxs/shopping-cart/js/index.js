@@ -121,10 +121,11 @@ class UI {
     var carRect = this.doms.car.getBoundingClientRect();
 
     var jumpTarget = {
-      x: carRect.left + carRect.width / 2,
+      // x从左到右 y从上往下
+      x: carRect.left + carRect.width / 2, // 左边距离加上宽度一半即中心
       y: carRect.top + carRect.height / 5,
     };
-    this.jumpTarget = jumpTarget;
+    this.jumpTarget = jumpTarget; // 每个跳的目标位置是一样的，可以上提
 
     this.createHTML(); // 当代码臃肿的时候需要解耦分离外提函数/文件
     this.updateFooter();
@@ -318,6 +319,7 @@ class UI {
   carAnimate() {
     this.doms.car.classList.add('animate');
   }
+  // 动画: 实现从初始位置到结束位置的中间过渡
   // 抛物线跳跃的元素
   jump(index) {
     // 找到对应商品的加号
@@ -339,7 +341,8 @@ class UI {
     i.style.transform = `translateY(${start.y}px)`;
     div.appendChild(i);
     document.body.appendChild(div);
-    // 强行渲染
+    // 由于浏览器为了优化性能会批量合并 DOM操作（先加到任务队列然后会合并），所以如果中间不强行渲染的话就会合并成最终状态
+    // 读属性就会立即reflow强行渲染
     div.clientWidth;
 
     // 设置结束位置

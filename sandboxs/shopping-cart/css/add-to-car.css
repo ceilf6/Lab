@@ -1,4 +1,5 @@
 .add-to-car {
+  /* 相对视口，确保 translateX/Y 移动时坐标计算基准是固定的 */
   position: fixed;
   color: #fff;
   font-size: 23rem;
@@ -10,6 +11,7 @@
   left: 0;
   top: 0;
   transition: 0.5s linear;
+  /* transition 添加中间过渡效果 */
 }
 
 .add-to-car .iconfont {
