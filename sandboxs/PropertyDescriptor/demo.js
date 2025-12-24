@@ -17,8 +17,8 @@ class UIGoods {
   }
 
   constructor(g) {
-    g = { ...g };
-    Object.freeze(g);
+    g = { ...g }; // 不影响原数据
+    Object.freeze(g); // 属性只读
     Object.defineProperty(this, 'data', {
       get: function () {
         return g;
@@ -50,6 +50,7 @@ class UIGoods {
       },
     });
     this.a = 1;
+    Object.freeze(this); // 冻结对象不能加属性
     Object.seal(this);
   }
 }
