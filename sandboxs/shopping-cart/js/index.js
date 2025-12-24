@@ -14,7 +14,37 @@
 class UIGoods {
   constructor(g) {
     this.data = g;
-    this.choose = 0;
+    // this.choose = 0;
+    let internalChooseValue = 0;
+    Object.defineProperties(this, 'data', {
+      get: function () {
+        return g;
+      },
+      set: function () {
+        throw new Error('data 属性是只读的，不能重新赋值');
+      },
+      configurable: false,
+    });
+    Object.defineProperty(this, 'choose', {
+      configurable: false,
+      get: function () {
+        return internalChooseValue;
+      },
+      set: function (val) {
+        if (typeof val !== 'number') {
+          throw new Error('choose属性必须是数字');
+        }
+        // var temp = parseInt(val);
+        var temp = ~~val; // 位运算符，相当于 parseInt(val)
+        if (temp !== val) {
+          throw new Error('choose属性必须是整数');
+        }
+        if (val < 0) {
+          throw new Error('choose属性必须大于等于 0');
+        }
+        internalChooseValue = val;
+      },
+    });
     // this.totalPrice = 0; // 这个总价 = choose * data.单价 ， 所以是冗余的、最好是通过方法实现；数据冗余可能会导致数据不一致
   }
   // 获取总价；但是没有银弹：添加方法会影响效率；但是开始开发先不用管效率，尽量确保代码简洁：可维护性、可拓展性，优化是后面的事情
