@@ -50,8 +50,8 @@ class UIGoods {
       },
     });
     this.a = 1;
-    Object.freeze(this); // 冻结对象不能加属性
-    Object.seal(this);
+    // Object.freeze(this); // 冻结对象不能加属性
+    Object.seal(this); // 用 seal 密封的话不能加但是其他属性还能改
   }
 }
 
