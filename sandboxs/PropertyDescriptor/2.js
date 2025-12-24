@@ -6,7 +6,7 @@ Object.defineProperty(obj, 'a', {
   }, // 读取器 getter
   set: function (val) {
     throw new Error(
-      `兄弟，你正在给a这个属性重新赋值，你所赋的值是${val}，但是，这个属性是不能复制，你再考虑考虑`
+      `兄弟，你正在给a这个属性重新赋值，你所赋的值是${val}，但是，这个属性是不能赋值，你再考虑考虑`
     );
   }, // 设置器 setter
 });
