@@ -38,7 +38,8 @@ class UIGoods {
         if (typeof val !== 'number') {
           throw new Error('choose属性必须是数字');
         }
-        var temp = parseInt(val);
+        // var temp = parseInt(val);
+        var temp = ~~val; // 位运算符，相当于 parseInt(val)
         if (temp !== val) {
           throw new Error('choose属性必须是整数');
         }
