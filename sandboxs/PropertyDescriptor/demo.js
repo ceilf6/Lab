@@ -55,7 +55,7 @@ class UIGoods {
   }
 }
 
-Object.freeze(UIGoods.prototype);
+Object.freeze(UIGoods.prototype); // 冻结原型防止添加属性
 
 var g = new UIGoods(aGoods);
 UIGoods.prototype.haha = 'abc';
