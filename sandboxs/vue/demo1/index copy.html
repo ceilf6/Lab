@@ -19,8 +19,10 @@
           active: item.choose>0
         }"
         >
+        <!-- 动态属性-键值对：值为条件，键为条件true时的添加样式 -->
           <div class="title">{{item.name}}</div>
           <div class="controls">
+            <!-- 通过 @ 绑定事件，响应式会自动更新界面 -->
             <i @click="item.choose--" class="iconfont i-jianhao"></i>
             <span>{{item.choose}}</span>
             <i
