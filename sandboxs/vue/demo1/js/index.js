@@ -1,6 +1,6 @@
 var vm = new Vue({
   // 配置对象
-  el: '.container',
+  el: '.container', // CSS选择器控制对象 - #app
   data: {
     // 界面数据
     title: '淘东手机',
