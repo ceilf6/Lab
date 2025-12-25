@@ -28,7 +28,8 @@ function observe(obj) {
 }
 
 function autorun(fn) {
-  window.__func = fn; // 
+  window.__func = fn; // 通过 不让直接运行函数，而是通过代理层
+                      // 拿到要回调函数方便set通知
   fn();
   window.__func = null;
 }
