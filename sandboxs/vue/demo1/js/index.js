@@ -3,7 +3,7 @@ var vm = new Vue({
   el: '.container', // CSS选择器控制对象 - #app
   data: {
     // 界面数据
-    title: '淘东手机',
+    title: '淘东手机', // -> {{title}} 来使用
     goods: goods,
   },
   // 计算属性
