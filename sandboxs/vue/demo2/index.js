@@ -31,6 +31,9 @@ function showAge() {
   }
   document.querySelector('#age').textContent = '年龄：' + age;
 }
+
+// 直接调用三个 show 的话界面不会跟着数据变
+// 但是该调用哪几个呢？调用那些依赖、使用了变化属性的
 autorun(showFirstName);
 autorun(showLastName);
 autorun(showAge);
