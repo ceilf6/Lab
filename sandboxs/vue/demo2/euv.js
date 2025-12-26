@@ -6,8 +6,8 @@ function observe(obj) {
   for (const key in obj) { // var的话有闭包问题
     let internalValue = obj[key];
 
-    // 如果是对象的话就深度观察
-    observe(internalValue);
+    // 如果是对象的话、并且没有冻结，就深度观察
+    if (!Object.isFrozen(internalValue)) observe(internalValue);
 
     // const funcs = [];
     const funcs = new Set(); // 闭包
