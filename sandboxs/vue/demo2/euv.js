@@ -5,6 +5,10 @@
 function observe(obj) {
   for (const key in obj) { // var的话有闭包问题
     let internalValue = obj[key];
+
+    // 如果是对象的话就深度观察
+    observe(internalValue);
+
     // const funcs = [];
     const funcs = new Set(); // 闭包
     Object.defineProperty(obj, key, {
@@ -18,6 +22,10 @@ function observe(obj) {
       },
       set: function (val) {
         internalValue = val;
+
+        // 如果新值是对象，也要 observe
+        observe(val);
+
         // 派发更新，运行：执行用我的函数 - 调用观察者的回调函数
         for (var i = 0; i < funcs.length; i++) {
           funcs[i]();
@@ -29,7 +37,7 @@ function observe(obj) {
 
 function autorun(fn) {
   window.__func = fn; // 通过 不让直接运行函数，而是通过代理层
-                      // 拿到要回调函数方便set通知
+  // 拿到要回调函数方便set通知
   fn();
   window.__func = null;
 }
