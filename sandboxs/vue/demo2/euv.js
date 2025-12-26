@@ -6,7 +6,7 @@ function observe(obj) {
   for (const key in obj) { // var的话有闭包问题
     let internalValue = obj[key];
     // const funcs = [];
-    const funcs = new Set()
+    const funcs = new Set(); // 闭包
     Object.defineProperty(obj, key, {
       get: function () {
         //  依赖收集，记录：是哪个函数在用我
