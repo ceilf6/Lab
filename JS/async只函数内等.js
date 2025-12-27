@@ -8,7 +8,11 @@ const wait = new Promise((resolve, reject) => {
 
 async function asyncInside() {
     console.log('async1');
-    const res = await wait; // 注意 wait 是一个 Promise 对象，不应该像函数一样 wait()
+    try {
+        const res = await wait; // 注意 wait 是一个 Promise 对象，不应该像函数一样 wait()
+    } catch (e) {
+        console.log(e)
+    }
     console.log(res);
 }
 
