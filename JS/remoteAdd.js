@@ -24,5 +24,5 @@ async function add(...inputs) {
     return ans;
 }
 
-const res = add(target);
+const res = add(...target); // 别忘记展开，因为形参就是 ...一个数组
 console.log(res);
