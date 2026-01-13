@@ -1,50 +1,59 @@
-# 1. sandboxs
+# Lab
 
-一个基于 Vite 的实验场：把每个实验放到 `sandboxs/<name>/` 文件夹下，然后通过 `/sandboxs/<name>/` 路由即可查看效果。
+[中文文档](./docs/README-CN.md)
 
-## 快速开始
+A Vite-based experimental playground with multiple modules for learning and practicing.
 
-1. 安装依赖：
+## Modules
+
+### 1. Sandboxes
+
+Put each experiment in a `sandboxs/<name>/` folder and access it via the `/sandboxs/<name>/` route.
+
+### 2. Agent
+
+Agent development practices, experiments, and optimizations.
+
+### 3. Monorepo
+
+Includes [Reimplementing-Masterpieces](https://github.com/ceilf6/Reimplementing-Masterpieces) as a submodule for studying and reimplementing elegant engineering solutions.
+
+## Quick Start
+
+1. Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. 启动开发服务器：
+2. Start the development server:
 
 ```bash
 npm run dev
 ```
 
-服务器将在 `http://localhost:8030` 启动，并自动打开浏览器。
+The server will start at `http://localhost:8030` and automatically open the browser.
 
-3. 创建一个新实验：
+3. Create a new experiment:
 
-- 在 `sandboxs/` 下新建文件夹 `my-widget`
-- 在 `sandboxs/my-widget/index.html` 写入页面
-- 在浏览器打开 `http://localhost:8030/sandboxs/my-widget/`
+- Create a new folder `my-widget` under `sandboxs/`
+- Write your page in `sandboxs/my-widget/index.html`
+- Open `http://localhost:8030/sandboxs/my-widget/` in your browser
 
-## 可用命令
+## Available Commands
 
-- `npm run dev` - 启动 Vite 开发服务器（支持热更新）
-- `npm run build` - 构建生产版本到 `dist/` 目录
-- `npm run preview` - 预览构建后的生产版本
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Vite dev server with HMR |
+| `npm run build` | Build production version to `dist/` |
+| `npm run preview` | Preview the production build |
 
-## 特性
+## Features
 
-✅ 基于 Vite，启动速度快，支持热模块替换（HMR）  
-✅ 自动扫描 `sandboxs/` 下的所有文件夹  
-✅ 每个文件夹可以有独立的 HTML/CSS/JS  
-✅ 支持现代 JavaScript 特性和 ES 模块  
-✅ 首页自动列出所有可用示例
+- Fast startup with Vite and Hot Module Replacement (HMR)
+- Automatic scanning of all folders under `sandboxs/`
+- Independent HTML/CSS/JS for each folder
+- Modern JavaScript and ES modules support
+- Homepage automatically lists all available examples
 
-示例已包含在 `sandboxs/demo`。
-
-# 2. agent
-
-agent 开发实践、效果测验以及优化。
-
-# 3. monorepo
-
-将 [Reimplementing-Masterpieces](https://github.com/ceilf6/Reimplementing-Masterpieces) 作为子仓库合入（这个目录存放那些精妙工程的底层源码学习与复现）
-方便后面的统一学习管理
+A demo is included in `sandboxs/demo`.
