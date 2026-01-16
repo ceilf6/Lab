@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/descendant.css">
+</head>
+
+<body>
+    <div class="red">
+        <ul>
+            <li>class为red的div</li>
+            <li>Lorem, ipsum dolor.</li>
+            <li>Lorem, ipsum dolor.</li>
+        </ul>
+    </div>
+
+    <div>
+        <ul>
+            <li>class不为red的div</li>
+            <li>Lorem, ipsum dolor.</li>
+            <li>Lorem, ipsum dolor.</li>
+        </ul>
+    </div>
+
+    <div class="red">
+        <p class="InDiv">.red .InDiv</p>
+        <p class="InDiv2">.red>.InDiv2</p>
+        <!-- 不是紧邻的后代：不是子元素 -->
+        <div>
+            <p class="InDiv3">.red>.InDiv3</p>
+        </div>
+    </div>
+
+    <p class="red">red</p>
+
+    <div>
+        <ul>
+            <li>Lorem.</li>
+            <li class="special">special</li>
+            <!-- <li>special next li</li> -->
+            <ul>
+                <li>ul-ul-li</li>
+            </ul>
+            <!-- 注意必须要如果是相邻兄弟紧挨着 -->
+            <li>special next li</li>
+        </ul>
+    </div>
+</body>
+
+</html>
