@@ -1,0 +1,30 @@
+div.red li,
+.red .InDiv,
+.red>.InDiv2,
+.red>.InDiv3 {
+    color: red;
+}
+
+/* .red .InDiv {
+    color: red;
+}
+
+.red>.InDiv2 {
+    color: red;
+}
+
+.red>.InDiv3 {
+    color: red;
+} */
+
+.special {
+    color: purple;
+}
+
+.special+li {
+    color: purple
+}
+
+.special~li {
+    color: green;
+}
