@@ -1,0 +1,32 @@
+/*
+一. 重要性一样：都是作者样式表 
+二. 特殊性不同
+*/
+
+/* 0001 */
+a {
+    color: red;
+    /* !important; */
+    /* important会降低代码可读性！ */
+}
+
+/* 0002 */
+body a {
+    color: blue;
+}
+
+/* 0011 */
+a.special {
+    color: green;
+}
+
+/* 0100 */
+#myId {
+    color: brown;
+}
+
+/* 0011 */
+/* 三. 特殊性也相同时靠后胜出（这也就是为什么 a 需要爱恨法则 */
+a.aa {
+    color: cornflowerblue;
+}
