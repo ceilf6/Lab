@@ -32,12 +32,32 @@
             background-clip: content-box;
         }
 
-        .overflow {
+        .container {
             width: 200px;
             height: 100px;
             border: 2px solid red;
-            /* overflow-y: scroll; */
-            overflow: auto;
+            overflow: scroll;
+        }
+
+        /* 强制在 macOS 上始终显示滚动条 */
+        /* track thickness */
+        .container::-webkit-scrollbar {
+            -webkit-appearance: none;
+            /* 竖向滚动条粗细 */
+            width: 8px;
+            /* 横向滚动条粗细 */
+            height: 8px;
+        }
+
+        /* scroll box */
+        .container::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, .5);
+        }
+
+        /* track color */
+        .container::-webkit-scrollbar-track {
+            background-color: rgba(0, 0, 0, .1);
         }
     </style>
 </head>
@@ -58,7 +78,7 @@
 
     <div class="back-cover">Lorem ipsum dolor sit amet.</div>
 
-    <div class="overflow">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus saepe cum minima
+    <div class="container">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus saepe cum minima
         dicta beatae obcaecati, quis doloribus non tempore earum.</div>
 </body>
 
