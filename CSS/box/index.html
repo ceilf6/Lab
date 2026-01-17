@@ -12,6 +12,33 @@
             /* border-width: 10px; */
             border: 4px dashed red;
         }
+
+        .width {
+            width: 100px;
+            padding: 50px 50px;
+            background-color: aqua;
+        }
+
+        .boxSizing {
+            width: 100px;
+            padding: 50px 50px;
+            background-color: aqua;
+            box-sizing: border-box;
+        }
+
+        .back-cover {
+            border: 10px dashed red;
+            background-color: green;
+            background-clip: content-box;
+        }
+
+        .overflow {
+            width: 200px;
+            height: 100px;
+            border: 2px solid red;
+            /* overflow-y: scroll; */
+            overflow: auto;
+        }
     </style>
 </head>
 
@@ -25,6 +52,14 @@
         iusto velit atque.</span>
 
     <div class="border">Lorem ipsum dolor sit amet.</div>
+
+    <div class="width">width</div>
+    <div class="boxSizing">box-sizing</div>
+
+    <div class="back-cover">Lorem ipsum dolor sit amet.</div>
+
+    <div class="overflow">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus saepe cum minima
+        dicta beatae obcaecati, quis doloribus non tempore earum.</div>
 </body>
 
 </html>
