@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        nav a {
+            border: 1px solid #e1e2e3;
+            text-decoration: none;
+            color: #38f;
+            width: 34px;
+            height: 34px;
+            line-height: 34px;
+            text-align: center;
+
+            display: inline-block;
+        }
+
+        nav a:hover {
+            border-color: #38f;
+            background-color: blue;
+        }
+
+        /* 
+        .selected {
+            border: none;
+            color: #000;
+            background: initial;
+        } 
+        优先级仍然不够高，会被 hover 的时候覆盖
+        */
+        /* 所以加一层 a 元素选择器提高特殊性 */
+        nav a.selected {
+            border: none;
+            color: #000;
+            background: initial;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <!-- 如果换行了就会导致空白折叠 -->
+        <a href="">1</a><a href="">2</a>
+        <a href="">3</a>
+        <a href="">4</a>
+        <a href="" class="selected">5</a>
+        <a href="">6</a>
+    </nav>
+</body>
+
+</html>
