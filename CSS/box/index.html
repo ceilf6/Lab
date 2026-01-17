@@ -36,17 +36,17 @@
             width: 200px;
             height: 100px;
             border: 2px solid red;
-            overflow: scroll;
+            overflow: auto;
         }
 
-        /* 强制在 macOS 上始终显示滚动条 */
+        /* 通过伪元素强制在 macOS 上始终显示滚动条 */
         /* track thickness */
         .container::-webkit-scrollbar {
             -webkit-appearance: none;
             /* 竖向滚动条粗细 */
             width: 8px;
             /* 横向滚动条粗细 */
-            height: 8px;
+            /* height: 8px; */
         }
 
         /* scroll box */
@@ -58,6 +58,31 @@
         /* track color */
         .container::-webkit-scrollbar-track {
             background-color: rgba(0, 0, 0, .1);
+        }
+
+        .break-all {
+            width: 200px;
+            border: 2px solid red;
+            word-break: break-all;
+        }
+
+        .keep-all {
+            width: 200px;
+            border: 2px solid red;
+            word-break: keep-all;
+        }
+
+        li {
+            border-bottom: 1px dashed #ccc;
+            line-height: 2;
+            border-left: 3px solid #008c8c;
+            padding-left: 10px;
+            margin: 1em 0;
+            width: 300px;
+            /* 下面进行空白省略处理 */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 </head>
@@ -80,6 +105,22 @@
 
     <div class="container">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus saepe cum minima
         dicta beatae obcaecati, quis doloribus non tempore earum.</div>
+
+    <div class="break-all">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero, omnis.</div>
+    <div class="break-all">深爱的 深爱的 挖出。阿斯顿 大发现。 精神焕发景宏是 骚乱 撒娇睡觉啊水泥厂</div>
+    <div class="keep-all">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero, omnis.</div>
+    <div class="keep-all">深爱的 深爱的 挖出。阿斯顿 大发现。 精神焕发景宏是 骚乱 撒娇睡觉啊水泥厂</div>
+
+    <div class="omit">
+        <ul>
+            <li>Lorem ipsum dolor sit amet consectetur.</li>
+            <li>Fugiat, exercitationem? Nemo amet ratione aliquid?</li>
+            <li>Architecto ut aliquid cum nihil rerum.</li>
+            <li>Obcaecati assumenda eligendi tenetur ipsa molestias!</li>
+            <li>Sapiente excepturi reprehenderit libero quod molestias.</li>
+            <li>Explicabo, voluptatum accusamus. Nobis, quo aliquam.</li>
+        </ul>
+    </div>
 </body>
 
 </html>
