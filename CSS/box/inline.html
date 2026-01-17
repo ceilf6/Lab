@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        p,
+        span {
+            background: lightblue;
+            border: 2px solid;
+            line-height: 3;
+        }
+
+        .a1 {
+            color: white;
+            background-color: red;
+            /* 
+            width: 100px;
+            无效，因为 a 元素是行盒，其宽度是由内容决定
+            */
+            padding: 0 20px;
+        }
+
+        .a2 {
+            color: white;
+            background-color: red;
+
+            display: inline-block;
+            width: 100px;
+            text-align: center;
+            /* 盒高=行高 实现垂直居中 */
+            height: 100px;
+            line-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, a voluptate assumenda aliquid iste doloremque
+        possimus temporibus ex aut aspernatur error laboriosam officiis ea autem quod explicabo nam molestiae rem vero
+        deleniti suscipit exercitationem mollitia quasi? Aperiam, natus tempora eaque perspiciatis mollitia culpa
+        aliquid. Eius beatae fugit veniam aut natus.</p>
+
+    <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, a voluptate assumenda aliquid iste doloremque
+        possimus temporibus ex aut aspernatur error laboriosam officiis ea autem quod explicabo nam molestiae rem vero
+        deleniti suscipit exercitationem mollitia quasi? Aperiam, natus tempora eaque perspiciatis mollitia culpa
+        aliquid. Eius beatae fugit veniam aut natus.</span>
+    <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquam, molestiae reprehenderit! Tempora neque
+        harum impedit eligendi modi exercitationem illum distinctio!</span>
+
+    <span>Lorem, ipsum dolor.</span>
+    <a class="a1" href="">ceilf6</a>
+    <span>Lorem, ipsum dolor.</span>
+    <a class="a2" href="">ceilf6</a>
+    <span>Lorem, ipsum dolor.</span>
+</body>
+
+</html>
