@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .parent {
+            background: lightblue;
+            height: 300px;
+            margin-top: 50px;
+            /* padding-top: 50px; */
+        }
+
+        .child {
+            height: 100px;
+            background: red;
+            margin-top: 60px;
+            /* 
+            margin-top: 50px; 
+            直接写成父元素的内边距
+            */
+            width: 200px;
+        }
+
+        /* 如果用伪元素，得生成盒子、占据空间，不好 */
+        /* .parent::before {
+            content: '';
+            display: block;
+            height: 1px;
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="child"></div>
+    </div>
+</body>
+
+</html>

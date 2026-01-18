@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .containing-block {
+            background: lightblue;
+            border: 2px solid;
+            padding: 30px;
+            margin: 30px;
+            width: 600px;
+            height: 1000px;
+        }
+
+        .child {
+            border: 2px solid;
+            background: red;
+            width: 100px;
+            /* 左右margin为auto进行吸收->水平/居中 */
+            margin: 0 auto;
+            height: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="containing-block">
+        <div class="child"></div>
+    </div>
+</body>
+
+</html>
