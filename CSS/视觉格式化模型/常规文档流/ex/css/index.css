@@ -1,0 +1,73 @@
+body {
+    background-color: #4d4a40;
+    /* 页面背景颜色都是设置在body上的 */
+
+    padding: 20px 0;
+
+    /* 如果页面中需要保持统一的样式，且这个样式可以继承，那么一般写在body中，例如：行高 */
+    line-height: 2;
+
+    /* 在 body 设置最小宽度 */
+    min-width: 1000px;
+}
+
+.container {
+    background-color: #fff;
+    width: 90%;
+
+    margin: 0 auto;
+    /* 左右居中 */
+
+    padding: 30px 0;
+}
+
+.container header {
+    background-color: #267890;
+    color: #fff;
+
+    text-align: center;
+    /* text-align 是可以被继承的 */
+
+    /* margin: 30px 0; 
+    会外边距折叠
+    */
+
+    margin: 0 -34px;
+    /* 通过设置 margin 为负值可以实现 “伸出去” 的效果 */
+}
+
+.container header h1 {
+    font-size: 42px;
+    font-weight: bold;
+    /* 或 700px */
+}
+
+/* div元素太多了，最好不要用元素选择器 */
+.container header .hello {
+    color: #000;
+    /* margin-bottom: 30px; */
+    /* 因为有边框了不会合并 */
+    margin-bottom: 26px;
+    /* 字高导致没有像素级还原 */
+}
+
+.container header .hello a {
+    text-decoration: underline;
+}
+
+/* 尽量精细 */
+.container header .hello a::hover {
+    color: #fff;
+}
+
+.container section {
+    width: 90%;
+    /* 90% 是相对于父元素 article 的 */
+
+    /* 段落之间的间距：1个字体大小 */
+    /* 并且这时候的上下外边距合并是希望的 */
+    margin: 1em 0;
+
+    border-top: 1px dashed;
+    border-bottom: 1px dashed;
+}
