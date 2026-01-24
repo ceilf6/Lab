@@ -56,7 +56,7 @@ body {
 }
 
 /* 尽量精细 */
-.container header .hello a::hover {
+.container header .hello a:hover {
     color: #fff;
 }
 
