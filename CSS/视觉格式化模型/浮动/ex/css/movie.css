@@ -68,6 +68,38 @@
     color: red;
 }
 
+/* 问题1：缩小页面宽度时 nav 文字会下来                                                                                         
+                                                                                                                               
+  原因分析：                                                                                                                   
+                                                                                                                               
+  从 css/movie.css:11-21 的代码：                                                                                              
+  .main nav {                                                                                                                  
+      height: 60px;           固定高度                                                                             
+      line-height: 60px;      单行文字垂直居中                                                                   
+  }                                                                                                                            
+  .main nav a {                                                                                                                
+      margin: 0 38px;         每个链接左右各38px间距                                                                     
+  }                                                                                                                            
+                                                                                                                               
+  - <a> 标签是行内元素，会在一行内排列                                                                                         
+  - 当页面宽度缩小时，一行放不下所有链接，就会自动换行                                                                         
+  - 换行后每行仍然有 line-height: 60px，但 nav 只有 height: 60px                                                               
+  - 导致第二行文字溢出到 nav 外面                                                                                              
+                                                                                                                               
+  解决方案：                                                                                                                   
+  1. 禁止换行：给 nav 设置 white-space: nowrap + overflow: hidden                                                              
+  2. 允许多行：移除固定高度，改用 padding 控制                                                                                 
+  3. 响应式设计：使用媒体查询，小屏幕时减少 margin 或改变布局  
+  
+  这里选择直接给 body 设置最小宽度
+  */
+
+body {
+    color: #333;
+
+    min-width: 1000px;
+}
+
 .main .container {
     width: 1120px;
     margin: 0 auto;
@@ -75,6 +107,8 @@
 
 .main .container .choose-area {
     border: 1px solid #e5e5e5;
+
+    padding: 0 30px;
 }
 
 .main .container .choose-area .choose-item .left {
@@ -94,8 +128,244 @@
 
     margin: 0 9px;
     color: #333;
+
+    padding: 6px;
+    /* 通过 padding 拓展背景，和下面 border-radius 匹配 */
 }
 
-body {
-    color: #333;
+.main .container .choose-area .choose-item .right li:hover {
+    color: #ef4238;
+}
+
+.main .container .choose-area .choose-item .right li.selected {
+    background: #ef4238;
+    color: #fff;
+    /* CSS3 圆角边框 */
+    border-radius: 15px;
+}
+
+/* 最后一个没有下划线 */
+.main .container .choose-area .choose-item.no-line {
+    border: none;
+}
+
+.main .container .choose-area .choose-item .left {
+    float: left;
+    color: #999;
+
+    padding-top: 8px;
+}
+
+/*
+  问题2：left 区域没有垂直居中，right 区域垂直居中                                                                             
+                                                                                                                               
+  原因分析：                                                                                                                   
+                                                                                                                               
+  从代码和截图看：                                                                                                             
+                                                                                                                               
+  left 区域（css/movie.css:40-42）：                                                                                           
+  - 只是一个浮动的 <div>，内部直接是文本 "left"                                                                                
+  - 继承 .main 的 line-height: 1.5（css/movie.css:8）                                                                          
+  - 没有设置高度，div 高度由内容撑开                                                                                           
+  - 文本默认从顶部开始显示                                                                                                     
+                                                                                                                               
+  right 区域（css/movie.css:44-57）：                                                                                          
+  - 包含 <ul><li> 结构                                                                                                         
+  - <li> 也设置了 float: left，并且有 margin: 0 9px                                                                            
+  - <ul> 默认有上下 padding（浏览器默认样式）                                                                                  
+  - li 内的文本也继承 line-height: 1.5                                                                                         
+                                                                                                                               
+  视觉上 right 看起来"居中"的真正原因：                                                                                        
+  - 并非真的垂直居中，而是 <ul> 的默认 padding-top 造成的视觉偏移                                                              
+  - 如果 reset.css 没有完全清除 ul 的默认样式，就会有这个效果                                                                  
+                                                                                                                               
+  解决方案：                                                                                                                   
+  1. 让 left 也"居中"：给 .left 添加 padding-top 或 margin-top                                                                 
+  2. 统一基线对齐：给 .left 和 .right 都设置 vertical-align: top（如果不浮动的话）                                             
+  3. 检查 reset.css：确认是否清除了 ul 的默认 padding
+*/
+
+/*
+  line-height 垂直居中的原理                                                                                                   
+                                                                                                                               
+  原理：                                                                                                                       
+  - 文本在**行盒（line box）**内是垂直居中的                                                                                   
+  - line-height 决定行盒的高度                                                                                                 
+  - 当 line-height = height 时，单行文本就会在整个元素内垂直居中                                                               
+                                                                                                                               
+  条件：                                                                                                                       
+  1. ✅ 单行文本（多行会失效）                                                                                                 
+  2. ✅ 设置固定 height                                                                                                        
+  3. ✅ line-height = height   
+*/
+
+/*
+多行文本垂直居中方案                                                                                                         
+                                                                                                                               
+  方案1：Flexbox（最推荐）                                                                                                     
+                                                                                                                               
+  .main .container .choose-area .choose-item {                                                                                 
+      display: flex;                                                                                                           
+      align-items: center;  垂直居中                                                                                    
+  }                                                                                                                            
+                                                                                                                               
+  .main .container .choose-area .choose-item .left {                                                                           
+      移除 float: left                                                                                                    
+  }                                                                                                                            
+                                                                                                                               
+  .main .container .choose-area .choose-item .right {                                                                          
+       移除 float: left                                                                                                  
+      width: 1000px;                                                                                                           
+  }                                                                                                                            
+                                                                                                                               
+  优点：                                                                                                                       
+  - ✅ 最现代，最简洁                                                                                                          
+  - ✅ 自动等高                                                                                                                
+  - ✅ 支持任意多行                                                                                                            
+  - ✅ 兼容性好（IE10+）                                                                                                       
+                                                                                                                               
+  缺点：                                                                                                                       
+  - ❌ 需要移除浮动，改变布局方式                                                                                              
+                                                                                                                               
+  ---                                                                                                                          
+  方案2：Table/Table-cell（兼容性最好）                                                                                        
+                                                                                                                               
+  .main .container .choose-area .choose-item {                                                                                 
+      display: table;                                                                                                          
+      width: 100%;                                                                                                             
+  }                                                                                                                            
+                                                                                                                               
+  .main .container .choose-area .choose-item .left {                                                                           
+      display: table-cell;                                                                                                     
+      vertical-align: middle;   垂直居中                                                                                 
+      移除 float                                                                                                        
+  }                                                                                                                            
+                                                                                                                               
+  .main .container .choose-area .choose-item .right {                                                                          
+      display: table-cell;                                                                                                     
+      vertical-align: middle;                                                                                                  
+      width: 1000px;                                                                                                           
+      移除 float                                                                                                         
+  }                                                                                                                            
+                                                                                                                               
+  优点：                                                                                                                       
+  - ✅ 兼容性极好（IE8+）                                                                                                      
+  - ✅ 自动等高                                                                                                                
+  - ✅ 支持任意多行                                                                                                            
+                                                                                                                               
+  缺点：                                                                                                                       
+  - ❌ 需要移除浮动                                                                                                            
+  - ❌ 语义上不如 Flexbox 清晰                                                                                                 
+                                                                                                                               
+  ---                                                                                                                          
+  方案3：Position + Transform                                                                                                  
+                                                                                                                               
+  .main .container .choose-area .choose-item {                                                                                 
+      position: relative;                                                                                                      
+      height: 50px;  需要固定高度                                                                                       
+  }                                                                                                                            
+                                                                                                                               
+  .main .container .choose-area .choose-item .left {                                                                           
+      position: absolute;                                                                                                      
+      top: 50%;                                                                                                                
+      transform: translateY(-50%);   向上偏移自身高度的50%                                                                 
+      保留或移除 float 都行                                                                                       
+  }                                                                                                                            
+                                                                                                                               
+  优点：                                                                                                                       
+  - ✅ 支持任意多行                                                                                                            
+  - ✅ 灵活                                                                                                                    
+                                                                                                                               
+  缺点：                                                                                                                       
+  - ❌ 需要父元素固定高度                                                                                                      
+  - ❌ 脱离文档流，布局复杂                                                                                                    
+                                                                                                                               
+  ---                                                                                                                          
+  方案4：Grid（最现代）                                                                                                        
+                                                                                                                               
+  .main .container .choose-area .choose-item {                                                                                 
+      display: grid;                                                                                                           
+      grid-template-columns: auto 1fr;  左边自适应，右边占剩余空间                                                        
+      align-items: center;  垂直居中                                                                                    
+  }                                                                                                                            
+                                                                                                                               
+  .main .container .choose-area .choose-item .left {                                                                           
+       移除 float                                                                                                       
+  }                                                                                                                            
+                                                                                                                               
+  .main .container .choose-area .choose-item .right {                                                                          
+       移除 float                                                                                                         
+  }                                                                                                                            
+                                                                                                                               
+  优点：                                                                                                                       
+  - ✅ 最强大的布局系统                                                                                                        
+  - ✅ 自动等高                                                                                                                
+  - ✅ 支持任意多行                                                                                                            
+                                                                                                                               
+  缺点：                                                                                                                       
+  - ❌ 需要移除浮动                                                                                                            
+  - ❌ 兼容性稍差（IE11 部分支持）                                                                                             
+                                                                                                                               
+  ---                                                                                                                          
+  方案5：保持浮动 + Padding/Margin（最简单）                                                                                   
+                                                                                                                               
+  .main .container .choose-area .choose-item .left {                                                                           
+      float: left;                                                                                                             
+      padding-top: 10px;  手动调整                                                                                     
+  }                                                                                                                            
+                                                                                                                               
+  优点：                                                                                                                       
+  - ✅ 不改变现有布局                                                                                                          
+  - ✅ 简单直接                                                                                                                
+                                                                                                                               
+  缺点：                                                                                                                       
+  - ❌ 需要手动计算偏移量                                                                                                      
+  - ❌ 不是真正的居中，只是视觉调整                                                                                            
+                                                                                                                               
+  ---                                                                                                                          
+  方案6：伪元素 + inline-block（Hack）                                                                                         
+                                                                                                                               
+  .main .container .choose-area .choose-item {                                                                                 
+      height: 50px;  固定高度                                                                                        
+  }                                                                                                                            
+                                                                                                                               
+  .main .container .choose-area .choose-item::before {                                                                         
+      content: "";                                                                                                             
+      display: inline-block;                                                                                                   
+      height: 100%;                                                                                                            
+      vertical-align: middle;                                                                                                  
+  }                                                                                                                            
+                                                                                                                               
+  .main .container .choose-area .choose-item .left {                                                                           
+      display: inline-block;                                                                                                   
+      vertical-align: middle;                                                                                                  
+      移除 float                                                                                                      
+  }                                                                                                                            
+                                                                                                                               
+  优点：                                                                                                                       
+  - ✅ 支持多行                                                                                                                
+                                                                                                                               
+  缺点：                                                                                                                       
+  - ❌ 需要固定高度                                                                                                            
+  - ❌ 代码复杂，不直观                                                                                                        
+
+*/
+
+/* 过长省略实现 */
+.main .container .movies .movie-item .name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.main .container .movies .movie-item .score {
+    color: #ffb400;
+    text-align: center;
+    line-height: 2.5;
+    font-style: italic;
+}
+
+/* ::first-letter选中第一个字母 */
+.main .container .movies .movie-item .score::first-letter {
+    font-size: 1.5em;
 }

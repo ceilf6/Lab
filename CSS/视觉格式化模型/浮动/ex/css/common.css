@@ -1,0 +1,49 @@
+/* 多页面的通用样式 */
+
+/* 1. a元素默认inline + text-align: center */
+.pager {
+    margin: 2em 0;
+    text-align: center;
+}
+
+.pager a {
+    border: 1px solid #d8d8d8;
+    padding: 5px 10px;
+    margin: 0 3px;
+}
+
+.pager a:hover {
+    border-color: #ef4238;
+}
+
+.pager a.select {
+    background: #ef4238;
+    color: #fff;
+    border: none;
+}
+
+
+
+/* 2. 用行块盒实现 */
+nav a {
+    border: 1px solid #e1e2e3;
+    text-decoration: none;
+    color: #38f;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+
+    display: inline-block;
+}
+
+nav a:hover {
+    border-color: #38f;
+    background-color: blue;
+}
+
+nav a.selected {
+    border: none;
+    color: #000;
+    background: initial;
+}
