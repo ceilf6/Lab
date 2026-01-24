@@ -1,0 +1,101 @@
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/* 
+  clearfix 确实不能继承，原因有两点：                                                                                          
+                                                                                                                               
+  1. clearfix 使用伪元素 - ::after 伪元素不会被子元素继承                                                                      
+  2. clear 属性不会继承 - CSS 的 clear 属性本身就不是可继承属性                                                                
+                                                                                                                               
+  当前问题所在：                                                                                                               
+                                                                                                                               
+  在你的代码中：                                                                                                               
+  - clearfix 被应用在 .choose-area 上（css/movie.css:23）                                                                      
+  - 但浮动元素 .left 和 .right 在 .choose-item 内部（css/movie.css:41, 45）                                                    
+  - .choose-item 本身没有浮动，但它的子元素浮动了，导致 .choose-item 高度坍塌                                                  
+  - .choose-area 的 clearfix 只能清除它的直接子元素（.choose-item）的浮动，但无法处理孙子元素的浮动问题                        
+                                                                                                                               
+  解决方案：                                                                                                                   
+                                                                                                                               
+  需要在 .choose-item 上也添加 clearfix，因为它才是浮动元素的直接父元素：                                                      
+                                                                                                                               
+  <div class="choose-item clearfix">                                                                                           
+                                                                                                                               
+  这样每个 .choose-item 都能正确包裹住内部的浮动元素，从而让 .choose-area 也能正确计算高度。                                   
+                                                                                                                               
+  需要我帮你修改代码吗？                                                                                                       
+                                                                                                                               
+❯ 那是每个choose-item都需要添加吗？                                                                                            
+                                                                                                                               
+⏺ 是的，每个包含浮动子元素的 choose-item 都需要添加 clearfix。                                                                 
+                                                                                                                               
+  从你的代码来看：                                                                                                             
+                                                                                                                               
+  - 第1个 choose-item（index.html:24-35）- 内部有 .left 和 .right 浮动元素，需要                                               
+  - 第2个 choose-item（index.html:36-47）- 内部有 .left 和 .right 浮动元素，需要                                               
+  - 第3个 choose-item（index.html:48）- 目前是空的，不需要（除非以后会添加浮动内容）                                           
+                                                                                                                               
+  原则：哪个元素的直接子元素有浮动，哪个元素就需要清除浮动。                                                                   
+                                                                                                                               
+  所以前两个 choose-item 必须加，第三个如果一直为空就不用加。为了避免遗忘，也可以统一给所有 choose-item 都加上 clearfix        
+  class，这样更安全。
+*/
+
+.main {
+    line-height: 1.5;
+}
+
+.main nav {
+    height: 60px;
+    background-color: black;
+    color: #999;
+    text-align: center;
+    line-height: 60px;
+}
+
+.main nav a {
+    margin: 0 38px;
+}
+
+.main nav a:hover {
+    color: #fff;
+}
+
+.main nav a.selected {
+    color: red;
+}
+
+.main .container {
+    width: 1120px;
+    margin: 0 auto;
+}
+
+.main .container .choose-area {
+    border: 1px solid #e5e5e5;
+}
+
+.main .container .choose-area .choose-item .left {
+    float: left;
+}
+
+.main .container .choose-area .choose-item .right {
+    float: left;
+    /* <!-- 或者都左浮动那么就不需要设置右边宽度 --> */
+    /* 但是为了防止撑开导致的换行，还是得有宽度 */
+    width: 1000px;
+}
+
+.main .container .choose-area .choose-item .right li {
+    /* 防止块盒换行 */
+    float: left;
+
+    margin: 0 9px;
+    color: #333;
+}
+
+body {
+    color: #333;
+}
