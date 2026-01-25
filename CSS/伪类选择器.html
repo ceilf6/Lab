@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /* 选中a元素，并且a元素必须是第一个子元素 */
+        a:first-child {
+            color: red;
+        }
+
+        /* 选中的是子元素中第一个a元素 */
+        a:first-of-type {
+            color: red;
+        }
+
+        /* 必须是a元素，必须是最后一个子元素 */
+        a:last-child {
+            color: green;
+        }
+
+        /* 选中子元素中最后一个a元素 */
+        a:last-of-type {
+            color: green;
+        }
+
+        /* 必须是a元素，必须是第五个子元素 */
+        /* 必须是a元素，必须是第偶数个子元素 */
+        /* a:nth-child(odd) {
+            color: red;
+        } */
+        a:nth-of-type(odd) {
+            color: red;
+        }
+
+        li {
+            background: #ccc;
+            margin: 1em 0;
+        }
+
+        li:nth-child(odd) {
+            background: #008c8c;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <nav>
+            <p>
+                啊手动阀
+            </p>
+            <a href="">Lorem.</a>
+            <a href="">Eligendi.</a>
+            <a href="">Officia.</a>
+            <a href="">Provident!</a>
+            <a href="">Eaque.</a>
+            <a href="">Delectus!</a>
+            <a href="">Eveniet?</a>
+            <a href="">Illo?</a>
+            <a href="">Commodi?</a>
+            <a href="">Nobis.</a>
+            <p>
+                多范式
+            </p>
+        </nav>
+    </div>
+
+    <ul>
+        <li>Lorem.</li>
+        <li>Officiis.</li>
+        <li>Dolorem!</li>
+        <li>Eum?</li>
+        <li>Ut!</li>
+        <li>Accusamus?</li>
+        <li>Dolor.</li>
+        <li>Doloremque.</li>
+        <li>Fugiat.</li>
+        <li>Minus?</li>
+    </ul>
+</body>
+
+</html>
