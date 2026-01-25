@@ -16,12 +16,11 @@
 }
 
 /* 蒙层内部的居中 */
-/* 
-1. 通过 margin 获取剩余空间
-    .modal .container {
+/* 1. 通过 margin 获取剩余空间 */
+.modal .container {
     position: absolute;
 
-    width: 400px;
+    width: 512px;
     height: 512px;
 
     left: 0;
@@ -29,10 +28,15 @@
     top: 0;
     bottom: 0;
     margin: auto;
-} */
+}
+
+.modal .container img {
+    width: 512px;
+    height: 512px;
+}
 
 /* 
-2. 在中心居中后通过 transform 拉回一般
+2. 在中心居中后通过 transform 拉回一半
     .modal .container {
     position: absolute;
     left: 50%;
@@ -41,7 +45,7 @@
 } */
 
 /* 3. flex 通过 justify-content 和 align-items */
-.modal {
+/* .modal {
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, .5);
@@ -52,11 +56,35 @@
 }
 
 /* 4. grid */
-.modal {
+/* .modal {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, .5);
 
     display: grid;
     place-items: center;
+} */
+
+.modal .container .close {
+    color: white;
+    width: 30px;
+    height: 30px;
+
+    /* 圆角直接设置 */
+    border-radius: 50%;
+
+    background-color: red;
+
+    text-align: center;
+    line-height: 30px;
+
+    position: absolute;
+    top: -15px;
+    right: -15px;
+
+    border: 1px solid white;
+}
+
+.modal .container .close:hover {
+    cursor: pointer;
 }
