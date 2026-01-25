@@ -90,7 +90,10 @@
     /* 注意：伪元素必须有内容才会出现 */
 
     position: absolute;
-    bottom: 0;
+
+    bottom: -2px;
+    /* 注意！一定要改为负值，向下延伸 2px 覆盖 border */
+
     left: 0;
 
     width: 100%;
