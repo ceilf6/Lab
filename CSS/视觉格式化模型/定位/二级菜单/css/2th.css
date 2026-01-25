@@ -1,0 +1,97 @@
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.header {
+    background-color: #1A1B27;
+    color: #bf91f3;
+
+    height: 40px;
+    line-height: 40px;
+    /* 单行文本水平居中 */
+
+    position: fixed;
+    top: 0;
+    width: 100%;
+    /* 注意宽度必须设置 100% 否则该绝对定位盒子就是适应内容的宽度 */
+    margin: 0 auto;
+}
+
+.header .top-nav>li {
+    float: left;
+    margin: 0 15px;
+    padding: 0 8px;
+
+    /* 得设置宽度，不然 浮动宽度auto会被撑开 */
+    width: 140px;
+
+    text-align: center;
+
+    height: 40px;
+
+    /* 为了防止 hover 时 边框出现导致的变化 */
+    box-sizing: border-box;
+
+    /* 作为坐标系 */
+    position: relative;
+}
+
+/* 移动到菜单上时 上、左、右 会出现边框 */
+.header .top-nav>li:hover {
+    background-color: lightblue;
+
+    border: 2px solid #bf91f3;
+    border-bottom: none;
+
+    /* 为了防止 hover 时 边框出现导致的变化 
+    40px - 2px
+    */
+    line-height: 38px;
+}
+
+.header .top-nav>li>.submenu {
+    line-height: 1.5;
+    width: 300px;
+
+    text-align: left;
+    background-color: lightblue;
+
+    /* 不生成盒子 */
+    display: none;
+
+    border: 2px solid #bf91f3;
+    box-sizing: border-box;
+    /* border-top: none; */
+    /*
+    处理二者衔接处的 border：
+    1. 再写一个元素直接覆盖
+    2. 通过伪元素 :)
+    */
+
+    /* 通过绝对定位精准衔接
+    注意上边还有 2px 的 border
+    */
+    position: absolute;
+    right: -2px;
+}
+
+/* 注意得是共同的父元素，即li */
+.header .top-nav>li:hover .submenu {
+    display: block;
+}
+
+.header .top-nav>li:hover::after {
+    content: "";
+    /* 注意：伪元素必须有内容才会出现 */
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 5px;
+
+    background-color: lightblue;
+}
