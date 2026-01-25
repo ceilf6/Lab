@@ -1,0 +1,30 @@
+.main img {
+    width: 100%;
+}
+
+/* 遮蒙层 */
+.modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+
+    top: 0;
+    left: 0;
+
+    /* 半透明 - 一般都是黑色 */
+    background-color: rgba(0, 0, 0, .5);
+}
+
+/* 蒙层内部的居中 */
+.modal .container {
+    position: absolute;
+
+    width: 400px;
+    height: 512px;
+
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
