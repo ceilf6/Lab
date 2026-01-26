@@ -1,0 +1,12 @@
+textarea {
+    /* resize: both; 两个方向都允许调整 */
+
+    /* resize: none; */
+    /* 两个方向都不允许调整 */
+
+    /* resize: horizontal; */
+    /* 水平方向 */
+
+    resize: vertical;
+    /* 垂直方向 */
+}
