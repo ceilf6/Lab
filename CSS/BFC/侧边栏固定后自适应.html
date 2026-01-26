@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .float {
+            width: 200px;
+            height: 1000px;
+            /* margin: 50px; */
+            background-color: #bf91f3;
+            float: left;
+
+            text-align: center;
+        }
+
+        .container {
+            /* height: 500px; */
+            background-color: #70A5Fe;
+
+            /* 创建BFC */
+            overflow: hidden;
+
+            /* margin-left 得大于 300px 才有用，因为这个 margin 是相较于整个网页的最左边2
+            而 BFC 导致其左侧至少有 200px+2*50px 的距离 */
+            /* 所以想调整的话应该是调整 float 的右外边距 */
+            /* margin-left: 300px; */
+
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 其包含块是整个网页 -->
+    <div class="float">
+        <nav>侧边栏</nav>
+    </div>
+    <div class="container">
+        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure perferendis sed totam sit culpa quisquam
+            eveniet dolorem ad officia. Eveniet laudantium maiores omnis aperiam tenetur nesciunt ut distinctio nihil,
+            deleniti at officia sed reiciendis maxime nam dicta odio totam beatae itaque quod obcaecati quos. Nisi
+            aliquid modi officia facilis odit natus nihil, iure autem fuga nam nobis, ipsam quidem repellat, minus
+            tempore. Quas voluptates quo fuga laboriosam pariatur rem perferendis, corrupti placeat obcaecati. Porro
+            assumenda expedita debitis quasi fuga repudiandae magni, aliquid facilis accusantium dolores maiores
+            inventore sapiente non iusto consequuntur perspiciatis. Quod delectus velit quam quae perferendis laborum
+            rerum possimus repudiandae magnam? Magnam fugit corporis ad sed obcaecati asperiores saepe commodi dolorum
+            deserunt libero. Architecto quis blanditiis tempora minus fugiat est sapiente tempore sed! Iste natus
+            tenetur nemo saepe unde magni porro culpa vel libero? Recusandae dicta ut alias esse. Enim ea cum magni sit
+            quae iste quaerat odio corrupti maiores beatae fuga optio id, sequi eum aspernatur odit harum, officiis
+            ullam est et eligendi aliquid atque nostrum! Ratione vitae natus voluptatum ipsa consequatur ab sequi
+            deserunt nesciunt? Numquam perferendis porro, sit tenetur nesciunt expedita quasi fugiat, corrupti hic
+            deleniti nulla blanditiis similique explicabo vel. Fugit, eligendi tempore? Quasi fugit quidem ea mollitia
+            possimus veritatis voluptates inventore repellat? Nobis excepturi nemo aliquid ex nostrum eos ipsam quas
+            doloribus sint suscipit. Id soluta fugiat labore eaque optio. Porro, tenetur accusamus magnam facere quas
+            exercitationem consectetur esse id amet quisquam aut, cum est animi deserunt, eos assumenda saepe sequi
+            quibusdam atque repellat ea ad. Nihil, enim a accusamus repellat et debitis fugiat sit sequi impedit. Eos
+            veritatis qui similique, excepturi dolores amet facilis voluptatum magnam earum perspiciatis, nostrum
+            numquam at accusantium ratione sequi ex! Libero doloremque magnam harum ratione atque totam molestiae animi
+            quidem architecto laborum? Ab officia suscipit facilis eius obcaecati ducimus ea. Odio reprehenderit
+            molestiae alias harum nam illum ducimus dolore eaque illo. Cumque suscipit rem dolore ipsam, ullam expedita,
+            deserunt nam recusandae ut illum eaque consequatur vero animi eum, est enim accusantium eveniet
+            necessitatibus esse. Totam amet ipsam ut dolores ad praesentium voluptatem consequuntur illo. Reprehenderit
+            vel placeat at ipsum ut libero corporis dolorem rerum, saepe amet repudiandae error, cumque provident
+            architecto, delectus laudantium ipsam odit in alias nam aspernatur quae sint itaque. Facere obcaecati animi
+            excepturi dignissimos aliquam est, maiores quasi, recusandae nihil explicabo sunt perspiciatis quas
+            architecto, dicta ratione quibusdam atque vel eos. Necessitatibus incidunt sunt animi qui eos obcaecati ut
+            sequi, nam atque ipsum delectus corporis ducimus, dolorem natus assumenda laudantium fugit accusantium
+            distinctio mollitia, at recusandae perspiciatis quos labore! Enim consequatur ratione facilis, aperiam ex
+            assumenda corrupti nihil iste corporis fuga ut impedit veritatis, cum porro unde necessitatibus vitae
+            voluptate, obcaecati error optio nesciunt sunt dignissimos? Dignissimos, distinctio dolorum vero quia ex,
+            aspernatur laborum sunt at dolor odit facilis ipsa laudantium delectus nesciunt? Quas labore consectetur
+            unde officia corporis, ipsam vero numquam, dolorem consequatur, odit dolor a cumque excepturi omnis?
+            Maiores, quasi, vero mollitia autem obcaecati illum quia dolore quae corrupti, nostrum necessitatibus
+            consequuntur?</span>
+    </div>
+</body>
+
+</html>
