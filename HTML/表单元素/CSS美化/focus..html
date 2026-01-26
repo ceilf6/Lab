@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input {
+            color: black
+        }
+
+        input:focus {
+            /* outline: <width> <style> <color>; */
+            outline: #bf91f3 auto 2px;
+            /* 默认样式还有 offset 偏移量 */
+            outline-offset: 0;
+
+            color: #70A5FE
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 通过 tab 键切换 focus 元素，可以通过 tabindex 调整顺序 -->
+
+    <a href="https://www.baidu.com" tabindex="9">Lorem.</a>
+
+    <input type="text">
+
+    <button tabindex="1">按钮</button>
+</body>
+
+</html>
