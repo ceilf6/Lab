@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            background-color: #008c8c;
+            height: 500px;
+            margin-top: 30px;
+
+            overflow: hidden;
+        }
+
+        .child {
+            height: 100px;
+            margin: 50px;
+            background-color: red;
+        }
+
+        .overflow {
+            overflow: hidden;
+        }
+
+        .new-BFC-father {
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 在根元素的上下文 -->
+    <div class="container">
+        <!-- 在container创建BFC后，是在 container的BFC 中，二者BFC不同导致外边距不会合并 -->
+        <div class="child"></div>
+    </div>
+
+    <p class="overflow">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt quo, quas eligendi eveniet
+        sit soluta
+        provident quisquam velit, ullam porro quibusdam! Accusantium porro voluptate perferendis animi fugiat corrupti.
+        Quos sit repellendus, libero voluptatum voluptates quidem explicabo repellat commodi! Quasi aliquid consequatur
+        fuga, itaque quo nisi quibusdam iusto nulla est eos, accusamus ratione enim molestiae vel placeat, maxime soluta
+        atque sunt deleniti. Sequi reprehenderit harum illum fuga culpa, mollitia totam aliquam aperiam facere ratione
+        error voluptatem. Dolore laborum sed suscipit? Illo repellendus cumque, nisi omnis consectetur non labore ullam
+        ipsum? Deserunt itaque eveniet nobis iure eaque suscipit, vero dignissimos tempore obcaecati!</p>
+
+    <p class="overflow">我和上面的文本的默认p元素自带的外边距16px仍然合并，因为即使都各自创建了BFC，
+        但是上下文仍然都是根元素创建的BFC中</p>
+
+    <!-- <br> -->
+
+    <p class="overflow">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt quo, quas eligendi eveniet
+        sit soluta
+        provident quisquam velit, ullam porro quibusdam! Accusantium porro voluptate perferendis animi fugiat corrupti.
+        Quos sit repellendus, libero voluptatum voluptates quidem explicabo repellat commodi! Quasi aliquid consequatur
+        fuga, itaque quo nisi quibusdam iusto nulla est eos, accusamus ratione enim molestiae vel placeat, maxime soluta
+        atque sunt deleniti. Sequi reprehenderit harum illum fuga culpa, mollitia totam aliquam aperiam facere ratione
+        error voluptatem. Dolore laborum sed suscipit? Illo repellendus cumque, nisi omnis consectetur non labore ullam
+        ipsum? Deserunt itaque eveniet nobis iure eaque suscipit, vero dignissimos tempore obcaecati!</p>
+
+    <div class="new-BFC-father">
+        <p class="overflow">我和上面的文本的默认p元素自带的外边距16px没有合并</p>
+    </div>
+</body>
+
+</html>
