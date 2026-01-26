@@ -10,16 +10,20 @@
 
 <body>
     请选择性别
+
+    注意！默认 tab 生成的 label的for 和 input的id 属性一定要删掉
+    否则浏览器仍然走显式关联，通过for去找同一个id的控件，而原先的 "" 会导致混乱匹配
+    所以最推荐的还是显式关联的写法，而不是包裹的隐式关联
     <label class="radio-item">
-        <input type="radio" name="sex" id="">
+        <input type="radio" name="sex">
         <!-- 用span元素是 因为label中不允许div -->
         <span class="radio"></span>
         <span>男</span>
         <span>孩子</span>
     </label>
 
-    <label for="" class="radio-item">
-        <input type="radio" name="sex" id="">
+    <label class="radio-item">
+        <input type="radio" name="sex">
         <span class="radio"></span>
         <span>女</span>
         <span>孩子</span>
