@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .float {
+            width: 200px;
+            height: 200px;
+            margin: 50px;
+            background-color: red;
+            float: left;
+        }
+
+        .container {
+            height: 500px;
+            background-color: blue;
+
+            /* 创建BFC */
+            overflow: hidden;
+
+            /* margin-left 得大于 300px 才有用，因为这个 margin 是相较于整个网页的最左边2
+            而 BFC 导致其左侧至少有 200px+2*50px 的距离 */
+            /* 所以想调整的话应该是调整 float 的右外边距 */
+            margin-left: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 其包含块是整个网页 -->
+    <div class="float"></div>
+    <div class="container"></div>
+</body>
+
+</html>
