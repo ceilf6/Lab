@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            background-color: #bf91f3;
+
+            /* position: absolute; */
+            /* float: left; */
+
+            /* 副作用最小的 */
+            overflow: hidden;
+        }
+
+        .container .item {
+            background-color: lightblue;
+            width: 200px;
+            height: 100px;
+            margin: 10px;
+            float: left;
+        }
+
+        /* 法1. clear
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+    </div>
+</body>
+
+</html>
