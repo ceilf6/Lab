@@ -37,6 +37,17 @@
 }
 
 /* 隐藏input的选择框 */
-.radio-item input[type="radio"] {
+/* 直接 display: none 会导致盒子不存在而无法选中 */
+/* .radio-item input[type="radio"] {
     display: none;
+} */
+.radio-item input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
 }
+
+/* .radio-item input[type="radio"] {
+    visibility: hidden;
+    position: absolute;
+} */
