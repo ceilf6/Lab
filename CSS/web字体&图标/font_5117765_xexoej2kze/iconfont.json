@@ -1,0 +1,30 @@
+{
+  "id": "5117765",
+  "name": "README",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "37384675",
+      "name": "Vlog",
+      "font_class": "vlog1",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    },
+    {
+      "icon_id": "1061079",
+      "name": "Blog",
+      "font_class": "blog",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "3176645",
+      "name": "GitHub",
+      "font_class": "GitHub",
+      "unicode": "ea0a",
+      "unicode_decimal": 59914
+    }
+  ]
+}
