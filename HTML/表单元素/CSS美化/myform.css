@@ -1,0 +1,10 @@
+input[type="text"],
+textarea {
+    border: 1px solid #bf91f3;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    border: none;
+    outline: 1px solid #70A5FE;
+}
