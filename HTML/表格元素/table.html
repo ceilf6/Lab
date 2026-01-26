@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            width: 100%;
+
+            /* 控制边框空隙 */
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            border: 1px #bf91f3 solid;
+            text-align: center;
+
+            padding: 10px 0;
+        }
+
+        table th {
+            background-color: rgb(70, 70, 223);
+        }
+
+        table caption {
+            margin: 10px 0;
+            font-size: 32px;
+        }
+
+        /* 隔行变色 */
+        tbody tr:nth-child(even) {
+            background-color: #70A5FE;
+        }
+
+        tbody tr:hover {
+            background-color: lightblue;
+        }
+
+        tbody td:first-child {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <caption>表格标题</caption>
+        <!-- 表头 -->
+        <thead>
+            <!-- tr 一行 -->
+            <tr>
+                <th>列1</th>
+                <th>列2</th>
+                <th>列3</th>
+                <th>列4</th>
+                <th>列5</th>
+            </tr>
+        </thead>
+
+        <!-- 表体 -->
+        <tbody>
+            <tr>
+                <!-- 通过 rowspan 跨行 -->
+                <td rowspan="2">数据1</td>
+                <td>数据2</td>
+                <td>数据3</td>
+                <td>数据4</td>
+                <td>数据5</td>
+            </tr>
+            <tr>
+                <!-- <td>数据1</td> -->
+                <td>数据2</td>
+                <td>数据3</td>
+                <td>数据4</td>
+                <td>数据5</td>
+            </tr>
+            <tr>
+                <td>数据1</td>
+                <td>数据2</td>
+                <td>数据3</td>
+                <td>数据4</td>
+                <td>数据5</td>
+            </tr>
+            <tr>
+                <td>数据1</td>
+                <td>数据2</td>
+                <td>数据3</td>
+                <td>数据4</td>
+                <td>数据5</td>
+            </tr>
+            <tr>
+                <td>数据1</td>
+                <td>数据2</td>
+                <td>数据3</td>
+                <td>数据4</td>
+                <td>数据5</td>
+            </tr>
+            <tr>
+                <td>数据1</td>
+                <td>数据2</td>
+                <td>数据3</td>
+                <td>数据4</td>
+                <td>数据5</td>
+            </tr>
+            <tr>
+                <td>数据1</td>
+                <td>数据2</td>
+                <td>数据3</td>
+                <td>数据4</td>
+                <td>数据5</td>
+            </tr>
+            <tr>
+                <td>数据1</td>
+                <td>数据2</td>
+                <td>数据3</td>
+                <td>数据4</td>
+                <td>数据5</td>
+            </tr>
+            <tr>
+                <td>数据1</td>
+                <td>数据2</td>
+                <td>数据3</td>
+                <td>数据4</td>
+                <td>数据5</td>
+            </tr>
+            <tr>
+                <td>数据1</td>
+                <td>数据2</td>
+                <td>数据3</td>
+                <td>数据4</td>
+                <td>数据5</td>
+            </tr>
+        </tbody>
+
+        <!-- 表尾 -->
+        <tfoot>
+            <tr>
+                <!-- <td></td>
+                <td></td>
+                <td></td>
+                <td></td> -->
+                <td colspan="5">合计</td>
+                <!-- 通过 colspan 实现跨列 -->
+            </tr>
+        </tfoot>
+    </table>
+</body>
+
+</html>
