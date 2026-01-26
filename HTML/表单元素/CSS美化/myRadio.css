@@ -1,0 +1,42 @@
+.radio-item .radio {
+    display: inline-block;
+    /* 必须得是块盒或者行盒才会生效 宽、高 */
+    width: 12px;
+    height: 12px;
+    border: 1px solid #bf91f3;
+    /* 圆形 */
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* 通过 :checked+ 实现系统选中引到自实现的上 */
+.radio-item input:checked+.radio {
+    border-color: #70A5FE;
+    position: relative;
+}
+
+/* 选中所有在 A 后面的、同一父级下的 B */
+.radio-item input~span {
+    color: #bf91f3;
+}
+
+.radio-item input:checked~span {
+    color: #70A5FE;
+}
+
+.radio-item input:checked+.radio::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #70A5FE;
+    /* (12-6)/2 */
+    left: 3px;
+    top: 3px;
+    border-radius: 50%;
+}
+
+/* 隐藏input的选择框 */
+.radio-item input[type="radio"] {
+    display: none;
+}
