@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .container {
+            padding: 30px;
+            border: 3px solid black;
+
+            min-width: 700px;
+        }
+
+        .left {
+            float: left;
+            width: 200px;
+            background-color: #70A5FE;
+
+            margin-right: 20px;
+        }
+
+        .right {
+            float: right;
+            width: 200px;
+            background-color: #70A5FE;
+
+            margin-left: 20px;
+        }
+
+        .mid {
+            background-color: #bf91f3;
+
+            /* 常规流块盒在排列时，无视浮动盒子
+            这个盒子不会避开浮动元素，导致被遮挡
+            所以得创建 BFC => 创建 BFC 的元素，它的边框盒不会和浮动元素重叠 */
+            overflow: hidden;
+
+            border: 2px solid #008c8c;
+
+            /* min-width: 300px; */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container clearfix">
+        <div class="left">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, repellat totam laudantium architecto
+            voluptatibus voluptas ex fuga alias reiciendis asperiores explicabo itaque iure ea dignissimos nobis porro
+            voluptate nulla autem veniam reprehenderit voluptatem. Sequi cumque quo animi assumenda magnam nemo modi
+            numquam porro explicabo rerum. Omnis iusto, illum unde ab corrupti, numquam doloremque harum totam officia
+            distinctio molestiae ratione reprehenderit magni blanditiis natus velit! Provident totam vel, voluptatum
+            explicabo ex eos adipisci et ut optio saepe earum qui, minima reprehenderit tempora corrupti, officia
+            repellendus sunt voluptatem. Rerum aliquam veniam dolorum nulla, harum sint eos, sed aut numquam, distinctio
+            repudiandae totam!
+        </div>
+        <!-- float 只影响后续兄弟元素
+        如果 mid 元素写在 right 前面，那么其就会占满 left 右侧的空间
+        而 right 后来的只能占包含块剩下空间的 靠上靠右 -->
+        <div class="right">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Explicabo corrupti aliquam ullam obcaecati
+            incidunt ea quo maiores doloribus quibusdam nobis magni voluptatibus sit saepe commodi iste, perferendis cum
+            esse reprehenderit labore tempora minus ut, pariatur quaerat! Vitae esse perferendis officiis impedit eos
+            ipsum mollitia fugit, tempore sit expedita labore consequatur quas atque, ratione dolores id quod asperiores
+            perspiciatis natus voluptate! Totam dolores natus debitis accusantium. Dignissimos eaque ex voluptate a
+            molestiae corporis at, commodi vitae voluptatum, error officiis saepe nesciunt fugit cumque laboriosam.
+            Alias earum atque voluptatem veritatis ex repellat tempora explicabo suscipit eius esse ab dicta dolorem
+            doloribus, dolor quam aut non excepturi nostrum, voluptatibus delectus sint. Consequatur, odit quasi rem
+            excepturi sint veritatis rerum veniam quas inventore aliquid repudiandae cum, quaerat quo! Sit illum tempora
+            perspiciatis rem commodi pariatur consectetur nesciunt possimus. Autem distinctio dolores corrupti
+            voluptatibus vel. Enim et quod hic praesentium fuga nemo minus facilis excepturi ullam quas laudantium
+            ducimus aspernatur animi delectus beatae commodi quos, deserunt reiciendis assumenda asperiores qui cumque
+            fugit quo optio! Omnis magni commodi similique, dolorum ut culpa repellendus aliquam in sint eum praesentium
+            at eaque non illum quam quae id maxime aspernatur aperiam odio. Inventore possimus ullam excepturi porro
+            laborum. Labore, nihil ratione. Aspernatur eligendi exercitationem tempore expedita quidem magni odio,
+            soluta, eos delectus commodi molestiae officia minima dicta esse enim recusandae impedit corrupti quaerat,
+            tenetur optio sequi cupiditate! Temporibus vero odio error, sapiente, tempore nam modi nemo labore ullam
+            voluptate mollitia et ex libero repudiandae sit ipsum animi blanditiis fugit nisi non sunt culpa quas.
+            Quidem doloribus aspernatur a eaque cum aliquid sapiente minima repellendus aliquam. Quia optio aperiam fuga
+            voluptatum omnis assumenda corrupti ut unde. Deserunt recusandae harum repudiandae, ullam adipisci ea animi
+            mollitia? Veritatis a illo doloribus laudantium quae et corrupti culpa debitis deserunt corporis facilis,
+            minima sunt ipsum laboriosam totam officiis! Explicabo exercitationem provident recusandae distinctio omnis
+            est quas nesciunt nostrum vero error incidunt aspernatur alias ab blanditiis ipsa optio, obcaecati eaque
+            eligendi molestiae minima id esse! Iure eveniet temporibus accusamus fuga, deleniti culpa non laborum
+            itaque, nostrum dolorum et animi modi, quam suscipit! Dolorum illum placeat officiis quas itaque praesentium
+            perferendis, modi iste incidunt. Fuga quo incidunt ex corporis eligendi consectetur tempora sunt facere
+            cumque id autem ullam officiis, voluptate asperiores tempore quod repudiandae enim quisquam vel atque sequi
+            optio. Aliquam, expedita saepe dignissimos veniam facere recusandae numquam assumenda nobis quae incidunt?
+            Optio magni aperiam vel!
+        </div>
+        <div class="mid">
+            常规流块盒在排列时，无视浮动盒子
+            这个盒子不会避开浮动元素，导致被遮挡
+            <div style="background-color: red;width: 100px;height: 20px;"></div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum neque consequuntur molestias? Iure excepturi et
+            dolorum exercitationem harum veritatis nostrum consectetur fugiat maiores tenetur non quaerat, tempore
+            explicabo, doloribus maxime porro asperiores consequatur illum rerum quisquam minima illo! Reiciendis magnam
+            tenetur voluptatum, fuga aliquid, necessitatibus nulla sunt id dolores officiis possimus numquam sed
+            consequuntur quam odio rerum fugiat consectetur laudantium labore nemo perferendis reprehenderit earum
+            aperiam iste! Harum sint distinctio ratione dicta. Fuga tempora eligendi harum laboriosam nemo nihil
+            repellat obcaecati cumque distinctio voluptatem, voluptatum accusantium inventore! Labore atque animi quos
+            vel, illo officia in ipsam unde quasi corporis commodi aliquid earum qui, laborum odio iusto rem voluptate,
+            sint explicabo ad nisi! Amet obcaecati facilis, blanditiis expedita consequuntur vel ducimus tenetur harum
+            voluptatibus fuga quod veniam exercitationem optio, tempora et quam cumque dignissimos assumenda quibusdam?
+            Ipsam possimus recusandae voluptates debitis ab voluptatibus itaque velit repudiandae rem facere minima,
+            neque eius. Velit deleniti illum porro, non fugit soluta ratione ducimus tenetur quisquam, voluptatum ipsam
+            consequatur debitis modi fuga quos animi doloremque omnis cum. Eos facere adipisci molestiae odit accusamus,
+            officiis vel tenetur velit minima ad neque, hic, aut beatae. Quis recusandae sit ex nesciunt aliquid amet
+            dolorem voluptatum voluptatem alias, fuga sint earum deserunt consequatur doloremque. Esse cumque unde
+            necessitatibus eum autem a et corrupti est? Maxime optio fugit suscipit error voluptas dignissimos molestias
+            adipisci magni, recusandae ratione animi magnam, facere laudantium nulla aliquid iste! Libero odio esse ut
+            eaque, vitae perferendis voluptatem iste ipsa rem optio eum facilis voluptas laboriosam harum. Culpa
+            laudantium id minima unde molestiae eius labore officiis dolore. Ipsa repudiandae aut rerum corporis.
+            Aliquam voluptatum molestias eum distinctio ad voluptates deleniti quas voluptatem blanditiis eveniet
+            sapiente eligendi quidem laudantium harum eos cupiditate incidunt maxime accusantium et, aliquid odio
+            perspiciatis. Architecto illum cupiditate, dicta quae nemo dolore culpa! Obcaecati, aspernatur. Dolorem sed
+            optio quas non molestiae distinctio perferendis est dolore mollitia, ex commodi atque similique asperiores
+            veritatis harum magni rem esse ea dignissimos? Libero accusamus soluta beatae repellat quis ipsum, modi
+            provident similique, quisquam eaque at, facere ex. Tenetur illum pariatur deleniti, quod ex distinctio
+            voluptatem, inventore obcaecati accusantium sed neque earum ratione. Fuga nostrum nisi eius earum molestiae
+            neque exercitationem alias atque error, facere tenetur aut corporis aliquam nemo vero deserunt aspernatur,
+            et voluptatibus tempore asperiores sint sunt! Rerum officia, aut mollitia quo amet accusantium esse libero
+            tempora. Quod distinctio eaque, porro voluptas deserunt tempore, sint ex fuga explicabo facilis consequatur
+            beatae, enim quisquam sunt commodi architecto adipisci ullam provident et soluta ratione hic dicta
+            reprehenderit! Veritatis odio beatae sed consectetur amet excepturi obcaecati corrupti ipsa voluptatem,
+            ducimus voluptate doloribus vitae atque iste maxime deserunt ratione commodi? Nesciunt, inventore? Numquam
+            iste molestiae dolor aliquid porro, pariatur quam nihil ea doloribus unde quis perspiciatis officia voluptas
+            error sint optio nulla culpa voluptates suscipit nostrum quaerat, odio magni commodi? Illum odit consequatur
+            vel omnis accusantium qui placeat ut voluptatum debitis corporis quos quaerat cumque, animi soluta dicta
+            saepe numquam, reprehenderit impedit quibusdam. Temporibus, natus quia ipsum tenetur voluptatibus non?
+        </div>
+    </div>
+</body>
+
+</html>
