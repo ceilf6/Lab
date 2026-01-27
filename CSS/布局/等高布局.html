@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .container {
+            padding: 30px;
+            border: 3px solid black;
+            min-width: 700px;
+
+            overflow: hidden;
+            /* 超出隐藏 */
+        }
+
+        .left {
+            float: left;
+            width: 200px;
+            background-color: #70A5FE;
+            margin-right: 20px;
+
+            /* 2. 通过极大高度 => 超出隐藏的实现 伪等高 */
+            height: 10000px;
+            margin-bottom: -9990px;
+            /* 需要把 clearfix 的伪元素拉回来 */
+        }
+
+        .right {
+            float: right;
+            width: 200px;
+            background-color: #70A5FE;
+            margin-left: 20px;
+
+            /* 2. 通过极大高度 => 超出隐藏的实现 伪等高 */
+            height: 10000px;
+            margin-bottom: -9990px;
+            /* 需要把 clearfix 的伪元素拉回来 */
+        }
+
+        .mid {
+            background-color: #bf91f3;
+            overflow: hidden;
+            border: 2px solid #008c8c;
+        }
+
+        /* 1. 弹性盒子布局实现等高 */
+        /* .container {
+            display: flex;
+        }
+
+        .left,
+        .right {
+            width: 200px;
+            background: #70A5FE;
+        }
+
+        .mid {
+            flex: 1;
+            background: #bf91f3;
+            margin: 0 20px;
+        } */
+
+        /* 3. JS 计算实现 */
+    </style>
+</head>
+
+<body>
+    <div class="container clearfix">
+        <div class="left">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus vel cum dolorum ex. Illo nesciunt assumenda
+            deleniti distinctio doloremque voluptas delectus placeat corrupti repellendus minima, perferendis nostrum
+            repudiandae sed iste reiciendis optio aut ratione explicabo enim illum rerum maiores architecto?
+        </div>
+
+        <!-- float 只影响后续兄弟元素
+        如果 mid 元素写在 right 前面，那么其就会占满 left 右侧的空间
+        而 right 后来的只能占包含块剩下空间的 靠上靠右 -->
+        <div class="right">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, expedita quidem? Tempora esse, minima
+            alias nemo voluptates possimus accusamus debitis vero. Illum, eaque culpa. Labore eveniet necessitatibus
+            aperiam rerum qui tenetur natus tempora, corrupti, laudantium quasi quam mollitia odio cum amet. Laboriosam
+            accusantium nulla natus exercitationem dicta quos veritatis commodi?
+        </div>
+
+        <div class="mid">
+            常规流块盒在排列时，无视浮动盒子
+            这个盒子不会避开浮动元素，导致被遮挡
+            <div style="background-color: red;width: 100px;height: 20px;"></div>
+            用 flex 布局的话就不需要 mid 写在 right 前面了，弹性盒子的顺序就是元素的顺序
+            <br>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum neque consequuntur molestias? Iure excepturi et
+            dolorum exercitationem harum veritatis nostrum consectetur fugiat maiores tenetur non quaerat, tempore
+            explicabo, doloribus maxime porro asperiores consequatur illum rerum quisquam minima illo! Reiciendis magnam
+            tenetur voluptatum, fuga aliquid, necessitatibus nulla sunt id dolores officiis possimus numquam sed
+            consequuntur quam odio rerum fugiat consectetur laudantium labore nemo perferendis reprehenderit earum
+            aperiam iste! Harum sint distinctio ratione dicta. Fuga tempora eligendi harum laboriosam nemo nihil
+            repellat obcaecati cumque distinctio voluptatem, voluptatum accusantium inventore! Labore atque animi quos
+            vel, illo officia in ipsam unde quasi corporis commodi aliquid earum qui, laborum odio iusto rem voluptate,
+            sint explicabo ad nisi! Amet obcaecati facilis, blanditiis expedita consequuntur vel ducimus tenetur harum
+            voluptatibus fuga quod veniam exercitationem optio, tempora et quam cumque dignissimos assumenda quibusdam?
+            Ipsam possimus recusandae voluptates debitis ab voluptatibus itaque velit repudiandae rem facere minima,
+            neque eius. Velit deleniti illum porro, non fugit soluta ratione ducimus tenetur quisquam, voluptatum ipsam
+            consequatur debitis modi fuga quos animi doloremque omnis cum. Eos facere adipisci molestiae odit accusamus,
+            officiis vel tenetur velit minima ad neque, hic, aut beatae. Quis recusandae sit ex nesciunt aliquid amet
+            dolorem voluptatum voluptatem alias, fuga sint earum deserunt consequatur doloremque. Esse cumque unde
+            necessitatibus eum autem a et corrupti est? Maxime optio fugit suscipit error voluptas dignissimos molestias
+            adipisci magni, recusandae ratione animi magnam, facere laudantium nulla aliquid iste! Libero odio esse ut
+            eaque, vitae perferendis voluptatem iste ipsa rem optio eum facilis voluptas laboriosam harum. Culpa
+            laudantium id minima unde molestiae eius labore officiis dolore. Ipsa repudiandae aut rerum corporis.
+            Aliquam voluptatum molestias eum distinctio ad voluptates deleniti quas voluptatem blanditiis eveniet
+            sapiente eligendi quidem laudantium harum eos cupiditate incidunt maxime accusantium et, aliquid odio
+            perspiciatis. Architecto illum cupiditate, dicta quae nemo dolore culpa! Obcaecati, aspernatur. Dolorem sed
+            optio quas non molestiae distinctio perferendis est dolore mollitia, ex commodi atque similique asperiores
+            veritatis harum magni rem esse ea dignissimos? Libero accusamus soluta beatae repellat quis ipsum, modi
+            provident similique, quisquam eaque at, facere ex. Tenetur illum pariatur deleniti, quod ex distinctio
+            voluptatem, inventore obcaecati accusantium sed neque earum ratione. Fuga nostrum nisi eius earum molestiae
+            neque exercitationem alias atque error, facere tenetur aut corporis aliquam nemo vero deserunt aspernatur,
+            et voluptatibus tempore asperiores sint sunt! Rerum officia, aut mollitia quo amet accusantium esse libero
+            tempora. Quod distinctio eaque, porro voluptas deserunt tempore, sint ex fuga explicabo facilis consequatur
+            beatae, enim quisquam sunt commodi architecto adipisci ullam provident et soluta ratione hic dicta
+            reprehenderit! Veritatis odio beatae sed consectetur amet excepturi obcaecati corrupti ipsa voluptatem,
+            ducimus voluptate doloribus vitae atque iste maxime deserunt ratione commodi? Nesciunt, inventore? Numquam
+            iste molestiae dolor aliquid porro, pariatur quam nihil ea doloribus unde quis perspiciatis officia voluptas
+            error sint optio nulla culpa voluptates suscipit nostrum quaerat, odio magni commodi? Illum odit consequatur
+            vel omnis accusantium qui placeat ut voluptatum debitis corporis quos quaerat cumque, animi soluta dicta
+            saepe numquam, reprehenderit impedit quibusdam. Temporibus, natus quia ipsum tenetur voluptatibus non?
+        </div>
+    </div>
+</body>
+
+</html>
