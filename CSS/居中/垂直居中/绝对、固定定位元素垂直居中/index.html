@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            margin: 30px;
+            background-color: lightblue;
+            height: 100px;
+
+            text-align: center;
+        }
+
+        .container {
+            position: relative;
+        }
+
+        div .child {
+            background-color: #bf91f3;
+            width: 800px;
+        }
+
+        .child {
+            position: absolute;
+            /* position: fixed; */
+
+            /* 1 */
+            height: 50px;
+
+            /* 2 */
+            top: 0;
+            bottom: 0;
+
+            /* 3 */
+            margin: auto 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="child">
+
+        </div>
+    </div>
+</body>
+
+</html>
