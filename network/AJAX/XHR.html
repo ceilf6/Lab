@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="module">
+        import "../../env.js";
+        const BASE_URL = window._ENV.BASE_URL;
+        const MOCK_URL = window._ENV.MOCK_URL;
+
+        var xhr = new XMLHttpRequest(); // 发送请求的对象
+        xhr.onreadystatechange = function () {
+
+        };
+        xhr.open('GET', BASE_URL + "api/herolist"); // 请求行：请求方法、url地址配置
+        // 如果 BASE_URL 没有写 根目录/ 的话 api 前面记得加
+        // xhr.setRequestHeader('Content-Type', 'application/json'); // 请求头，例如这里设置了请求体消息格式为json
+        xhr.send(null); // 请求体
+    </script>
+</body>
+
+</html>
