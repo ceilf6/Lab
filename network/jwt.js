@@ -44,3 +44,14 @@ const signature = HMAC_SHA256(
 )
 
 console.log(former + '.' + signature);
+
+
+
+// const jwt = require('jsonwebtoken');
+
+// const token = jwt.sign({ a: 1, b: 2 }, secret);
+// console.log(token);
+// //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ7.eyJhIjoxLCJiIjoyLCJpYXQiOjE2MzQ4MDg1Mzh9.EH6KLP-yegEN5H5As7JUzziOenlT5kuHM1Pxj6cJ9C8';
+
+// const result = jwt.verify(token, secret);
+// console.log(result);
