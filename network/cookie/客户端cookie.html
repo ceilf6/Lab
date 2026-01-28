@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        document.cookie = "ceilf6=handsome; path=/; domain=127.0.0.1; expires=Wed, 28 Jan 2026 08:00:00 GMT; max-age=3600; secure";
+        // 后来的会覆盖
+        document.cookie = "ceilf6=so-handsome; path=/; domain=127.0.0.1; expires=Wed, 28 Jan 2026 08:00:00 GMT; max-age=3600; secure";
+
+        document.cookie = "ceilf7=handsome; path=/; domain=127.0.0.1; expires=Wed, 28 Jan 2026 08:00:00 GMT; max-age=3600; secure";
+
+        document.cookie = "ceilf8=handsome; path=/; domain=127.0.0.1; expires=Wed, 28 Jan 2026 08:00:00 GMT; max-age=3600; secure";
+        // delete: max-age=-1
+        document.cookie = "ceilf8=handsome; path=/; domain=127.0.0.1; expires=Wed, 28 Jan 2026 08:00:00 GMT; max-age=-1; secure";
+
+        console.log(document.cookie);
+        // ceilf6=so-handsome; ceilf7=handsome
+    </script>
+</body>
+
+</html>
