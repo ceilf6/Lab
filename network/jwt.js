@@ -1,3 +1,5 @@
+import { head } from "framer-motion/client";
+
 const headerJson =
 {
     "alg": "HS256",
@@ -30,3 +32,15 @@ const payloadJson =
 }
 
 const payload = btoa(JSON.stringify(payloadJson))
+
+const former = header + "." + payload;
+// 别忘记 .
+
+const secret = "secret-key";
+
+const signature = HMAC_SHA256(
+    header.payload,
+    secret
+)
+
+console.log(former + '.' + signature);
