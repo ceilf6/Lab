@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="module">
+        import "../../env.js";
+        const BASE_URL = window._ENV.BASE_URL;
+        const MOCK_URL = window._ENV.MOCK_URL;
+        const url = BASE_URL + "api/user/login"; // "api/movies?page=2&size=10";
+        console.log(url);
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({ loginId: 'admin', loginPwd: '123123' }),
+        })
+            .then((resp) => {
+                console.log(resp.headers.get('authorization'));
+                /*
+                可以拿到这是因为响应头
+                access-control-allow-credentials true
+                access-control-allow-origin http://127.0.0.1:5500
+                ！有 access-control-expose-headers authorization
+                */
+                return resp.json();
+            })
+            .then((resp) => {
+                console.log(resp);
+            });
+    </script>
+</body>
+
+</html>
