@@ -46,6 +46,20 @@
                     }
                 }
             );
+
+        // 业务中一般会封装一个函数用于获取数据
+        async function getData() {
+            const res = await fetch(url);
+            const json = await res.json();
+            return json.data;
+        };
+        // async 返回的一定是一个 Promise 
+        const data = await getData();
+        console.log(data);
+
+        getData().then(
+            res => { console.log(res); }
+        )
     </script>
 </body>
 
