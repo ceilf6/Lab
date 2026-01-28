@@ -1,5 +1,4 @@
 node_modules/
-/.env
 dist/
 sandboxs/**/__entry.tsx
 sandboxs/**/__entry.jsx
@@ -14,3 +13,7 @@ word/
 _CONFIG.sh
 
 .DS_Store
+
+.env
+
+env.js
