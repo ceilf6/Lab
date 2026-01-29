@@ -103,7 +103,8 @@
 
             // 上传文件
             const formData = new FormData();
-            formData.append('file', doms.fileUploader.files[0]); // 添加文件键值对
+            formData.append('file', doms.fileUploader.files[0]);
+            // 添加文件键值对，会自动添加到一对文件定界符中间
 
             const resp = await fetch('http://localhost:8000/api/upload', {
                 method: 'POST',
