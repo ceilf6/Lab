@@ -92,19 +92,18 @@ class LRUCache {
             const node = this.cache[key]
             node.value = value
             this.moveToHead(node)
-        } else {
-            // 新节点
-            const newNode = new DLLNode(key, value)
-            this.cache[key] = newNode
-            this.addToHead(newNode)
-            this.size++
-
-            if (this.size > this.capacity) {
+        } else { // 新节点
+            if (this.size >= this.capacity) {
                 // 移除最久未使用的（尾部）
                 const tailNode = this.removeTail()
                 delete this.cache[tailNode.key]
                 this.size--
             }
+
+            const newNode = new DLLNode(key, value)
+            this.cache[key] = newNode
+            this.addToHead(newNode)
+            this.size++
         }
     }
 }
