@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <a data-res="thunder" href="http://localhost:8000/download/Wallpaper1.jpg">
+        下载桌面壁纸1
+    </a>
+    <a data-res="thunder" href="http://localhost:8000/download/Wallpaper2.jpg">
+        下载桌面壁纸2
+    </a>
+
+    <script>
+        // 通过属性选择器对于所有属性 thunder 更换 href 为迅雷的目标格式
+        // thunder://base64(AA地址ZZ)
+        const links = document.querySelectorAll('[data-res=thunder]');
+        for (const link of links) {
+            const base64 = btoa(`AA${link.href}ZZ`);
+            const href = `thunder://${base64}`;
+            link.href = href;
+        }
+    </script>
+</body>
+
+</html>
