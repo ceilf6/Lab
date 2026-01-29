@@ -33,47 +33,47 @@ class DLLNode {
     constructor(key, value) {
         this.key = key
         this.value = value
-        this.prev = null
+        this.pre = null
         this.next = null
     }
 }
 
-class LRUCacheWithObject {
+class LRUCache {
     constructor(capacity) {
         this.capacity = capacity
         this.cache = {} // 对象存储 key -> node 的映射
         this.size = 0
 
         // 虚拟头尾节点，方便操作
-        this.head = new DLLNode(0, 0)
-        this.tail = new DLLNode(0, 0)
+        this.head = new DLLNode(0, 0) // head.next 才是头
+        this.tail = new DLLNode(0, 0) // tail.pre 才是尾
         this.head.next = this.tail
-        this.tail.prev = this.head
+        this.tail.pre = this.head
     }
 
-    // 将节点添加到头部（最近使用）
+    // 将节点添加到头部 - 头部是最近使用的
     addToHead(node) {
-        node.prev = this.head
+        node.pre = this.head
         node.next = this.head.next
-        this.head.next.prev = node
+        this.head.next.pre = node
         this.head.next = node
     }
 
     // 移除节点
     removeNode(node) {
-        node.prev.next = node.next
-        node.next.prev = node.prev
+        node.pre.next = node.next
+        node.next.pre = node.pre
     }
 
-    // 移动到头部（刷新地位）
+    // 移动到头部 - 刷新地位
     moveToHead(node) {
         this.removeNode(node)
         this.addToHead(node)
     }
 
-    // 移除尾部节点
+    // 移除尾部节点，同时返回被移除节点方便维护cache映射
     removeTail() {
-        const node = this.tail.prev
+        const node = this.tail.pre
         this.removeNode(node)
         return node
     }
