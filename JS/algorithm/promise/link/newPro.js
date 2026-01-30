@@ -18,3 +18,19 @@ setTimeout(() => {
     */
     console.log(pro3);
 }, 1000);
+
+const pro21 = new Promise((resolve, reject) => {
+    resolve();
+});
+
+let pro23;
+
+const pro22 = pro1.then(() => {
+    pro23 = new Promise((resolve, reject) => { resolve(23) });
+    return pro23;
+});
+
+setTimeout(() => {
+    console.log(pro22);
+    console.log(pro23);
+}, 1000);
