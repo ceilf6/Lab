@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <select id="datas"></select>
+
+    <script type="module">
+        import "../../../env.js";
+        const BASE_URL = window._ENV.BASE_URL;
+        const MOCK_URL = window._ENV.MOCK_URL;
+        const url = BASE_URL + "api/citylist"; // "api/movies?page=2&size=10";
+        console.log(url);
+
+        // 获取数据函数：返回一个Promise
+        function getData() {
+            return fetch(url) // fetch到之后还需要解格式
+                .then((resp) => resp.json())
+                .then((resp) => resp.data)
+                .then((resp) =>
+                    resp.map((it) => ({ value: it.value, label: it.label }))
+                );
+        }
+        // 利用getProvinces函数，将省份数据加载到select元素中
+        getData().then(
+            (ps) => {
+                const html = ps
+                    .map((p) => `<option value="${p.value}">${p.label}</option>`)
+                    .join('');
+                const selProvince = document.getElementById('datas');
+                selProvince.innerHTML = html;
+            },
+            (reason) => {
+                console.log(reason);
+            }
+        );
+    </script>
+</body>
+
+</html>
