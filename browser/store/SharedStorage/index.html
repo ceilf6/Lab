@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Shared Storage Demo</title>
+</head>
+
+<body>
+    <button id="run">Run Shared Storage</button>
+
+    <script>
+        // 跨越顶层站点隔离
+
+        async function initSharedStorage() {
+            // 1 向 Shared Storage 写入数据
+            await sharedStorage.set('experiment_group', 'A');
+            await sharedStorage.set('view_count', 3);
+
+            // 2 加载 worklet 脚本
+            await sharedStorage.worklet.addModule('shared-storage-worklet.js');
+
+            console.log('Shared Storage initialized');
+        }
+
+        async function runWorklet() {
+            // 3 调用 worklet 逻辑（不会直接返回数据）
+            await sharedStorage.run('my-operation', {
+                data: {
+                    threshold: 2
+                }
+            });
+
+            console.log('Worklet executed');
+        }
+
+        document.getElementById('run').onclick = async () => {
+            await initSharedStorage();
+            await runWorklet();
+        };
+    </script>
+</body>
+
+</html>
