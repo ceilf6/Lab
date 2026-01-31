@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="file" name="" id="file" multiple>
+    <script>
+        // 获取 DOM 元素
+        var file = document.getElementById('file');
+        file.onchange = function (event) {
+            var files = event.target.files;
+            console.log(files); // filelist 是类数组对象
+            console.log(files[0] instanceof File);
+        }
+    </script>
+</body>
+
+</html>
