@@ -12,11 +12,11 @@
     <script>
         // 获取 DOM 元素
         var file = document.getElementById('file');
-        file.onchange = function (event) {
-            var files = event.target.files;
-            console.log(files); // filelist 是类数组对象
-            console.log(files[0] instanceof File);
-        }
+        // file.onchange = function (event) {
+        //     var files = event.target.files;
+        //     console.log(files); // FileList 是类数组对象
+        //     console.log(files[0] instanceof File);
+        // }
 
         var newFile = new File(
             ['foo'],
@@ -26,6 +26,22 @@
             }
         );
         console.log(newFile)
+
+        file.onchange = function (event) {
+            // event 就是选中文件的事件
+            // event.target 就是选中的文件
+            var files = event.target.files;
+            var reader = new FileReader();
+            // 读取文件
+            reader.readAsText(files[0])
+
+            // 读取成功后触发 load 事件（onload 是监听函数）
+            reader.onload = function (event) {
+                console.log("读取成功");
+                // 通过 result 属性拿到结果
+                console.log(event.target.result);
+            }
+        }
     </script>
 </body>
 
