@@ -133,3 +133,29 @@ function getAllDataByKey(db, storeName) {
     });
 }
 
+/**
+ * 通过游标读取数据
+ * @param {object} db 数据库实例
+ * @param {string} storeName 仓库名称
+ */
+function cursorGetData(db, storeName) {
+    return new Promise((resolve, reject) => {
+        let list = []; // 存放数据
+        var store = db
+            .transaction(storeName, "readwrite") // 打开事务
+            .objectStore(storeName); // 仓库对象
+        var request = store.openCursor(); // 指针对象 - 默认指向第一条数据
+        // 游标开启成功，逐行读数据
+        // 只要游标移动了就会触发 onsuccess
+        request.onsuccess = function (e) {
+            var cursor = e.target.result;
+            if (cursor) {
+                // 必须要通过 cursor 是否有数据来检查是否越界
+                list.push(cursor.value);
+                cursor.continue(); // 遍历了存储对象中的所有内容
+            } else {
+                resolve(list)
+            }
+        };
+    })
+}

@@ -30,6 +30,8 @@
             addData(db2, "测试表", { "Id": 2, "Name": "ceilf7", "Age": 20 })
             const res = await getAllDataByKey(db2, "测试表");
             console.log(res);
+            const res2 = await cursorGetData(db2, "测试表");
+            console.log(res2);
         }
         test();
     </script>
