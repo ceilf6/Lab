@@ -17,6 +17,15 @@
             console.log(files); // filelist 是类数组对象
             console.log(files[0] instanceof File);
         }
+
+        var newFile = new File(
+            ['foo'],
+            'foo.txt',
+            {
+                type: 'text/plain',
+            }
+        );
+        console.log(newFile)
     </script>
 </body>
 
