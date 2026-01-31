@@ -142,7 +142,7 @@ function cursorGetData(db, storeName) {
     return new Promise((resolve, reject) => {
         let list = []; // 存放数据
         var store = db
-            .transaction(storeName, "readwrite") // 打开事务
+            .transaction(storeName, "readonly") // 打开事务
             .objectStore(storeName); // 仓库对象
         var request = store.openCursor(); // 指针对象 - 默认指向第一条数据
         // 游标开启成功，逐行读数据
@@ -156,6 +156,28 @@ function cursorGetData(db, storeName) {
             } else {
                 resolve(list)
             }
+        };
+    })
+}
+
+/**
+ * 通过索引读取数据
+ * 只是通过索引查询的话只会返回符合要求的第一条数据
+ * @param {object} db 数据库实例
+ * @param {string} storeName 仓库名称
+ * @param {string} indexName 索引名称
+ * @param {string} indexValue 索引值
+ */
+function getDataByIndex(db, storeName, indexName, indexValue) {
+    return new Promise((resolve, reject) => {
+        var store = db.transaction(storeName, "readonly").objectStore(storeName);
+        var request = store.index(indexName).get(indexValue);
+        request.onerror = function () {
+            console.log("事务失败");
+        };
+        request.onsuccess = function (e) {
+            var result = e.target.result;
+            resolve(result);
         };
     })
 }
