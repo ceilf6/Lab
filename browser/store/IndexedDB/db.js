@@ -39,3 +39,26 @@ function openDB(dbName, version = 1) {
     })
 }
 
+/**
+ * 关闭数据库
+ * @param {object} db 数据库实例
+ */
+function closeDB(db) {
+    db.close();
+    console.log("数据库已关闭");
+}
+
+/**
+ * 删除数据库
+ * @param {object} dbName 数据库名称
+ */
+function deleteDBAll(dbName) {
+    console.log(dbName);
+    let deleteRequest = window.indexedDB.deleteDatabase(dbName);
+    deleteRequest.onerror = function (event) {
+        console.log("删除失败");
+    };
+    deleteRequest.onsuccess = function (event) {
+        console.log("删除成功");
+    };
+}
