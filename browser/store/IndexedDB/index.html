@@ -14,8 +14,24 @@
         // 而不是数据库实例，所以得通过 .then 接受实例
         openDB("testDB", 1).then((db) => {
             addData(db, "测试表", { "Id": 1, "Name": "ceilf6", "Age": 18 })
-            closeDB(db);
-        });
+            addData(db, "测试表", { "Id": 2, "Name": "ceilf7", "Age": 20 })
+
+            // closeDB(db);
+
+            // 查询也是异步的
+            return getDataByKey(db, "测试表", 2);
+        }).then(res => {
+            console.log(res);
+        })
+
+        async function test(params) {
+            const db2 = await openDB("testDB2", 1.1);
+            addData(db2, "测试表", { "Id": 1, "Name": "ceilf6", "Age": 18 })
+            addData(db2, "测试表", { "Id": 2, "Name": "ceilf7", "Age": 20 })
+            const res = await getAllDataByKey(db2, "测试表");
+            console.log(res);
+        }
+        test();
     </script>
 </body>
 
