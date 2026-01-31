@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .uploadImg {
+            width: 150px;
+            height: 150px;
+            border: 1px dashed skyblue;
+            border-radius: 30px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cross {
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            left: calc(50% - 15px);
+            top: calc(50% - 15px);
+        }
+
+        .cross::before {
+            content: "";
+            width: 30px;
+            height: 2px;
+            background-color: skyblue;
+            position: absolute;
+            top: calc(50% - 1px);
+        }
+
+        .cross::after {
+            content: "";
+            width: 30px;
+            height: 2px;
+            background-color: skyblue;
+            position: absolute;
+            left: calc(50% - 15px);
+            top: calc(50% - 1px);
+            transform: rotate(90deg);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 通过 label 关联 -->
+    <label>
+        <input type="file" name="" id="file">
+        <div class="uploadImg">
+            <div class="cross"></div>
+        </div>
+    </label>
+    <script>
+        var file = document.querySelector("#file");
+        var div = document.querySelector(".uploadImg");
+        var cross = document.querySelector(".cross");
+        file.onchange = function (event) {
+            var fileHandle = event.target.files[0];
+            var reader = new FileReader();
+            reader.readAsDataURL(fileHandle); // readAsDataURL 拿到结果可以直接作为img:src图片资源地址
+            reader.onload = function (event) {
+                div.style.background = `url(${event.target.result}) center/cover no-repeat`;
+                cross.style.opacity = 0;
+            }
+        }
+    </script>
+</body>
+
+</html>
