@@ -35,6 +35,8 @@ function openDB(dbName, version = 1) {
             });
             // 创建索引，提高查询速度（类似于字典的拼音/部首）
             objectStore.createIndex("Id索引", "Id", { unique: true });
+            objectStore.createIndex("Name索引", "Name", { unique: true });
+            objectStore.createIndex("Age索引", "Age", { unique: true });
         }
     })
 }
@@ -60,5 +62,27 @@ function deleteDBAll(dbName) {
     };
     deleteRequest.onsuccess = function (event) {
         console.log("删除成功");
+    };
+}
+
+/**
+ * 新增数据
+ * @param {object} db 数据库实例
+ * @param {string} storeName 数据仓库实例（表）
+ * @param {string} data 要添加的数据
+ */
+function addData(db, storeName, data) {
+    // 装饰器模式：链式调用
+    var request = db
+        .transaction([storeName], "readwrite") // 事务对象 指定表格名称和操作模式（"只读"或"读写"）
+        .objectStore(storeName) // 仓库对象
+        .add(data);
+
+    request.onsuccess = function (event) {
+        console.log("数据写入成功");
+    };
+
+    request.onerror = function (event) {
+        console.log("数据写入失败");
     };
 }
