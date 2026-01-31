@@ -29,7 +29,7 @@ function openDB(dbName, version = 1) {
             console.log("数据库版本更新");
             db = event.target.result;
             // 创建数据仓库（表）
-            var objectStore = db.creatObjectStore("测试表", {
+            var objectStore = db.createObjectStore("测试表", {
                 keyPath: "Id", // 这是主键：独一无二不会重复的
                 autoIncrement: true // 实现自增
             });
