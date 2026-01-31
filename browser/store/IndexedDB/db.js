@@ -35,8 +35,8 @@ function openDB(dbName, version = 1) {
             });
             // 创建索引，提高查询速度（类似于字典的拼音/部首）
             objectStore.createIndex("Id索引", "Id", { unique: true });
-            objectStore.createIndex("Name索引", "Name", { unique: true });
-            objectStore.createIndex("Age索引", "Age", { unique: true });
+            objectStore.createIndex("Name索引", "Name"); // , { unique: true });
+            objectStore.createIndex("Age索引", "Age"); // , { unique: true });
         }
     })
 }
@@ -179,5 +179,35 @@ function getDataByIndex(db, storeName, indexName, indexValue) {
             var result = e.target.result;
             resolve(result);
         };
+    })
+}
+
+/**
+ * 通过索引和游标查询所有符合要求的记录
+ * @param {object} db 数据库实例
+ * @param {string} storeName 仓库名称
+ * @param {string} indexName 索引名称
+ * @param {string} indexValue 索引值
+ */
+function cursorGetDataByIndex(db, storeName, indexName, indexValue) {
+    return new Promise((resolve, reject) => {
+        let list = [];
+        var store = db.transaction(storeName, "readwrite").objectStore(storeName); // 仓库对象
+        var request = store
+            .index(indexName) // 索引对象
+            .openCursor(IDBKeyRange.only(indexValue)); // 指针对象
+        request.onsuccess = function (e) {
+            var cursor = e.target.result;
+            if (cursor) {
+                // 必须要检查
+                list.push(cursor.value);
+                cursor.continue();
+                // 遍历了存储对象中的所有内容
+                // 不是一个一个移动，因为存储对象已经筛选过了
+            } else {
+                resolve(list)
+            }
+        };
+        request.onerror = function (e) { };
     })
 }

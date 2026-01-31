@@ -36,8 +36,11 @@
             addData(db2, "测试表", { "Id": 3, "Name": "ceilf6", "Age": 22 })
             // 只是通过索引查询的话只会返回符合要求的第一条数据
             // 注意是写 Name索引 ，而不是属性值Name
-            const resCeilf6 = await getDataByIndex(db2, "测试表", "Name索引", "ceilf6")
-            console.log(resCeilf6)
+            const IndexCeilf6 = await getDataByIndex(db2, "测试表", "Name索引", "ceilf6")
+            console.log(IndexCeilf6)
+
+            const CursorIndexCeilf6 = await cursorGetDataByIndex(db2, "测试表", "Name索引", "ceilf6");
+            console.log(CursorIndexCeilf6);
         }
         test();
     </script>
