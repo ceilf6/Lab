@@ -252,7 +252,7 @@ function cursorGetDataByIndexAndPage(
                 if (counter < pageSize) {
                     cursor.continue(); // 遍历了存储对象中的所有内容
                 } else {
-                    cursor = null;
+                    cursor = null; // 关闭读取指针
                     resolve(list);
                 }
             } else {
