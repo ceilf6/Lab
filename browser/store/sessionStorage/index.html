@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+        setItem - 增、改
+        getItem - 查
+        removeItem - 删
+        */
+
+        sessionStorage.setItem('I\'m Key', 'I\'m Value');
+
+        const value = sessionStorage.getItem('I\'m Key');
+        console.log(value);
+
+        const userValue = {
+            id: 1,
+            name: 'ceilf6',
+            role: 'admin'
+        }
+        // 只能存字符串，所以得 JSON.stringify / JSON.parse
+        const userValueStr = JSON.stringify(userValue)
+        sessionStorage.setItem('I\'m Key', userValueStr);
+        const userValueParse = JSON.parse(sessionStorage.getItem('I\'m Key'))
+        console.log(userValueParse);
+
+        // sessionStorage.removeItem('I\'m Key');
+
+        console.log(sessionStorage.getItem('I\'m Key'));
+    </script>
+</body>
+
+</html>
