@@ -74,7 +74,8 @@ function deleteDBAll(dbName) {
 function addData(db, storeName, data) {
     // 装饰器模式：链式调用
     var request = db
-        .transaction([storeName], "readwrite") // 事务对象 指定表格名称和操作模式（"只读"或"读写"）
+        // 通过 transaction 方法创建事务对象 指定表格名称和操作模式（"只读"或"读写"）
+        .transaction([storeName], "readwrite")
         .objectStore(storeName) // 仓库对象
         .add(data);
 
@@ -86,3 +87,49 @@ function addData(db, storeName, data) {
         console.log("数据写入失败");
     };
 }
+
+/**
+ * 通过主键读取数据
+ * @param {object} db 数据库实例
+ * @param {string} storeName 仓库名称
+ * @param {string} key 主键值
+ */
+function getDataByKey(db, storeName, key) {
+    return new Promise((resolve, reject) => {
+        var transaction = db.transaction([storeName]); // 事务
+        var objectStore = transaction.objectStore(storeName); // 仓库对象
+        var request = objectStore.get(key); // 通过主键获取数据
+
+        request.onerror = function (event) {
+            console.log("事务失败");
+        };
+
+        request.onsuccess = function (event) {
+            console.log("主键查询结果: ", request.result);
+            resolve(request.result);
+        };
+    });
+}
+
+/**
+ * 读取数据库对应数据表所有数据
+ * @param {object} db 数据库实例
+ * @param {string} storeName 仓库名称
+ */
+function getAllDataByKey(db, storeName) {
+    return new Promise((resolve, reject) => {
+        var transaction = db.transaction([storeName]); // 事务
+        var objectStore = transaction.objectStore(storeName); // 仓库对象
+        var request = objectStore.getAll();
+
+        request.onerror = function (event) {
+            console.log("事务失败");
+        };
+
+        request.onsuccess = function (event) {
+            console.log("主键查询结果: ", request.result);
+            resolve(request.result);
+        };
+    });
+}
+
