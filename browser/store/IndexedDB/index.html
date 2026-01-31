@@ -10,7 +10,10 @@
 <body>
     <script src="./db.js"></script>
     <script>
+        // IndexedDB是异步的 - openDB返回的是Promise，
+        // 而不是数据库实例，所以得通过 .then 接受实例
         openDB("testDB", 1).then((db) => {
+            addData(db, "测试表", { "Id": 1, "Name": "ceilf6", "Age": 18 })
             closeDB(db);
         });
     </script>
