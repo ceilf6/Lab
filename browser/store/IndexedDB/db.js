@@ -211,3 +211,150 @@ function cursorGetDataByIndex(db, storeName, indexName, indexValue) {
         request.onerror = function (e) { };
     })
 }
+
+/**
+ * 通过索引和游标分页查询记录
+ * @param {object} db 数据库实例
+ * @param {string} storeName 仓库名称
+ * @param {string} indexName 索引名称
+ * @param {string} indexValue 索引值
+ * @param {number} page 页码
+ * @param {number} pageSize 查询条数
+ */
+function cursorGetDataByIndexAndPage(
+    db,
+    storeName,
+    indexName,
+    indexValue,
+    page,
+    pageSize
+) {
+    return new Promise((resolve, reject) => {
+        var list = [];
+        var counter = 0; // 计数器
+        var advanced = true; // 是否跳过多少条查询
+        var store = db.transaction(storeName, "readwrite").objectStore(storeName); // 仓库对象
+        var request = store
+            // .index(indexName) // 索引对象
+            // .openCursor(IDBKeyRange.only(indexValue)); // 按照指定值分页查询（配合索引）
+            .openCursor(); // 指针对象
+        request.onsuccess = function (e) {
+            var cursor = e.target.result;
+            if (page > 1 && advanced) {
+                advanced = false;
+                cursor.advance((page - 1) * pageSize); // 跳过多少条
+                return;
+            }
+            if (cursor) {
+                // 必须要检查
+                list.push(cursor.value);
+                counter++;
+                if (counter < pageSize) {
+                    cursor.continue(); // 遍历了存储对象中的所有内容
+                } else {
+                    cursor = null;
+                    resolve(list);
+                }
+            } else {
+                resolve(list);
+            }
+        };
+        request.onerror = function (e) { };
+    })
+}
+
+/**
+ * 更新数据
+ * @param {object} db 数据库实例
+ * @param {string} storeName 仓库名称
+ * @param {object} data 数据
+ */
+function updateDB(db, storeName, data) {
+    return new Promise((resolve, reject) => {
+        var request = db
+            .transaction([storeName], "readwrite") // 事务对象
+            .objectStore(storeName) // 仓库对象
+            .put(data);
+
+        request.onsuccess = function () {
+            resolve({
+                status: true,
+                message: "更新数据成功"
+            })
+        };
+
+        request.onerror = function () {
+            reject({
+                status: false,
+                message: "更新数据失败"
+            })
+        };
+    })
+}
+
+/**
+ * 通过主键删除数据
+ * @param {object} db 数据库实例
+ * @param {string} storeName 仓库名称
+ * @param {object} id 主键值
+ */
+function deleteDB(db, storeName, id) {
+    return new Promise((resolve, reject) => {
+        var request = db
+            .transaction([storeName], "readwrite")
+            .objectStore(storeName)
+            .delete(id);
+
+        request.onsuccess = function () {
+            resolve({
+                status: true,
+                message: "删除数据成功"
+            })
+        };
+
+        request.onerror = function () {
+            reject({
+                status: true,
+                message: "删除数据失败"
+            })
+        };
+    })
+}
+
+/**
+ * 通过索引和游标删除指定的数据
+ * @param {object} db 数据库实例
+ * @param {string} storeName 仓库名称
+ * @param {string} indexName 索引名
+ * @param {object} indexValue 索引值
+ */
+function cursorDelete(db, storeName, indexName, indexValue) {
+    return new Promise((resolve, reject) => {
+        var store = db.transaction(storeName, "readwrite").objectStore(storeName);
+        var request = store
+            .index(indexName) // 索引对象
+            .openCursor(IDBKeyRange.only(indexValue)); // 指针对象
+        request.onsuccess = function (e) {
+            var cursor = e.target.result;
+            var deleteRequest;
+            if (cursor) {
+                deleteRequest = cursor.delete(); // 请求删除当前项
+                deleteRequest.onsuccess = function () {
+                    console.log("游标删除该记录成功");
+                    resolve({
+                        status: true,
+                        message: "游标删除该记录成功"
+                    })
+                };
+                deleteRequest.onerror = function () {
+                    reject({
+                        status: false,
+                        message: "游标删除该记录失败"
+                    })
+                };
+                cursor.continue();
+            }
+        };
+        request.onerror = function (e) { };
+    })
+}
