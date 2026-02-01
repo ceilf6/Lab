@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="(item, i) in list" :key="item.id">
+                姓名: {{item.name}}, 年龄:
+                <!-- {{item.age}} -->
+                <button @click="changeAge(item, item.age - 1)">-</button>
+                {{item.age?item.age:'so young'}}
+                <button @click="changeAge(item, item.age + 1)">+</button>
+            </li>
+        </ul>
+    </div>
+    <script src="./vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                list: [
+                    { name: 'ceilf6', age: 18, id: 1 },
+                    { name: 'ceilf7', age: 20, id: 2 },
+                    { name: 'ceilf8', age: 22, id: 3 },
+                    { name: 'ceilf9', age: 24, id: 4 },
+                ]
+            },
+            computed: {
+                total() {
+                    return this.list.length;
+                }
+            },
+            methods: {
+                changeAge(item, newAge) {
+                    if (newAge < 0) newAge = 0;
+                    item.age = newAge;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
