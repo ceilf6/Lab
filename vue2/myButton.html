@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div style="margin-bottom: 100px;">
+            <cnt-button></cnt-button>
+            <cnt-button></cnt-button>
+        </div>
+        <div>
+            <cnt-button2></cnt-button2>
+            <cnt-button2></cnt-button2>
+        </div>
+    </div>
+    <script src="./vue.min.js"></script>
+    <script>
+        const cntButton = {
+            // data 配置为函数就是为了复用组件时不同实例间的数据相互独立
+            // 否则如果用同一个对象，数据就不会分割
+            data() {
+                return {
+                    count: 0
+                }
+            },
+            template: `<button @click="count++">点击了{{count}}次</button>`
+        }
+        Vue.component('cnt-button', cntButton)
+        const obj = {
+            count: 0,
+        }
+        const cntButton2 = {
+            data() { return obj; },
+            template: `<button @click="count++">点击了{{count}}次</button>`
+        }
+        Vue.component('cnt-button2', cntButton2)
+
+        // 注册应该在挂载前，否则就会被识别为普通组件
+        var vm = new Vue({
+            el: '#app',
+        })
+    </script>
+</body>
+
+</html>
