@@ -12,3 +12,5 @@ const CntButton = {
     template: `<button @click="count++">点击了{{count}}次</button>`,
     props: ["cnt"]
 }
+
+export default CntButton
