@@ -9,7 +9,7 @@
 
 <body>
     <div id="app" style="margin-bottom: 100px;">
-        <cnt-button></cnt-button>
+        <cnt-button cnt="2"></cnt-button>
         <cnt-button></cnt-button>
     </div>
     <div id="app2">
@@ -24,10 +24,14 @@
             // 否则如果用同一个对象，数据就不会分割
             data() {
                 return {
-                    count: 0
+                    count: this.cnt ? this.cnt : 0,
+                    // props 通过在 data函数中通过 this. 拿到
+                    // 或者直接在 template 中通过 {{ }}
+                    // Vue 在编译模板时自动做了 this 代理
                 }
             },
-            template: `<button @click="count++">点击了{{count}}次</button>`
+            template: `<button @click="count++">点击了{{count}}次</button>`,
+            props: ["cnt"]
         }
         Vue.component('cnt-button', CntButton)
         // 注册应该在挂载前，否则就会被识别为普通组件
