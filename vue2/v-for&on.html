@@ -15,7 +15,8 @@
                 <!-- {{item.age}} -->
                 <button @click="changeAge(item, item.age - 1)">-</button>
                 {{item.age?item.age:'so young'}}
-                <button @click="changeAge(item, item.age + 1)">+</button>
+                <!-- <button @click="changeAge(item, item.age + 1)">+</button> -->
+                <button @click="item.age++">+</button>
             </li>
         </ul>
     </div>
