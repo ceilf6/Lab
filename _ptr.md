@@ -17,3 +17,8 @@
 
 - HTML/表单元素/CSS美化/myRadio.css
     - 自实现选择框
+
+- NodeJS/CMJ
+    - .cjs 后缀会永远用 CJS
+        - 会覆盖 package.json 中的 type: "module"
+    - .mjs → 永远是 ES Module
