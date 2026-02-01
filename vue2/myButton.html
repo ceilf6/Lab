@@ -8,19 +8,18 @@
 </head>
 
 <body>
-    <div id="app">
-        <div style="margin-bottom: 100px;">
-            <cnt-button></cnt-button>
-            <cnt-button></cnt-button>
-        </div>
-        <div>
-            <cnt-button2></cnt-button2>
-            <cnt-button2></cnt-button2>
-        </div>
+    <div id="app" style="margin-bottom: 100px;">
+        <cnt-button></cnt-button>
+        <cnt-button></cnt-button>
     </div>
+    <div id="app2">
+        <cnt-button-two></cnt-button-two>
+        <cnt-button-two></cnt-button-two>
+    </div>
+
     <script src="./vue.min.js"></script>
     <script>
-        const cntButton = {
+        const CntButton = {
             // data 配置为函数就是为了复用组件时不同实例间的数据相互独立
             // 否则如果用同一个对象，数据就不会分割
             data() {
@@ -30,19 +29,27 @@
             },
             template: `<button @click="count++">点击了{{count}}次</button>`
         }
-        Vue.component('cnt-button', cntButton)
-        const obj = {
-            count: 0,
-        }
-        const cntButton2 = {
-            data() { return obj; },
-            template: `<button @click="count++">点击了{{count}}次</button>`
-        }
-        Vue.component('cnt-button2', cntButton2)
-
+        Vue.component('cnt-button', CntButton)
         // 注册应该在挂载前，否则就会被识别为普通组件
         var vm = new Vue({
             el: '#app',
+        })
+
+        const obj = {
+            count: 0,
+        }
+        const CntButtonTwo = {
+            data() { return obj; },
+            template: `<button @click="count++">点击了{{count}}次</button>`
+        }
+        var vm2 = new Vue({
+            el: '#app2',
+            // 局部注册
+            components: {
+                // 'cnt-button-two': CntButtonTwo
+                // Vue 在识别的时候支持自动将大驼峰转为 - 分割
+                CntButtonTwo
+            }
         })
     </script>
 </body>
