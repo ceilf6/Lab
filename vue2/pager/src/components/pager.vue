@@ -17,8 +17,8 @@
     <a href="">9</a>
     <a href="">10</a>
 
-    <a href="" :class="{ disabled: current === visibleNumber }">&gt;&gt;</a>
-    <a href="" :class="{ disabled: current === visibleNumber }">&gt;&gt;</a>
+    <a href="" :class="{ disabled: current === totalPageNumber }">&gt;&gt;</a>
+    <a href="" :class="{ disabled: current === totalPageNumber }">&gt;&gt;</a>
   </div>
 </template>
 
@@ -66,6 +66,12 @@ export default {
     visibleNumber: {
       type: Number,
       default: 10,
+    },
+  },
+  computed: {
+    // 总页数
+    totalPageNumber() {
+      return Math.ceil(this.total / this.limit);
     },
   },
 };
