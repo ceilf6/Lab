@@ -13,7 +13,11 @@ export default {
       type: String, // 类型必须是字符串
       required: true, // 必传属性
     },
-    width: Number,
+    width: {
+      type: Number,
+      requeired: false,
+      default: 60,
+    },
     height: Number,
   },
 };
