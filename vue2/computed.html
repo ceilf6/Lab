@@ -23,6 +23,8 @@
     <button @click="com = 'You\'er ceilf8'">直接修改computed</button>
     <!-- 直接调用 set 函数，没有 get -->
     <!-- 没有改动依赖项，不会导致重新渲染 -->
+     <div>{{ count }}</div>
+     <button @click="count++">查看时间变化了吗</button>
   </div>
 
   <script>
@@ -32,13 +34,14 @@
         return {
           a: "I'm",
           b: "ceilf6",
+          count: 0,
         };
       },
       computed: {
         com: {
           get() {
             console.log("computed");
-            return this.a + " " + this.b;
+            return this.a + " " + this.b + ' ' + Date.now().toString();
           },
           set(val) {
             console.log("直接修改computed");
