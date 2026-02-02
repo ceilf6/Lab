@@ -1,5 +1,5 @@
 <template>
-  <!-- 到时候会 直接把组件中的模板转换为render函数 -->
+  <!-- 到时候会 直接把组件中的模板转换为render函数 => 运行高效的同时，打包文件中不需要带上vue 的 template compiler -->
   <div id="app">
     <Avatar
       class="avatar-img"
