@@ -1,3 +1,6 @@
+// src/main.js 是打包依赖识别的入口文件
+
+
 // // import a from './a';
 // // import b from './b';
 // // require('./index.less');
@@ -12,11 +15,16 @@
 // // $('<h1>').text('hello webpack!!!!!!!').appendTo(document.body);
 // // $('<h2>').text('你好 webpack！').appendTo(document.body);
 // // createImg();
-// // async function test() {}
 
-// // test();
-// // const t = 1;
-// // console.log(t ?? 2);
+
+// webpack 会自动处理兼容性问题
+// babel.config.js
+// .browserslistrc
+async function test() { }
+test();
+
+const t = 1;
+console.log(t ?? 2);
 
 // var number = 1;
 
@@ -48,3 +56,6 @@ $('<h1>')
   .addClass(styles2.a)
   .appendTo(document.body);
 
+
+import { addImg } from './addImg';
+addImg();
