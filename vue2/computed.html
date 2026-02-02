@@ -40,8 +40,11 @@
             console.log("computed");
             return this.a + " " + this.b;
           },
-          set() {
+          set(val) {
             console.log("直接修改computed");
+            strs = val.split(" ")
+            this.a = strs[0]
+            this.b = strs[1]
           },
         },
       },
