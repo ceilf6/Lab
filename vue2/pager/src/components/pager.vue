@@ -2,8 +2,8 @@
   <!-- 组件根元素类名一般有 组件名-container 
   方便外层父组件预判内层根元素类名 => 作用域样式会对子组件根元素产生影响 -->
   <div class="pager-container">
-    <a href="">&lt;&lt;</a>
-    <a href="">&lt;&lt;</a>
+    <a href="" class="disabled">&lt;&lt;</a>
+    <a href="" class="active">&lt;&lt;</a>
 
     <a href="">1</a>
     <a href="">2</a>
@@ -20,6 +20,28 @@
     <a href="">&gt;&gt;</a>
   </div>
 </template>
+
+<style lang="less" scoped>
+@import "~@/styles/var.less";
+.pager-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  a {
+    color: @primary;
+    margin: 0 6px;
+    &.disabled {
+      color: @lightWords;
+      cursor: not-allowed;
+    }
+    &.active {
+      color: @words;
+      font-size: bold;
+      cursor: text;
+    }
+  }
+}
+</style>
 
 <script>
 export default {};
