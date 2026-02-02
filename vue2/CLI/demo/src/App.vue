@@ -1,4 +1,5 @@
 <template>
+  <!-- 到时候会 直接把组件中的模板转换为render函数 -->
   <div id="app">
     <Avatar
       class="avatar-img"
