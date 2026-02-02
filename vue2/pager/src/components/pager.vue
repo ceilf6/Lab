@@ -44,5 +44,28 @@
 </style>
 
 <script>
-export default {};
+export default {
+  props: {
+    // 当前所在页
+    current: {
+      type: Number,
+      default: 1,
+    },
+    // 总共数据数量
+    total: {
+      type: Number,
+      default: 0,
+    },
+    // 页容量
+    limit: {
+      type: Number,
+      default: 10,
+    },
+    // 分页器可见页码数量
+    visibleNumber: {
+      type: Number,
+      default: 10,
+    },
+  },
+};
 </script>
