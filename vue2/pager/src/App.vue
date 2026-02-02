@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <pager></pager>
+    <pager :current="2"></pager>
   </div>
 </template>
 
