@@ -1,0 +1,10 @@
+{
+    "editor.formatOnSave": true,
+    "[vue]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "vetur.format.enable": false,
+    "vetur.format.defaultFormatter.html": "none",
+    "vetur.format.defaultFormatter.css": "none",
+    "vetur.format.defaultFormatter.js": "none"
+}
