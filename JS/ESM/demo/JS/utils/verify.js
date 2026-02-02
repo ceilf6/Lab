@@ -1,5 +1,5 @@
-import { login as loginApi } from '../api';
-import { getFormElements } from './query';
+import { login as loginApi } from '../api/index.js';
+import { getFormElements } from './query.js';
 
 let isLoginning = false;
 
@@ -11,15 +11,15 @@ export async function handleLogin() {
     if (isLoginning) {
         return;
     }
-    
+
     const { txtUserName, txtUserPassword, btnSubmit } = getFormElements();
-    
+
     isLoginning = true;
     btnSubmit.value = '登录中...';
-    
+
     const userName = txtUserName.value.trim();
     const password = txtUserPassword.value;
-    
+
     // 表单验证
     if (!userName) {
         alert('请填写账号');
@@ -33,7 +33,7 @@ export async function handleLogin() {
         btnSubmit.value = '登录';
         return;
     }
-    
+
     try {
         const user = await loginApi(userName, password);
         if (user) {

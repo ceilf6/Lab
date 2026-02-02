@@ -1,2 +1,2 @@
 // 导出API模块
-export * from './login';
+export * from './login.js';

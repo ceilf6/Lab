@@ -7,7 +7,7 @@ import { getFormElements, handleLogin } from './index.js';
 // 初始化应用
 function initApp() {
     const { formContainer } = getFormElements();
-    
+
     // 绑定表单提交事件
     formContainer.addEventListener('submit', (e) => {
         e.preventDefault();
