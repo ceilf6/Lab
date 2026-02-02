@@ -1,4 +1,4 @@
 // 导出工具模块
-export * from './console';
-export * from './query';
-export * from './verify';
+export * from './console.js';
+export * from './query.js';
+export * from './verify.js';
