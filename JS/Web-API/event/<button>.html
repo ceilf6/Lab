@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="https://example.com/submit" method="post" id="myForm">
+        <input type="text" name="toBeSubmit">
+        <button type="submit">submit</button>
+        <!-- button 在 submit 类型下默认会提交 -->
+    </form>
+
+    <script>
+        const btn = document.querySelector('button')
+        const form = document.querySelector('#myForm');
+        addEventListener('click', (e) => {
+            e.preventDefault();
+            // e.returnValue = false;
+
+            const value = form.toBeSubmit.value;
+
+            fetch('https://example.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ toBeSubmit: value })
+            });
+        })
+    </script>
+</body>
+
+</html>
