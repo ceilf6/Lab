@@ -1,7 +1,9 @@
 <template>
   <!-- 组件根元素类名一般有 组件名-container 
   方便外层父组件预判内层根元素类名 => 作用域样式会对子组件根元素产生影响 -->
-  <div class="pager-container">
+  <div class="pager-container" v-if="totalPageNumber > 1">
+    <!-- 只有1总页数大于 1 的时候才显示，由于不经常变动，所以 v-if 可以 -->
+
     <!-- 第 1 页没有往前 -->
     <a href="" :class="{ disabled: current === 1 }">&lt;&lt;</a>
     <a href="" :class="{ disabled: current === 1 }">&lt;&lt;</a>
@@ -72,6 +74,9 @@ export default {
     // 总页数
     totalPageNumber() {
       return Math.ceil(this.total / this.limit);
+    },
+    numbers() {
+      return [7, 8, 9, 10];
     },
   },
 };
