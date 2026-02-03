@@ -1,10 +1,16 @@
 {
     "editor.formatOnSave": true,
+    "editor.defaultFormatter": "vscode.html-language-features",
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
     "[vue]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "vetur.format.enable": false,
-    "vetur.format.defaultFormatter.html": "none",
-    "vetur.format.defaultFormatter.css": "none",
-    "vetur.format.defaultFormatter.js": "none"
 }
