@@ -20,6 +20,14 @@
         let num = new Number(3.14159);
         num = num.toFixed(2);
         console.log(num)
+
+        const a1 = 123;
+        const a2 = new Number(123);
+        console.log('a1 == a2', a1 == a2) // true
+        // 包装类会自动隐式转换
+        console.log('a1 === a2', a1 === a2) // flase
+        console.log('a1', typeof a1) // number
+        console.log('a2', typeof a2) // object
     </script>
 </body>
 
