@@ -1,3 +1,5 @@
+import { createRef } from "react";
+
 function createObj(name = 'ceilf5', age = 5) { // 注意是在形参位置设置默认值
     // 构造函数：用于创建对象
     // 即返回对象
@@ -41,3 +43,18 @@ const newO = new CreateObj()
 const o = CreateObj();
 console.log('newO', newO)
 console.log('o', o)
+
+function CreateObj2(name = 'ceilf5', age = 5) { // 注意是在形参位置设置默认值
+    this.name = name;
+    this.age = age;
+
+    // 返回原始类型会直接忽略
+    // return 1;
+    // return 'hello';
+
+    // 返回引用类型会被覆盖
+    return new Array(1, 'hello');// [1, 'hello'];
+    // [] 其实是语法糖，本质还是 new Array(1, 'hello')
+}
+const newO2 = new CreateObj2();
+console.log('newO2', newO2)
