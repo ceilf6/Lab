@@ -119,6 +119,12 @@ export default {
   },
   methods: {
     handleClick(e, newPage) {
+      // 兜底处理
+      if (newPage < 1) {
+        newPage = 1;
+      } else if (newPage > this.totalPageNumber) {
+        newPage = this.totalPageNumber;
+      }
       console.log(e);
       // 子组件向父组件抛出事件
       // 事件名称，相关数据
