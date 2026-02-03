@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        document.body.appendChild(document.createElement('div'))
+
+        divEle = document.getElementsByTagName('div')
+        // getElement 返回的是集合
+        divEle[0].innerHTML = '<div style="color:red">I\'m ceilf6</div>'
+
+        // 或者直接用 querySelector
+        // const div = document.querySelector('div');
+        // div.innerHTML = '<div style="color:red">I\'m ceilf6</div>';
+
+        console.log(divEle[0].innerText);
+
+        h = document.createElement('h1')
+        h.innerText = `hello world`;
+        document.body.appendChild(h)
+    </script>
+</body>
+</html>
