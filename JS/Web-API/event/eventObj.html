@@ -8,11 +8,12 @@
 </head>
 
 <body>
-    <button onclick="console.log(event)">click</button>
+    <button onclick="console.log('onclick属性',event)">click</button>
     <script>
         const btn = document.querySelector("button");
         btn.onclick = function (e) {
             e = e || window.event;
+            console.log('覆盖成功', e)
         };
     </script>
 </body>
