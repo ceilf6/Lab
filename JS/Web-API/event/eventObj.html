@@ -8,12 +8,19 @@
 </head>
 
 <body>
-    <button onclick="console.log('onclick属性',event)">click</button>
+    <div class="container">
+        <!-- <button onclick="console.log('onclick属性',event)">click</button> -->
+        <button>click</button>
+    </div>
     <script>
-        const btn = document.querySelector("button");
-        btn.onclick = function (e) {
+        // const btn = document.querySelector("button");
+        const container = document.getElementsByClassName('container');
+        console.log(container);
+        container[0].onclick = function (e) {
             e = e || window.event;
-            console.log('覆盖成功', e)
+            // console.log('覆盖成功', e)
+            const source = e.target || e.srcElement
+            console.log('事件目标', source);
         };
     </script>
 </body>
