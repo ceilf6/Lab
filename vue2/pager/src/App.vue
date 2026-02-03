@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <pager :current="1" :total="302"></pager>
+    <pager :current="2" :total="302"></pager>
 
     <p v-if="visible">v-if -> 没有vnnode -> 渲染节点数少</p>
     <p v-show="visible">v-show -> 始终有vnode=>DOM - 稳定</p>
