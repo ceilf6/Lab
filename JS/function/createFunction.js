@@ -48,6 +48,12 @@ function CreateObj2(name = 'ceilf5', age = 5) { // 注意是在形参位置设�
     this.name = name;
     this.age = age;
 
+    // 本质是返回一个新对象
+    const newObj = new Object();
+    newObj.name = name;
+    newObj.age = age;
+    return newObj;
+
     // 返回原始类型会直接忽略
     // return 1;
     // return 'hello';
