@@ -11,12 +11,17 @@
 <body>
     <script>
         function test() {
-            return {};
-            // 相当于 new Object
+            return {}; // 如果没有 return {} 的话就是 test 为构造函数
+            // 相当于 new Object()
         }
 
         var obj = new test();
-        // obj.__proto__ === test.prototype
+        console.log(obj.__proto__); // 构造函数是 object
+        // obj.__proto__ === test.prototype 在构造 obj 的 test函数不 return {} 即构造函数不为 Object 的时候为 true
+
+        console.log('test.prototype.constructor === test', test.prototype.constructor === test) // true
+
+        console.log(Array.isArray([])) // 静态方法
     </script>
 </body>
 
