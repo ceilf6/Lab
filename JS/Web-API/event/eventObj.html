@@ -33,7 +33,12 @@
             const source = e.target || e.srcElement
             console.log('事件目标', source);
 
-            // 根据事件源进行分流判断
+            console.log('事件绑定元素', this)
+            console.log(e.currentTarget)
+
+            console.log('事件类型', e.type)
+
+            // 根据事件源进行分流处理
             if (e.target.tagName === "BUTTON") {
                 // 元素名称
                 e.target.parentElement.remove();
