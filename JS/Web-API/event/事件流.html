@@ -29,7 +29,7 @@
     <div>
         <!-- <button onclick=""> 不推荐直接在 HTML 中书写 JS -->
         <button>
-            点击我
+            红色DIV 蓝色BODY 当前BUTTON
         </button>
     </div>
 
@@ -38,48 +38,59 @@
     </p>
     <script>
         // ===== 捕获阶段 =====
-        document.documentElement.addEventListener('click', function () {
-            console.log('html 捕获');
+        document.documentElement.addEventListener('click', function (e) {
+            console.log(`${this.tagName} 捕获`);
+            console.log(e.eventPhase)
         }, true);
 
-        document.addEventListener('click', function () {
+        document.addEventListener('click', function (e) {
             console.log('document 捕获');
+            console.log(e.eventPhase)
         }, true);
 
-        document.body.addEventListener('click', function () {
-            console.log('body 捕获');
+        document.body.addEventListener('click', function (e) {
+            console.log(`${this.tagName} 捕获`);
+            console.log(e.eventPhase)
         }, true);
 
-        document.querySelector('div').addEventListener('click', function () {
-            console.log('div 捕获');
+        document.querySelector('div').addEventListener('click', function (e) {
+            console.log(`${this.tagName} 捕获`);
+            console.log(e.eventPhase)
         }, true);
 
-        document.querySelector('button').addEventListener('click', function () {
-            console.log('button 捕获');
+        document.querySelector('button').addEventListener('click', function (e) {
+            console.log(`${this.tagName} 捕获`);
+            console.log(e.eventPhase)
         }, true);
 
 
         // ===== 冒泡阶段 =====
-        document.documentElement.onclick = function () {
-            console.log("html 冒泡");
+        document.documentElement.onclick = function (e) {
+            console.log(`${this.tagName} 冒泡`);
+            console.log(e.eventPhase)
         }
-        document.onclick = function () {
+        document.onclick = function (e) {
             console.log("document 冒泡");
+            console.log(e.eventPhase)
         }
-        document.body.onclick = function () {
-            console.log("body 冒泡");
+        document.body.onclick = function (e) {
+            console.log(`${this.tagName} 冒泡`);
+            console.log(e.eventPhase)
         }
         document.querySelector("div").onclick = function (e) {
-            console.log("div 冒泡");
-            e.stopPropagation()
-            console.log('stopPropagation 阻止冒泡了')
+            console.log(`${this.tagName} 冒泡`);
+            console.log(e.eventPhase)
         }
-        document.querySelector("button").onclick = function () {
-            console.log("button 冒泡");
+        document.querySelector("button").onclick = function (e) {
+            console.log(`${this.tagName} 冒泡`);
+            console.log(e.eventPhase)
+            e.stopPropagation();
+            console.log(`${this.tagName} stopPropagation 阻止冒泡了`)
         }
 
-        document.querySelector("p").onclick = function () {
-            console.log("p");
+        document.querySelector("p").onclick = function (e) {
+            console.log(`${this.tagName} 冒泡`);
+            console.log(e.eventPhase)
         }
     </script>
 </body>
