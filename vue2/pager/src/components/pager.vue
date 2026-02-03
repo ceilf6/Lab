@@ -119,6 +119,8 @@ export default {
   },
   methods: {
     handleClick(e, newPage) {
+      // 阻止<a>标签的默认跳转行为导致的current更新失败
+      e.preventDefault();
       // 兜底处理
       if (newPage < 1) {
         newPage = 1;
