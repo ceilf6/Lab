@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <a href="https://www.baidu.com">百度</a>
+
+    <script>
+        const a = document.querySelector('a')
+        a.addEventListener('click', (e) => {
+            console.log(e);
+
+            e.preventDefault();
+            // 阻止浏览器默认行为
+            console.log('被点击')
+        })
+    </script>
+</body>
+
+</html>
