@@ -11,6 +11,17 @@
     <div class="container">
         <!-- <button onclick="console.log('onclick属性',event)">click</button> -->
         <button>click</button>
+
+        <p><span>Lorem ipsum dolor sit.</span><button>delete</button></p>
+        <p><span>Voluptatibus incidunt tempora debitis?</span><button>delete</button></p>
+        <p><span>Nemo cumque animi nisi.</span><button>delete</button></p>
+        <p><span>Ut consectetur illum aut!</span><button>delete</button></p>
+        <p><span>A commodi natus vel.</span><button>delete</button></p>
+        <p><span>Error inventore libero dolores?</span><button>delete</button></p>
+        <p><span>Illo nam dicta a.</span><button>delete</button></p>
+        <p><span>Consequuntur blanditiis rerum temporibus.</span><button>delete</button></p>
+        <p><span>Aspernatur at earum inventore.</span><button>delete</button></p>
+        <p><span>Labore error vero sint.</span><button>delete</button></p>
     </div>
     <script>
         // const btn = document.querySelector("button");
@@ -21,6 +32,12 @@
             // console.log('覆盖成功', e)
             const source = e.target || e.srcElement
             console.log('事件目标', source);
+
+            // 根据事件源进行分流判断
+            if (e.target.tagName === "BUTTON") {
+                // 元素名称
+                e.target.parentElement.remove();
+            }
         };
     </script>
 </body>
