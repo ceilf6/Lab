@@ -50,7 +50,12 @@ function CreateObj2(name = 'ceilf5', age = 5) { // 注意是在形参位置设�
         console.log(new.target)
     } else {
         console.log('使用方法错误，应该用 new')
-        return
+        // return
+        console.log('做兜底')
+        return {
+            name,
+            age
+        }
     }
 
     this.name = name;
