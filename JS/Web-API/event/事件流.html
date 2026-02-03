@@ -24,6 +24,7 @@
 </head>
 <body>
     <div>
+        <!-- <button onclick=""> 不推荐直接在 HTML 中书写 JS -->
         <button>
             点击我
         </button>
@@ -32,28 +33,49 @@
     <p>
 
     </p>
-    <script>
-        document.documentElement.onclick = function(){
-            console.log("html")
-        }
-        document.onclick = function(){
-            console.log("document");
-        }
-        
-        document.querySelector("div").onclick = function(){
-            console.log("div")
-        }
-        document.body.onclick = function(){
-            console.log("body")
-        }
-        document.querySelector("button").onclick = function(){
-            console.log("button")
-        }
-        
+<script>
+    // ===== 捕获阶段 =====
+    document.documentElement.addEventListener('click', function () {
+        console.log('html 捕获');
+    }, true);
 
-        document.querySelector("p").onclick = function(){
-            console.log("p");
-        }
-    </script>
+    document.addEventListener('click', function () {
+        console.log('document 捕获');
+    }, true);
+
+    document.body.addEventListener('click', function () {
+        console.log('body 捕获');
+    }, true);
+
+    document.querySelector('div').addEventListener('click', function () {
+        console.log('div 捕获');
+    }, true);
+
+    document.querySelector('button').addEventListener('click', function () {
+        console.log('button 捕获');
+    }, true);
+
+
+    // ===== 冒泡阶段 =====
+    document.documentElement.onclick = function(){
+        console.log("html 冒泡");
+    }
+    document.onclick = function(){
+        console.log("document 冒泡");
+    }
+    document.body.onclick = function(){
+        console.log("body 冒泡");
+    }
+    document.querySelector("div").onclick = function(){
+        console.log("div 冒泡");
+    }
+    document.querySelector("button").onclick = function(){
+        console.log("button 冒泡");
+    }
+
+    document.querySelector("p").onclick = function(){
+        console.log("p");
+    }
+</script>
 </body>
 </html>
