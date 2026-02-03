@@ -45,6 +45,14 @@ console.log('newO', newO)
 console.log('o', o)
 
 function CreateObj2(name = 'ceilf5', age = 5) { // 注意是在形参位置设置默认值
+    if (new.target) {
+        console.log('正确的通过 new 调用')
+        console.log(new.target)
+    } else {
+        console.log('使用方法错误，应该用 new')
+        return
+    }
+
     this.name = name;
     this.age = age;
 
@@ -64,3 +72,6 @@ function CreateObj2(name = 'ceilf5', age = 5) { // 注意是在形参位置设�
 }
 const newO2 = new CreateObj2();
 console.log('newO2', newO2)
+
+const newO2_2 = CreateObj2();
+console.log('newO2_2', newO2_2)
