@@ -29,11 +29,11 @@ export default {
     changeVisible() {
       this.visible = !this.visible;
     },
-  },
-  handlePageChange($event, newPage) {
-    // 注册事件 - 处理页码改变
-    this.current = newPage;
-    console.log(`加载第${this.current}页数据`);
+    handlePageChange($event, newPage) {
+      // 注册事件 - 处理页码改变
+      this.current = newPage;
+      console.log(`加载第${this.current}页数据`);
+    },
   },
 };
 </script>
