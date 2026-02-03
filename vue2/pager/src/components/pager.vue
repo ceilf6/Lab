@@ -5,8 +5,18 @@
     <!-- 只有1总页数大于 1 的时候才显示，由于不经常变动，所以 v-if 可以 -->
 
     <!-- 第 1 页没有往前 -->
-    <a href="" :class="{ disabled: current === 1 }">|&lt;&lt;</a>
-    <a href="" :class="{ disabled: current === 1 }">&lt;&lt;</a>
+    <a
+      href=""
+      :class="{ disabled: current === 1 }"
+      @click="handleClick($event, 1)"
+      >|&lt;&lt;</a
+    >
+    <a
+      href=""
+      :class="{ disabled: current === 1 }"
+      @click="handleClick($event, current - 1)"
+      >&lt;&lt;</a
+    >
 
     <!-- 优先级：肯定先运行的 v-for ，所以后面可以放心用 n -->
     <a
@@ -14,11 +24,22 @@
       v-for="(n, i) in numbers"
       :key="i"
       :class="{ active: n === current }"
+      @click="handleClick($event, n)"
       >{{ n }}</a
     >
 
-    <a href="" :class="{ disabled: current === totalPageNumber }">&gt;&gt;</a>
-    <a href="" :class="{ disabled: current === totalPageNumber }">&gt;&gt;|</a>
+    <a
+      href=""
+      :class="{ disabled: current === totalPageNumber }"
+      @click="handleClick($event, current + 1)"
+      >&gt;&gt;</a
+    >
+    <a
+      href=""
+      :class="{ disabled: current === totalPageNumber }"
+      @click="handleClick($event, totalPageNumber)"
+      >&gt;&gt;|</a
+    >
 
     <!-- <div>{{ visibleMin }}</div>
     <div>|</div>
@@ -94,6 +115,14 @@ export default {
         nums.push(i);
       }
       return nums;
+    },
+  },
+  methods: {
+    handleClick(e, newPage) {
+      console.log(e);
+      // 子组件向父组件抛出事件
+      // 事件名称，相关数据
+      this.$emit("pageChange", newPage);
     },
   },
 };
