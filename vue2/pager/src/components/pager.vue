@@ -19,6 +19,10 @@
 
     <a href="" :class="{ disabled: current === totalPageNumber }">&gt;&gt;</a>
     <a href="" :class="{ disabled: current === totalPageNumber }">&gt;&gt;|</a>
+
+    <!-- <div>{{ visibleMin }}</div>
+    <div>|</div>
+    <div>{{ visibleMax }}</div> -->
   </div>
 </template>
 
@@ -75,10 +79,21 @@ export default {
     },
     // 显示的最小数字
     visibleMin() {
-      return this.current - Math.floor(this.visibleNumber / 2);
+      // 注意得取个 max 去兜底
+      return Math.max(1, this.current - Math.floor(this.visibleNumber / 2));
+    },
+    visibleMax() {
+      return Math.min(
+        this.totalPageNumber,
+        this.visibleMin + this.visibleNumber - 1,
+      );
     },
     numbers() {
-      return [7, 8, 9, 10];
+      const nums = [];
+      for (let i = this.visibleMin; i <= this.visibleMax; ++i) {
+        nums.push(i);
+      }
+      return nums;
     },
   },
 };
