@@ -1,5 +1,5 @@
 <template>
-  <h1>welcome to ceilf6's Blogs</h1>
+  <h1>Welcome to ceilf6's Blogs</h1>
 </template>
 
 <script>

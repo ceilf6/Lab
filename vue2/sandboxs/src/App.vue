@@ -58,4 +58,11 @@ export default {
   display: block;
 }
 */
+
+/* 通过 VueRouter 自动添加的类名
+router-link-exact-active router-link-active
+实现选中效果 */
+#app > a.router-link-exact-active {
+  color: #bf91f3;
+}
 </style>
