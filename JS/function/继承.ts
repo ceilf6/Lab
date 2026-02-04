@@ -46,3 +46,5 @@ b.name;        // ✅ public
 const c = new Child('Bob');
 c.name;        // ✅ public
 // c.count;    // ❌ protected
+
+export {};
