@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import pager from "./components/pager.vue";
+import pager from "./components/Pager";
 export default {
   components: {
     pager,
