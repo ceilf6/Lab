@@ -13,10 +13,10 @@
     <button @click="changeVisible">切换显示</button>
 
     <router-view></router-view>
-    <router-link to="/" exact>主页</router-link>
-    <router-link to="/blog">博客</router-link>
-    <router-link to="/about" exact>关于我</router-link>
-    <router-link to="/message" exact>留言板</router-link>
+    <router-link :to="{ name: 'Home' }" exact>主页</router-link>
+    <router-link :to="{ name: 'Blog' }">博客</router-link>
+    <router-link :to="{ name: 'About' }" exact>关于我</router-link>
+    <router-link :to="{ name: 'Message' }" exact>留言板</router-link>
   </div>
 </template>
 
