@@ -84,7 +84,7 @@ export default {
         return;
       }
 
-      // 根据选择获取容器
+      // $refs => 根据选择获取容器
       let container = null;
       if (this.selectedContainer === "custom") {
         container = this.$refs.customContainer;
