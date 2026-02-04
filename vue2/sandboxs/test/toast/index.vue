@@ -34,7 +34,27 @@
       />
     </div>
 
+    <div class="form-group">
+      <label>显示容器:</label>
+      <div class="type-buttons">
+        <button
+          v-for="cont in containers"
+          :key="cont.value"
+          :class="{ active: selectedContainer === cont.value }"
+          @click="selectedContainer = cont.value"
+        >
+          {{ cont.label }}
+        </button>
+      </div>
+    </div>
+
     <button @click="showToast" class="submit-btn">显示提示</button>
+
+    <!-- 测试容器 -->
+    <div ref="customContainer" class="custom-container">
+      <p>自定义容器区域</p>
+      <p>Toast可以显示在这里</p>
+    </div>
   </div>
 </template>
 
@@ -50,6 +70,11 @@ export default {
       selectedType: "success",
       message: "操作成功",
       duration: 3000,
+      containers: [
+        { label: "页面中间", value: null },
+        { label: "自定义容器", value: "custom" },
+      ],
+      selectedContainer: null,
     };
   },
   methods: {
@@ -58,7 +83,14 @@ export default {
         alert("请输入提示内容");
         return;
       }
-      toast(this.message, this.selectedType, this.duration);
+
+      // 根据选择获取容器
+      let container = null;
+      if (this.selectedContainer === "custom") {
+        container = this.$refs.customContainer;
+      }
+
+      toast(this.message, this.selectedType, this.duration, container);
     },
   },
 };
@@ -140,5 +172,22 @@ export default {
 
 .submit-btn:active {
   background: #389e0d;
+}
+
+.custom-container {
+  margin-top: 40px;
+  padding: 60px 20px;
+  border: 2px dashed #1890ff;
+  border-radius: 8px;
+  background: #f0f5ff;
+  text-align: center;
+  position: relative;
+  min-height: 150px;
+}
+
+.custom-container p {
+  margin: 5px 0;
+  color: #666;
+  font-size: 14px;
 }
 </style>
