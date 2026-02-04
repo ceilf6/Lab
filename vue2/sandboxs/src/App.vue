@@ -13,6 +13,10 @@
     <button @click="changeVisible">切换显示</button>
 
     <router-view></router-view>
+    <router-link to="/">主页</router-link>
+    <router-link to="/blog">博客</router-link>
+    <router-link to="/about">关于我</router-link>
+    <router-link to="/message">留言板</router-link>
   </div>
 </template>
 
@@ -42,4 +46,16 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+/* router-link 会被渲染成 <a> 标签，所以要选择 a 元素 */
+#app > a {
+  display: block;
+}
+/*
+或者更精确一些：使用 Vue Router 自动添加的类名
+.router-link-active,
+.router-link-exact-active {
+  display: block;
+}
+*/
+</style>
