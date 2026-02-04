@@ -7,7 +7,7 @@ Vue.use(VueRouter); // 使用Vue插件 - Router
 const router = new VueRouter({
     // 插件配置
     routes, // 路由匹配模式
-    mode: 'history'
+    mode: 'history' // 路由模式
 })
 
 export default router
