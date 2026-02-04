@@ -9,11 +9,12 @@
     "test:Pager": "vue serve ./src/components/Pager/test.vue",
     "test:Modal": "vue serve ./src/components/Modal/test.vue",
     "test:Layout": "vue serve ./src/components/Layout/test.vue",
-    "test:ThreeColumnLayout":"vue serve ./src/components/ThreeColumnLayout/test.vue"
+    "test:ThreeColumnLayout": "vue serve ./src/components/ThreeColumnLayout/test.vue"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-router": "^3.6.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.8",
