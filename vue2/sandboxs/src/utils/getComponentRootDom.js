@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 /**
   通过 render 以及 $el 获取某个组件渲染的Dom根元素
 */
