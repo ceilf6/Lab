@@ -95,6 +95,7 @@ export default {
         type: this.selectedType,
         duration: this.duration,
         container: container,
+        callback: () => console.log("我是回调函数，我成功被触发啦~"),
       });
     },
   },
