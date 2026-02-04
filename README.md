@@ -28,3 +28,6 @@
 
 - vue2/sandboxs/src/utils/getComponentRootDom.js
     - 通过 render 以及 $el 获取某个组件渲染的Dom根元素
+
+- vue2/sandboxs/src/utils/toast.js
+    - 实现 toast 提示函数，通过 JS 创建提示框
