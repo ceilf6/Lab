@@ -1,12 +1,17 @@
 <template>
   <div class="message-container">
+    <div class="message">{{ msg }}</div>
     <button>确认</button>
     <button>关闭</button>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    msg: String,
+  },
+};
 </script>
 
 <style>
