@@ -25,3 +25,6 @@
 
 - vue2/sandboxs
     - demo created from Vue/CLI
+
+- vue2/sandboxs/src/utils/getComponentRootDom.js
+    - 通过 render 以及 $el 获取某个组件渲染的Dom根元素

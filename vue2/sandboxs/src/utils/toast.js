@@ -1,3 +1,5 @@
+import getComponentRootDom from "./getComponentRootDom";
+
 /**
  * 弹出消息提示
  * @param {String} content 消息内容
