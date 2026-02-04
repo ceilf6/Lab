@@ -22,3 +22,6 @@
     - .cjs 后缀会永远用 CJS
         - 会覆盖 package.json 中的 type: "module"
     - .mjs → 永远是 ES Module
+
+- vue2/sandboxs
+    - demo created from Vue/CLI
