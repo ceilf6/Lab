@@ -10,7 +10,8 @@
     "test:Modal": "vue serve ./src/components/Modal/test.vue",
     "test:Layout": "vue serve ./src/components/Layout/test.vue",
     "test:ThreeColumnLayout": "vue serve ./src/components/ThreeColumnLayout/test.vue",
-    "test:ref": "vue serve ./test/refs/index.vue"
+    "test:ref": "vue serve ./test/refs/index.vue",
+    "test:Icon": "vue serve ./src/components/Icon/test.vue"
   },
   "dependencies": {
     "core-js": "^3.6.5",
