@@ -20,9 +20,9 @@ export default function (content, type = "info", duration = 2000, container) {
 
     console.log(styles)
     // 设置样式
-    // 1. styles.toast
-    // 2. type的分类样式
-    toast.className = `toast-${type} ${styles.toast}`;
+    // 1. styles.toast styles.toast
+    // 2. type的分类样式 styles[`toast-${type}`]
+    toast.className = `${styles.toast} ${styles[`toast-${type}`]}`;
 
     // 如果容器没传，默认是页面居中
     if (!container) container = document.body;
