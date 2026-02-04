@@ -90,7 +90,12 @@ export default {
         container = this.$refs.customContainer;
       }
 
-      toast(this.message, this.selectedType, this.duration, container);
+      toast({
+        content: this.message,
+        type: this.selectedType,
+        duration: this.duration,
+        container: container,
+      });
     },
   },
 };

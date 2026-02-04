@@ -9,7 +9,12 @@ import styles from '@/styles/toast.module.less'
  * @param {Number} duration 多久后消失
  * @param {HTMLElement} container 容器，消息会显示到该容器的正中：如果不传默认在页面中间
  */
-export default function (content, type = "info", duration = 2000, container) {
+export default function (options = {}) {
+    const content = options.content || "";
+    const type = options.type || "info";
+    const duration = options.duration || 2000;
+    const container = options.container || document.body;
+
     // 创建消息元素
     const toast = document.createElement("div");
 
@@ -25,7 +30,7 @@ export default function (content, type = "info", duration = 2000, container) {
     toast.className = `${styles.toast} ${styles[`toast-${type}`]}`;
 
     // 如果容器没传，默认是页面居中
-    if (!container) container = document.body;
+    // if (!container) container = document.body;
 
     // 因为 toast 提示肯定是要绝对定位，需要容器不能是 static 默认的 position
     if (getComputedStyle(container).position === "static") {
@@ -49,6 +54,8 @@ export default function (content, type = "info", duration = 2000, container) {
             "transitionend",
             function () {
                 toast.remove();
+                // 运行回调函数
+                options.callback && options.callback();
             },
             { once: true }, // 确保事件只触发一次
         );
