@@ -34,7 +34,23 @@ export default function (content, type = "info", duration = 2000, container) {
 
     container.appendChild(toast)
 
+    // 浏览器强行渲染
+    toast.clientHeight; // 导致reflow
+
+    // 回归到正常位置
+    toast.style.opacity = 1;
+    toast.style.transform = `translate(-50%, -50%)`;
+
+    // 等一段时间，消失
     setTimeout(() => {
-        toast.remove();
+        toast.style.opacity = 0;
+        toast.style.transform = `translate(-50%, -50%) translateY(-25px)`;
+        toast.addEventListener(
+            "transitionend",
+            function () {
+                toast.remove();
+            },
+            { once: true }, // 确保事件只触发一次
+        );
     }, duration);
 }
