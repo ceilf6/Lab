@@ -13,10 +13,10 @@
     <button @click="changeVisible">切换显示</button>
 
     <router-view></router-view>
-    <router-link to="/">主页</router-link>
+    <router-link to="/" exact>主页</router-link>
     <router-link to="/blog">博客</router-link>
-    <router-link to="/about">关于我</router-link>
-    <router-link to="/message">留言板</router-link>
+    <router-link to="/about" exact>关于我</router-link>
+    <router-link to="/message" exact>留言板</router-link>
   </div>
 </template>
 
@@ -62,7 +62,13 @@ export default {
 /* 通过 VueRouter 自动添加的类名
 router-link-exact-active router-link-active
 实现选中效果 */
-#app > a.router-link-exact-active {
+/*
+为了例如 blog/ariticle/1 也能显示匹配，精准匹配 router-link-exact-active 不行
+所以用 router-link-active
+但是 about/something 不想显示匹配效果
+于是得将其他的 router-link 打开 exact 布尔属性
+*/
+#app > a.router-link-active {
   color: #bf91f3;
 }
 </style>
