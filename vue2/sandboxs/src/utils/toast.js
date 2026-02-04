@@ -16,7 +16,7 @@ export default function (content, type = "info", duration = 2000, container) {
     // 获取 DOM节点对象，将其 outerHTML 嵌入 toast元素的innerHTML
     const IconDOM = getComponentRootDom(Icon, { type: type })
 
-    toast.innerHTML = `<span>${IconDOM.outerHTML}<div>${content}</div></span>`
+    toast.innerHTML = `<span class="${styles.icon}">${IconDOM.outerHTML}</span><div>${content}</div>`
 
     // 设置样式
     toast.className = styles.toast;
