@@ -12,10 +12,10 @@ export default function (content, type = "info", duration = 2000, container) {
     // 创建消息元素
     const toast = document.createElement("div");
 
-    // 获取 DOM节点对象，将其 innerHTML 嵌入 toast元素的innerHTML
+    // 获取 DOM节点对象，将其 outerHTML 嵌入 toast元素的innerHTML
     const IconDOM = getComponentRootDom(Icon, { type: type })
 
-    toast.innerHTML = `<span>${IconDOM.innerHTML}<div>${content}</div></span>`
+    toast.innerHTML = `<span>${IconDOM.outerHTML}<div>${content}</div></span>`
 
     // 如果容器没传，默认是页面居中
     if (!container) container = document.body;
