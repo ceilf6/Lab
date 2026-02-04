@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let el = document.body
+
+        while (el) {
+            console.log(el)
+            el = Object.getPrototypeOf(el)
+        }
+        /*
+        document.body
+        → HTMLBodyElement.prototype
+        → HTMLElement.prototype
+        → Element.prototype
+        → Node.prototype
+        → EventTarget.prototype
+        → Object.prototype
+        → null
+        */
+    </script>
+</body>
+
+</html>
