@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import toast from "@/utils/toast";
+import { toast } from "@/utils";
 
 window.toast = toast; // 挂载、方便测试
 
