@@ -1,4 +1,5 @@
 import getComponentRootDom from "./getComponentRootDom";
+import Icon from "@/components/Icon"
 
 /**
  * 弹出消息提示
@@ -9,5 +10,24 @@ import getComponentRootDom from "./getComponentRootDom";
  */
 export default function (content, type = "info", duration = 2000, container) {
     // 创建消息元素
-    const div = document.createElement("div");
+    const toast = document.createElement("div");
+
+    // 获取 DOM节点对象，将其 innerHTML 嵌入 toast元素的innerHTML
+    const IconDOM = getComponentRootDom(Icon, { type: type })
+
+    toast.innerHTML = `<span>${IconDOM.innerHTML}</span><div>${content}</div>`
+
+    // 如果容器没传，默认是页面居中
+    if (!container) container = document.body;
+
+    // 因为 toast 提示肯定是要绝对定位，需要容器不能是 static 默认的 position
+    if (getComputedStyle(container).position === "static") {
+        container.style.position = "relative"
+    }
+
+    container.appendChild(toast)
+
+    setTimeout(() => {
+        toast.remove();
+    }, duration);
 }
