@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:Pager": "vue serve ./src/components/Pager/test.vue",
-    "test:Modal": "vue serve ./src/components/Modal/test.vue"
+    "test:Modal": "vue serve ./src/components/Modal/test.vue",
+    "test:Layout": "vue serve ./src/components/Layout/test.vue"
   },
   "dependencies": {
     "core-js": "^3.6.5",
