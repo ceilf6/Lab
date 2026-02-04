@@ -1,5 +1,6 @@
 import getComponentRootDom from "./getComponentRootDom";
 import Icon from "@/components/Icon"
+import styles from '@/styles/toast.module.less'
 
 /**
  * 弹出消息提示
@@ -16,6 +17,9 @@ export default function (content, type = "info", duration = 2000, container) {
     const IconDOM = getComponentRootDom(Icon, { type: type })
 
     toast.innerHTML = `<span>${IconDOM.outerHTML}<div>${content}</div></span>`
+
+    // 设置样式
+    toast.className = styles.toast;
 
     // 如果容器没传，默认是页面居中
     if (!container) container = document.body;
