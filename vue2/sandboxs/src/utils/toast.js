@@ -18,8 +18,11 @@ export default function (content, type = "info", duration = 2000, container) {
 
     toast.innerHTML = `<span class="${styles.icon}">${IconDOM.outerHTML}</span><div>${content}</div>`
 
+    console.log(styles)
     // 设置样式
-    toast.className = styles.toast;
+    // 1. styles.toast
+    // 2. type的分类样式
+    toast.className = `toast-${type} ${styles.toast}`;
 
     // 如果容器没传，默认是页面居中
     if (!container) container = document.body;
