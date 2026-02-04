@@ -20,11 +20,17 @@ class Father {
     constructor(prop) {
         this.prop = prop;
     }
+
+    func() {
+    }
 }
 
 class Child extends Father {
     constructor(prop, extProp) {
         super(prop);
         this.extProp = extProp;
+    }
+
+    extFunc() {
     }
 }
