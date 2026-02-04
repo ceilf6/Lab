@@ -9,7 +9,8 @@
     "test:Pager": "vue serve ./src/components/Pager/test.vue",
     "test:Modal": "vue serve ./src/components/Modal/test.vue",
     "test:Layout": "vue serve ./src/components/Layout/test.vue",
-    "test:ThreeColumnLayout": "vue serve ./src/components/ThreeColumnLayout/test.vue"
+    "test:ThreeColumnLayout": "vue serve ./src/components/ThreeColumnLayout/test.vue",
+    "test:ref": "vue serve ./test/refs/index.vue"
   },
   "dependencies": {
     "core-js": "^3.6.5",
