@@ -10,7 +10,7 @@ window.toast = toast; // 挂载、方便测试
 export default {
   methods: {
     showToast() {
-      toast("操作成功", "info", 50000);
+      toast("操作成功", "success", 50000);
     },
   },
 };
