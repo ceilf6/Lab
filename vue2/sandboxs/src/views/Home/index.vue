@@ -4,16 +4,18 @@
     <button @click="showToast">click to toast</button>
     <Lifecycle />
     <FetchData></FetchData>
+    <mountedDOM />
   </div>
 </template>
 
 <script>
-import { Lifecycle, FetchData } from "../../../test/Lifecycle";
+import { Lifecycle, FetchData, mountedDOM } from "../../../test/Lifecycle";
 
 export default {
   components: {
     Lifecycle,
     FetchData,
+    mountedDOM,
   },
   methods: {
     showToast() {
