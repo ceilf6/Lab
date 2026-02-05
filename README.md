@@ -40,3 +40,5 @@
 
 - [vue2/sandboxs/test/Lifecycle/timerDestroyed.vue](vue2/sandboxs/test/Lifecycle/timerDestroyed.vue)
     - 类似于[组合关系](https://github.com/ceilf6/CPlusPlus/blob/main/docs/relationship_demo.cpp#L120)的析构函数，凡是在 mounted / created 中引入的“组件外部副作用”，都应该在 beforeDestroy 中对称清理
+ 
+- [vue2沙盒开发的一系列成果测试脚本](https://github.com/ceilf6/Lab/blob/main/vue2/sandboxs/package.json#L9)
