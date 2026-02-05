@@ -37,3 +37,6 @@
 
 - [vue2/sandboxs/src/mock/index.js](vue2/sandboxs/src/mock/index.js)
     - 拦截 AJAX ，重新赋值 XHR 。 Apifox 和 Postman 也支持 mock 环境
+
+- [vue2/sandboxs/test/Lifecycle/timerDestroyed.vue](vue2/sandboxs/test/Lifecycle/timerDestroyed.vue)
+    - 类似于[组合关系](https://github.com/ceilf6/CPlusPlus/blob/main/docs/relationship_demo.cpp#L120)的析构函数，凡是在 mounted / created 中引入的“组件外部副作用”，都应该在 beforeDestroy 中对称清理
