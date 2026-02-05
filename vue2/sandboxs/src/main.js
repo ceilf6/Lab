@@ -13,7 +13,7 @@ new Vue({
 }).$mount('#app')
 
 // 注册全局指令，方便使用 Loading 组件
-import vLoading from './directives/loading'
+import vLoading from './directives/loading/index'
 Vue.directive("loading", vLoading)
 
 // ========= 测试 =========
