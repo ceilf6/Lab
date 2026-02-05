@@ -5,17 +5,24 @@
     <Lifecycle />
     <FetchData></FetchData>
     <mountedDOM />
+    <timerDestroyed></timerDestroyed>
   </div>
 </template>
 
 <script>
-import { Lifecycle, FetchData, mountedDOM } from "../../../test/Lifecycle";
+import {
+  Lifecycle,
+  FetchData,
+  mountedDOM,
+  timerDestroyed,
+} from "../../../test/Lifecycle";
 
 export default {
   components: {
     Lifecycle,
     FetchData,
     mountedDOM,
+    timerDestroyed,
   },
   methods: {
     showToast() {
