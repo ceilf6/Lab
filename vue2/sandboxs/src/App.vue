@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <pager
+    <Pager
       :current="current"
       :total="total"
       @pageChange="handlePageChange"
-    ></pager>
+    ></Pager>
     <!-- Vue 会自动将 $emit 的第二个参数传给处理函数的第一个参数 -->
     <!-- @pageChange="(newPage) => handlePageChange(newPage)" -->
 
@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import pager from "./components/Pager";
+import { Pager } from "./components";
 export default {
   components: {
-    pager,
+    Pager,
   },
   data() {
     return {
