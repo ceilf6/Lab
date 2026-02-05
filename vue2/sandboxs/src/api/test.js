@@ -5,6 +5,7 @@ export default async function getLab() {
     // 使用过程中直接省略 target ，那么就会自动使用当前网页的 - 肯定不会跨域，这样到时候生产环境也不用改
     // 除非是 静态资源服务器和数据服务器是分开的，例如 http://www.my-site.com 和 http://api.my-site.com/
     console.log(res)
+    return res
 }
 
 // getLab()
