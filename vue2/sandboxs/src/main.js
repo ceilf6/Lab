@@ -13,3 +13,4 @@ new Vue({
 }).$mount('#app')
 
 import './api/test'
+import './mock'
