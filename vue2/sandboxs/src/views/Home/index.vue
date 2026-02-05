@@ -3,15 +3,17 @@
     <h1>Welcome to ceilf6's Home</h1>
     <button @click="showToast">click to toast</button>
     <Lifecycle />
+    <FetchData></FetchData>
   </div>
 </template>
 
 <script>
-import Lifecycle from "../../../test/Lifecycle";
+import { Lifecycle, FetchData } from "../../../test/Lifecycle";
 
 export default {
   components: {
     Lifecycle,
+    FetchData,
   },
   methods: {
     showToast() {
