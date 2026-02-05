@@ -34,3 +34,6 @@
 
 - [vue2/sandboxs/vue.config.js](vue2/sandboxs/vue.config.js)
     - 通过开发服务器代理处理开发环境中的、浏览器同源策略导致的跨域问题
+
+- [vue2/sandboxs/src/mock/index.js](vue2/sandboxs/src/mock/index.js)
+    - 拦截 AJAX ，重新赋值 XHR 。 Apifox 和 Postman 也支持 mock 环境
