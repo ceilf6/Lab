@@ -1,18 +1,17 @@
 <template>
   <div>
-    <h1 v-if="!isLoading">branches: {{ branches }}</h1>
-    <!-- <h1 v-if="!branches">loading...</h1> -->
-    <Loading v-if="isLoading" />
+    <h1 v-loading:parm.p1.p2="isLoading">branches: {{ branches }}</h1>
+    <!-- <Loading v-if="isLoading" /> -->
   </div>
 </template>
 
 <script>
 import getLab from "@/api/test";
-import { Loading } from "@/components";
+// import { Loading } from "@/components";
 
 export default {
   components: {
-    Loading,
+    // Loading,
   },
   data() {
     return {
