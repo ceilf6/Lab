@@ -33,11 +33,11 @@ export default {
     console.log("=== mounted", document.getElementById("test"), this.$refs.ref);
   },
   beforeUpdate() {
-    console.log("=== beforeUpdate", "count:", this.$refs.count.innerHTML);
+    console.log("=== beforeUpdate", "innerHTML:", this.$refs.count.innerHTML);
     // this.count拿到的是同步之后的结果，因为得数据更新才会导致re-render
   },
   updated() {
-    console.log("=== updated", "count:", this.$refs.count.innerHTML);
+    console.log("=== updated", "innerHTML:", this.$refs.count.innerHTML);
   },
   beforeDestroy() {
     console.log("=== beforeDestroyed");
