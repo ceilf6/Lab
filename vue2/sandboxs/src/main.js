@@ -4,6 +4,8 @@ import App from './App.vue'
 import './styles/global.less'
 
 import router from './router'
+import { toast } from './utils'
+Vue.prototype.$toast = toast
 
 new Vue({
   router: router,

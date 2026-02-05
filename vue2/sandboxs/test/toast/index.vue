@@ -61,7 +61,7 @@
 <script>
 import { toast } from "@/utils";
 
-window.toast = toast; // 挂载、方便测试
+// window.toast = toast; // 挂载、方便测试
 
 export default {
   data() {
