@@ -2,6 +2,8 @@ import axios from "axios";
 
 async function getLab() {
     const res = await axios.get("/ceilf6/Lab/branch-and-tag-count")
+    // 使用过程中直接省略 target ，这样到时候生产环境也不用改
+    // 除非是 静态资源服务器和数据服务器是分开的，例如 http://www.my-site.com 和 http://api.my-site.com/
     console.log(res)
 }
 
