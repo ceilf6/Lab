@@ -6,3 +6,5 @@ Mock.setup({
 }) // 配置延迟、模拟异步
 
 import './test'
+
+// import './test2' // 等后端开发完毕后直接注释导入即可
