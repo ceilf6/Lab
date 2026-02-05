@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 v-loading:parm.p1.p2="isLoading">branches: {{ branches }}</h1>
+    <h1 v-loading="isLoading">branches: {{ branches }}</h1>
     <!-- <Loading v-if="isLoading" /> -->
   </div>
 </template>

@@ -7,9 +7,24 @@
 
 <script>
 import getLab from "@/api/test";
+import "../../mock";
 // import { Loading } from "@/components";
 
 export default {
+  directives: {
+    loading: {
+      bind(el, binding) {
+        console.log("=== bind");
+        console.log(el, binding);
+      },
+      inserted() {
+        console.log("=== inserted");
+      },
+      update() {
+        console.log("=== update");
+      },
+    },
+  },
   components: {
     // Loading,
   },
