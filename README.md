@@ -31,3 +31,6 @@
 
 - [vue2/sandboxs/src/utils/toast.js](vue2/sandboxs/src/utils/toast.js)
     - 实现 toast 提示函数，通过 JS 创建提示框
+
+- [vue2/sandboxs/vue.config.js](vue2/sandboxs/vue.config.js)
+    - 通过开发服务器代理处理开发环境中的、浏览器同源策略导致的跨域问题
