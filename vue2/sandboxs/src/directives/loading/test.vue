@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 v-loading:parm.p1.p2="isLoading">branches: {{ branches }}</h1>
+    <h1 v-loading="isLoading">branches: {{ branches }}</h1>
     <!-- <Loading v-if="isLoading" /> -->
   </div>
 </template>
@@ -9,20 +9,33 @@
 import getLab from "@/api/test";
 import "../../mock";
 // import { Loading } from "@/components";
+import loadingUrl from "@/assets/loading.svg";
+
+function getLoadingImg(el) {
+  return el.querySelector("img[data-role=loading]");
+}
+
+function createLoadingImg() {
+  const img = document.createElement("img");
+  img.dataset.role = "loading";
+  img.src = loadingUrl;
+  img.className = "loading";
+  return img;
+}
 
 export default {
   directives: {
-    loading: {
-      bind(el, binding) {
-        console.log("=== bind");
-        console.log(el, binding);
-      },
-      inserted() {
-        console.log("=== inserted");
-      },
-      update() {
-        console.log("=== update");
-      },
+    loading: function (el, binding) {
+      // 根据 binding.value 值决定 Loading 元素的创建和删除
+      const curImg = getLoadingImg(el);
+      if (binding.value) {
+        if (!curImg) {
+          const img = createLoadingImg();
+          el.appendChild(img);
+        }
+      } else {
+        curImg.remove();
+      }
     },
   },
   components: {
@@ -50,3 +63,10 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="less">
+@import "~@/styles/mixin.less";
+.loading {
+  .self-center();
+}
+</style>
