@@ -33,7 +33,8 @@ export default function (options = {}) {
     // if (!container) container = document.body;
 
     // 因为 toast 提示肯定是要绝对定位，需要容器不能是 static 默认的 position
-    if (getComputedStyle(container).position === "static") {
+    // 如果是默认容器 body 的话就不需要添加 relative 了，直接相对于初始包含块即可，防止后面所有祖先没有定位的元素都以 body 作为参考
+    if (container !== document.body && getComputedStyle(container).position === "static") {
         container.style.position = "relative"
     }
 
