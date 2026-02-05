@@ -17,6 +17,10 @@ import Mock from 'mockjs'
 */}
 
 Mock.mock('/ceilf6/Lab/branch-and-tag-count', 'get', {
-    tags: 0,
-    branches: 3
+    code: 500,
+    msg: "机器爆炸啦",
+    data: {
+        tags: 0,
+        branches: 3
+    }
 })
