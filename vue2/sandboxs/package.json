@@ -15,6 +15,7 @@
     "test:toast": "vue serve ./test/toast/index.vue"
   },
   "dependencies": {
+    "axios": "^1.13.4",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-router": "^3.6.5"
