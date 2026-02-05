@@ -21,6 +21,6 @@ Mock.mock('/ceilf6/Lab/branch-and-tag-count', 'get', {
     msg: "机器爆炸啦",
     data: {
         tags: 0,
-        branches: 3
+        branches: 2
     }
 })

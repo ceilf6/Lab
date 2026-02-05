@@ -2,11 +2,17 @@
   <div class="home">
     <h1>Welcome to ceilf6's Home</h1>
     <button @click="showToast">click to toast</button>
+    <Lifecycle />
   </div>
 </template>
 
 <script>
+import Lifecycle from "../../../test/Lifecycle";
+
 export default {
+  components: {
+    Lifecycle,
+  },
   methods: {
     showToast() {
       this.$toast({
