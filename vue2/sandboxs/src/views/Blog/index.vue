@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="blog-container">
     <h1>
       <a href="https://blog.csdn.net/2301_78856868"
         >Welcome to ceilf6's Blogs</a
@@ -34,3 +34,18 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="less">
+.blog-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  h1 {
+    flex: 0 0 auto;
+  }
+  .layout-container {
+    flex: 1 1 auto;
+  }
+}
+</style>
