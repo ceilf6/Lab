@@ -7,14 +7,14 @@ import router from './router'
 import { toast } from './utils'
 Vue.prototype.$toast = toast
 
+// 注册全局指令，必须在创建 Vue 实例之前
+import vLoading from './directives/loading/index'
+Vue.directive("loading", vLoading)
+
 new Vue({
   router: router,
   render: h => h(App),
 }).$mount('#app')
-
-// 注册全局指令，方便使用 Loading 组件
-import vLoading from './directives/loading/index'
-Vue.directive("loading", vLoading)
 
 // ========= 测试 =========
 
