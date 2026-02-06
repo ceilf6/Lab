@@ -9,7 +9,9 @@ export default function (defaultDataValue = null) { // 不用函数的话设置�
             }
         },
         async created() {
+            console.log("=== fetchData mixin created 钩子执行了");
             this.data = await this.fetchData();
+            console.log("=== fetchData mixin 获取数据完成", this.data);
             this.isLoading = false;
         }
     }
