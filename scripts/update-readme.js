@@ -30,7 +30,7 @@ function getPtrCommits() {
     // 获取所有提交的消息和 SHA
     let commits;
     try {
-        const output = execSync(`git log --format=%H|%s ${range}`, { encoding: 'utf-8' });
+        const output = execSync(`git log --format='%H|%s' ${range}`, { encoding: 'utf-8' });
         commits = output.trim().split('\n').filter(Boolean);
     } catch (error) {
         console.error('获取提交失败:', error.message);
