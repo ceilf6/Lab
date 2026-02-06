@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app-container">
     <!-- <Pager
       :current="current"
       :total="total"
@@ -12,19 +12,33 @@
     <p v-show="visible">v-show -> 始终有vnode=>DOM - 稳定</p>
     <button @click="changeVisible">切换显示</button> -->
 
-    <router-view></router-view>
+    <!-- <router-view></router-view>
     <router-link :to="{ name: 'Home' }" exact>主页</router-link>
     <router-link :to="{ name: 'Blog' }">博客</router-link>
     <router-link :to="{ name: 'About' }" exact>关于我</router-link>
-    <router-link :to="{ name: 'Message' }" exact>留言板</router-link>
+    <router-link :to="{ name: 'Message' }" exact>留言板</router-link> -->
+
+    <ThreeColumnLayout>
+      <template #left>
+        <div class="aside">
+          <SiteAside />
+        </div>
+      </template>
+      <template #default>
+        <RouterView />
+      </template>
+    </ThreeColumnLayout>
   </div>
 </template>
 
 <script>
+import { ThreeColumnLayout, SiteAside } from "@/components";
 // import { Pager } from "./components";
 export default {
   components: {
     // Pager,
+    ThreeColumnLayout,
+    SiteAside,
   },
   data() {
     return {
@@ -46,7 +60,16 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+@import "~@/styles/mixin.less";
+.app-container {
+  .self-fill(fixed);
+}
+.aside {
+  width: 250px;
+  height: 100%;
+}
+
 /* router-link 会被渲染成 <a> 标签，所以要选择 a 元素 */
 #app > a {
   display: block;
