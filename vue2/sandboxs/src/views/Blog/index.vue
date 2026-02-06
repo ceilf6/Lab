@@ -1,7 +1,34 @@
 <template>
-  <h1>Welcome to ceilf6's Blogs</h1>
+  <div>
+    <h1>
+      <a href="https://blog.csdn.net/2301_78856868"
+        >Welcome to ceilf6's Blogs</a
+      >
+      分类ID: {{ $route.params.categoryId }}
+    </h1>
+    <ThreeColumnLayout>
+      <!-- 注意 ThreeColumnLayout 中的 main 是类名、不是插槽 name -->
+      <BlogList></BlogList>
+      <template v-slot:right>
+        <BlogCategory></BlogCategory>
+      </template>
+    </ThreeColumnLayout>
+  </div>
 </template>
 
 <script>
-export default {};
+import { ThreeColumnLayout } from "@/components";
+import BlogList from "./components/BlogList.vue";
+import BlogCategory from "./components/BlogCategory.vue";
+
+export default {
+  components: {
+    ThreeColumnLayout,
+    BlogList,
+    BlogCategory,
+  },
+  created() {
+    console.log("=== Blog index.vue created", this.$route);
+  },
+};
 </script>

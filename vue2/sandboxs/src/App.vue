@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <Pager
+    <!-- <Pager
       :current="current"
       :total="total"
       @pageChange="handlePageChange"
-    ></Pager>
+    ></Pager> -->
     <!-- Vue 会自动将 $emit 的第二个参数传给处理函数的第一个参数 -->
     <!-- @pageChange="(newPage) => handlePageChange(newPage)" -->
 
-    <p v-if="visible">v-if -> 没有vnnode -> 渲染节点数少</p>
+    <!-- <p v-if="visible">v-if -> 没有vnnode -> 渲染节点数少</p>
     <p v-show="visible">v-show -> 始终有vnode=>DOM - 稳定</p>
-    <button @click="changeVisible">切换显示</button>
+    <button @click="changeVisible">切换显示</button> -->
 
     <router-view></router-view>
     <router-link :to="{ name: 'Home' }" exact>主页</router-link>
@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import { Pager } from "./components";
+// import { Pager } from "./components";
 export default {
   components: {
-    Pager,
+    // Pager,
   },
   data() {
     return {
