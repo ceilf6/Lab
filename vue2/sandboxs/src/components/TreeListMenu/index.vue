@@ -69,4 +69,10 @@ export default {
     }
   }
 }
+
+.aside {
+  font-size: 12px;
+  margin-left: 1em;
+  color: @gray;
+}
 </style>
