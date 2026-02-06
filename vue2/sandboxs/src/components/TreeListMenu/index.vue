@@ -11,6 +11,14 @@ Vue 的 template 是静态的，不像 React ，如果想要实现嵌套结构
       <span :class="{ selected: item.isSelected }" @click="handleClick(item)">{{
         item.name
       }}</span>
+      <span
+        v-if="item.aside"
+        @click="handleClick(item)"
+        class="aside"
+        :class="{ selected: item.isSelected }"
+      >
+        {{ item.aside }}
+      </span>
       <TreeListMenu :list="item.children" @click="handleClick">
         <!-- 归的时候从子组件上抛的事件继续往上抛 -->
       </TreeListMenu>

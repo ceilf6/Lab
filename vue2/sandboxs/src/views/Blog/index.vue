@@ -1,13 +1,15 @@
+<!-- 交互循环：路由信息 ⇒ 激活状态、文章列表 ⇒ 用户点击操作 ⇒ 更改路由信息  -->
+
 <template>
   <div class="blog-container">
-    <h1>
+    <!-- <h1>
       <a href="https://blog.csdn.net/2301_78856868"
         >Welcome to ceilf6's Blogs</a
       >
       <span v-if="$route.params.categoryId">
         分类ID: {{ $route.params.categoryId }}
       </span>
-    </h1>
+    </h1> -->
     <ThreeColumnLayout>
       <!-- 注意 ThreeColumnLayout 中的 main 是类名、不是插槽 name -->
       <BlogList></BlogList>
