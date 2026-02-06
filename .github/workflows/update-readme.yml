@@ -29,20 +29,29 @@ jobs:
       - name: Check for [ptr] in commits
         id: check_ptr
         run: |
+          echo "Checking commits for [ptr] marker..."
+          echo "Before: ${{ github.event.before }}"
+          echo "After: ${{ github.sha }}"
+          
           # 获取所有推送的提交消息
-          COMMITS=$(git log --format=%B ${{ github.event.before }}..${{ github.sha }})
+          COMMITS=$(git log --format=%B ${{ github.event.before }}..${{ github.sha }} 2>/dev/null || git log --format=%B -1)
+          echo "Commits:"
+          echo "$COMMITS"
+          
           if echo "$COMMITS" | grep -q "\[ptr\]"; then
+            echo "Found [ptr] marker!"
             echo "has_ptr=true" >> $GITHUB_OUTPUT
           else
+            echo "No [ptr] marker found"
             echo "has_ptr=false" >> $GITHUB_OUTPUT
           fi
       
       - name: Update README
         if: steps.check_ptr.outputs.has_ptr == 'true'
         env:
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           COMMIT_SHA: ${{ github.sha }}
           REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+          BEFORE_SHA: ${{ github.event.before }}
         run: node scripts/update-readme.js
       
       - name: Commit changes
