@@ -4,7 +4,9 @@
       <a href="https://blog.csdn.net/2301_78856868"
         >Welcome to ceilf6's Blogs</a
       >
-      分类ID: {{ $route.params.categoryId }}
+      <span v-if="$route.params.categoryId">
+        分类ID: {{ $route.params.categoryId }}
+      </span>
     </h1>
     <ThreeColumnLayout>
       <!-- 注意 ThreeColumnLayout 中的 main 是类名、不是插槽 name -->
