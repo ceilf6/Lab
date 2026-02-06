@@ -11,8 +11,6 @@ permissions:
 
 jobs:
   update-readme:
-    # 只有 commit message 包含 [ptr] 时才执行
-    if: contains(github.event.head_commit.message, '[ptr]')
     runs-on: ubuntu-latest
     
     steps:
@@ -27,7 +25,20 @@ jobs:
         with:
           node-version: '18'
       
+      # 检查推送中的所有提交是否包含 [ptr]
+      - name: Check for [ptr] in commits
+        id: check_ptr
+        run: |
+          # 获取所有推送的提交消息
+          COMMITS=$(git log --format=%B ${{ github.event.before }}..${{ github.sha }})
+          if echo "$COMMITS" | grep -q "\[ptr\]"; then
+            echo "has_ptr=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_ptr=false" >> $GITHUB_OUTPUT
+          fi
+      
       - name: Update README
+        if: steps.check_ptr.outputs.has_ptr == 'true'
         env:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           COMMIT_SHA: ${{ github.sha }}
@@ -35,6 +46,7 @@ jobs:
         run: node scripts/update-readme.js
       
       - name: Commit changes
+        if: steps.check_ptr.outputs.has_ptr == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "docs: auto update README [skip ci]"
