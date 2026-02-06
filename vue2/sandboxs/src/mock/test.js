@@ -24,3 +24,6 @@ Mock.mock('/ceilf6/Lab/branch-and-tag-count', 'get', {
         branches: 2
     }
 })
+
+// Mock.mock(/^\/api\/blog(\?.+)?$/, "get",
+// 像带参数的拦截就需要用正则处理
