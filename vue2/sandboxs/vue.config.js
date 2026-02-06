@@ -8,6 +8,11 @@ module.exports = {
                 target: 'https://github.com',
                 changeOrigin: true,
                 secure: true
+            },
+            '/api/image': {
+                target: 'http://dummyimage.com',
+                changeOrigin: true,
+                pathRewrite: { '^/api/image': '' }
             }
         }
     }
