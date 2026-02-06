@@ -45,3 +45,4 @@
 
 - [vue2/sandboxs/src/directives/loading/index.js](vue2/sandboxs/src/directives/loading/index.js)
     - v-loading 自定义指令实现 Loading 态呈现
+- [auto update Action for README](https://github.com/ceilf6/Lab/commit/e8a2c1df8e6f2bca5610dbd4a8dbbc40f8a8d268)
