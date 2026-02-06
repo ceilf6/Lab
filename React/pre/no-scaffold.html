@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <div id="app"></div>
+
+    <!-- 跨域了，虽然 script,img... 限制较小，加上 crossorigin 查看详细报错 -->
+    <!-- React的核心库，与宿主环境无关 -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <!-- 依赖核心库，将核心的功能与页面结合 -->
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script>
+        // 显示内容, 容器
+        ReactDOM.render("nihao", document.getElementById("app"))
+
+        // 创建元素 - 核心库
+        var span = React.createElement("span", {}, "一个span元素");
+        var h1 = React.createElement("h1", {
+            shuxing: "value"
+        }, "Hello", "World", span);
+        console.log("=== React vDOMnode", h1)
+        ReactDOM.render(h1, document.getElementById("root"));
+    </script>
+
+    <!-- Babel => 编译JSX -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <div id="root2"></div>
+    <script type="text/babel">
+        const ele = <h1 title="第一个React元素">Hello World <span>一个span元素</span></h1>
+        ReactDOM.render(ele, document.getElementById("root2"));
+    </script>
+</body>
+
+</html>
