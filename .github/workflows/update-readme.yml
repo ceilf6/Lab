@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+# 添加写权限
+permissions:
+  contents: write
+
 jobs:
   update-readme:
     # 只有 commit message 包含 [ptr] 时才执行
