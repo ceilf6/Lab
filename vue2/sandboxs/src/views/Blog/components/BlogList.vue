@@ -1,5 +1,7 @@
 <template>
   <div class="blog-list-container" ref="container" v-loading="isLoading">
+    <!-- isLoading 是从混入 fetchData 中拿到的 -->
+    <!-- Vue3 的 composition 组合式更便利 -->
     <ul>
       <li v-for="item in data.rows" :key="item.id">
         <div class="thumb" v-if="item.thumb">
@@ -24,7 +26,8 @@
         </div>
       </li>
     </ul>
-    <!-- 分页放到这里 -->
+    <!-- 路由信息 => 分页参数 -->
+    <!-- fetchData => 总数据量 -->
     <Pager
       v-if="data.total"
       :current="routeInfo.page"
@@ -63,7 +66,7 @@ export default {
     formatDate, // 导入后记得配置到组件中，否则模版中不能用
     async fetchData() {
       console.log("=== BlogList fetchData 方法被调用", this.routeInfo);
-      // return
+      // 将路由信息传入 fetch 参数
       const res = await getBlogs(
         this.routeInfo.page,
         this.routeInfo.limit,
@@ -72,6 +75,7 @@ export default {
       console.log("=== BlogList res", res);
       return res;
     },
+    // 页码变化 => 改变路由
     handlePageChange(newPage) {
       const query = {
         page: newPage,
@@ -86,6 +90,7 @@ export default {
           query,
         });
       } else {
+        // 有分类的话得传入参数
         // /article/cate/${this.routeInfo.categoryId}?page=${newPage}&limit=${this.routeInfo.limit}
         this.$router.push({
           name: "CategoryBlog",
@@ -98,12 +103,15 @@ export default {
     },
   },
   watch: {
-    async $route() {
-      this.isLoading = true;
-      // 滚动高度为0
-      this.$refs.container.scrollTop = 0;
-      this.data = await this.fetchData();
-      this.isLoading = false;
+    // 观察路由this.$route ⇒ fetch new Data
+    $route: {
+      async handler() {
+        this.isLoading = true;
+        // 设置滚动高度为0 ，往上切
+        this.$refs.container.scrollTop = 0;
+        this.data = await this.fetchData(); // 不需要参数，fetchData 内部就用的 计算属性
+        this.isLoading = false;
+      },
     },
   },
 };
@@ -119,7 +127,7 @@ export default {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  scroll-behavior: smooth;
+  scroll-behavior: smooth; // 平滑滚动
   ul {
     list-style: none;
     margin: 0;
