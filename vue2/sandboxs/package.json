@@ -14,7 +14,7 @@
     "test:Icon": "vue serve ./src/components/Icon/test.vue",
     "test:toast": "vue serve ./test/toast/index.vue",
     "test:Lifecycle": "vue serve ./test/lifecycle/Lifecycle.vue",
-    "test:FetchData":"vue serve ./test/lifecycle/FetchData.vue",
+    "test:FetchData": "vue serve ./test/lifecycle/FetchData.vue",
     "test:Loading": "vue serve ./src/components/Loading/test.vue",
     "test:vLoading": "vue serve ./src/directives/loading/test.vue",
     "test:TreeListMenu": "vue serve ./src/components/TreeListMenu/test.vue"
@@ -23,6 +23,7 @@
     "axios": "^1.13.4",
     "core-js": "^3.6.5",
     "mockjs": "^1.1.0",
+    "querystring": "^0.2.1",
     "vue": "^2.6.11",
     "vue-router": "^3.6.5"
   },
