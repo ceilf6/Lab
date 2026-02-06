@@ -50,3 +50,4 @@
 
 - [mixins 混入实现配置代码复用](https://github.com/ceilf6/Lab/commit/a2423747951f26fca4f3949f09b48b93cbc7b458)
 - [组件递归 实现 层级列表组件 TreeListMenu](https://github.com/ceilf6/Lab/commit/64afdb48013cd41985b79fd8fa12c4d4ae249b81)
+- [vue-router 动态路由匹配 通过 vue-router 注入的原型对象 $route 提供的路由信息](https://github.com/ceilf6/Lab/commit/833dd96a83e4f8a40d467202550db889c737236f)
