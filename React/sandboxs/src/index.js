@@ -1,4 +1,4 @@
 import React from 'react'; // 虽然也许可能没有使用，如果删了就会报错React.createElement
 import ReactDOM from 'react-dom';
 
-ReactDOM.render(<h1>Hello World <span>span元素</span></h1>, document.getElementById('root'));
+import './test/test1'
