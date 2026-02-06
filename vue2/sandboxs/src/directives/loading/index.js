@@ -23,7 +23,9 @@ export default function (el, binding) {
             el.appendChild(img)
         }
     } else {
-        curImg.remove();
+        if (curImg) {  // 添加空值检查
+            curImg.remove();
+        }
     }
 }
 
