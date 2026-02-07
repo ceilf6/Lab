@@ -22,8 +22,16 @@ import ReactDOM from 'react-dom';
 //         </FuncComp >}
 //     </>
 // )
-// ReactDOM.render(allEl, document.getElementById('root'))
 
-import NumState from './test/NumState';
+// import NumState from './test/NumState';
 
-ReactDOM.render(<NumState number={10}></NumState>, document.getElementById('root'))
+import { Btn, MyBtn } from './test/Event';
+
+const callback = () => console.log("我被电击了")
+const el = (
+    <div>
+        {Btn()}
+        <MyBtn callback={callback} onClick={() => console.log("自定义组件的onClick")} />
+    </div>
+)
+ReactDOM.render(el, document.getElementById('root'))
