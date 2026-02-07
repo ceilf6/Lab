@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    浏览器请求行中不能有非ASCII字符
+    <script>
+        // https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&
+        // wd=%E4%BD%A0%E5%A5%BD%26hello
+        // &fenlei=256&rsv_pq=0xa6c470140005b6e9&rsv_t=0dfeJBvd9ngUky1h9y954UM5Vro8NmsAQQviOa%2B78%2F0MgmgqTjRY3MSq6NhX&rqlang=en&rsv_enter=1&rsv_dl=tb&rsv_sug3=13&rsv_sug1=13&rsv_sug7=100&rsv_btype=i&prefixsug=%25E4%25BD%25A0%25E5%25A5%25BD%2526hello&rsp=3&inputT=4764&rsv_sug4=4764
+        console.log("wd=%E4%BD%A0%E5%A5%BD%26hello");
+        const precode = '你好&hello';
+        console.log(precode);
+        const encode = encodeURIComponent(precode);
+        console.log(encode);
+        const url = 'www.baidu.com/s?wd=' + encode;
+        fetch(url);
+        console.log(url);
+        // https://www.baidu.com/s?
+        // wd=%E4%BD%A0%E5%A5%BD%26hello
+    </script>
+</body>
+
+</html>

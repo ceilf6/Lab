@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul>
+        <h2>waiting for data</h2>
+    </ul>
+
+    <script type="module">
+        import "../../env.js";
+        const BASE_URL = window._ENV.BASE_URL;
+        const MOCK_URL = window._ENV.MOCK_URL;
+        const url = BASE_URL + "api/citylist"; // "api/movies?page=2&size=10";
+        console.log(url);
+
+        // fetch 默认就是 GET 方式
+        // fetch 返回的是一个 Promise
+        // 当收到服务器的响应头之后，Promise 就完成，即 XHR 的 状态3
+        fetch(url).then(
+            // 拿到了响应头            
+            (resH) => {
+                console.log(resH);
+                for (const iterator of resH.headers.keys()) {
+                    console.log(iterator);
+                }
+                console.log(resH.headers.get('content-type'));
+
+                // resH 的 json 和 text 都是用于处理响应体，只不过拿到的格式分别是 json 和 纯文本
+                // 返回的都是 promise 
+                return resH.json();
+            }).then( // 那么就能在 Promise 链上继续处理响应体
+                (resB) => {
+                    console.log(resB);
+                    const data = resB.data;
+                    const ul = document.querySelector('ul');
+                    for (const item of data) {
+                        var li = document.createElement('li')
+                        li.innerText = item.label;
+                        ul.appendChild(li);
+                    }
+                }
+            );
+
+        // 业务中一般会封装一个函数用于获取数据
+        async function getData() {
+            const res = await fetch(url);
+            const json = await res.json();
+            return json.data;
+        };
+        // async 返回的一定是一个 Promise 
+        const data = await getData();
+        console.log(data);
+
+        getData().then(
+            res => { console.log(res); }
+        )
+    </script>
+</body>
+
+</html>
