@@ -52,3 +52,4 @@
 - [组件递归 实现 层级列表组件 TreeListMenu](https://github.com/ceilf6/Lab/commit/64afdb48013cd41985b79fd8fa12c4d4ae249b81)
 - [vue-router 动态路由匹配 通过 vue-router 注入的原型对象 $route 提供的路由信息](https://github.com/ceilf6/Lab/commit/833dd96a83e4f8a40d467202550db889c737236f)
 - [React 自定义组件想要触发DOM事件，得传递到能响应的元素上 同时注意如果没有特殊处理，在事件处理函数中，this指向undefined 1. bind 2. () =>](https://github.com/ceilf6/Lab/commit/929c449923abc5d1e658b62b07571fa4e44ae267)
+- [JS执行 - call stack 执行上下文中的 this 和 变量对象VO 虽然 ES6 后 const 和 let 不会污染对象，但是之前代码都用的 var 还是得了解](https://github.com/ceilf6/Lab/commit/7509501150c9e476648fb3f61d77ff26cb6a6799)
