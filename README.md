@@ -54,3 +54,4 @@
 - [React 自定义组件想要触发DOM事件，得传递到能响应的元素上 同时注意如果没有特殊处理，在事件处理函数中，this指向undefined 1. bind 2. () =>](https://github.com/ceilf6/Lab/commit/929c449923abc5d1e658b62b07571fa4e44ae267)
 - [JS执行 - call stack 执行上下文中的 this 和 变量对象VO 虽然 ES6 后 const 和 let 不会污染对象，但是之前代码都用的 var 还是得了解](https://github.com/ceilf6/Lab/commit/7509501150c9e476648fb3f61d77ff26cb6a6799)
 - [当找不到某个属性时，执行上下文通过函数对象的隐藏属性 \[\[Environment\]\] (之前叫 \[\[scope\]\] )指针连接外层词法环境形成作用域链，然后往上寻找 => 即使 outer 执行完了，inner 仍然保留对 outer 变量的引用、导致GC失败 => 闭包 \[ => 内存泄漏风险 \]](https://github.com/ceilf6/Lab/commit/1dae95e5ea6a478353708e30340e91fac2b7e13a)
+- [CSRF danger example and 5 ways to solve](https://github.com/ceilf6/Lab/commit/3d687dd1827e287694ecd0bb5efbeef6265f0ef4)
