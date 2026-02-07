@@ -4,22 +4,26 @@ import ReactDOM from 'react-dom';
 // import './test/test1'
 // import './test/toggleImg'
 
-import FuncComp from './test/Comp/func'
-import ClassComp from './test/Comp/class';
-const el = (<FuncComp str="ceilf6" num={7}></FuncComp>)
-console.log(el)
-// 组件生成的仍然是React元素，但是 type: ƒ Comp()
-// 如果首字母不大写的话就是普通元素
-const el2 = (<ClassComp str="ceilf6" num={7}></ClassComp>) // type: class ClassComp
-console.log(el2)
-const allEl = (
-    <>
-        {el}
-        {el2}
-        {<FuncComp useless={false} useful
-            obj={{ name: "ceilf6", age: 20, ui: (<div>nihao</div>) }}
-        >
-        </FuncComp >}
-    </>
-)
-ReactDOM.render(allEl, document.getElementById('root'))
+// import FuncComp from './test/Comp/func'
+// import ClassComp from './test/Comp/class';
+// const el = (<FuncComp str="ceilf6" num={7}></FuncComp>)
+// console.log(el)
+// // 组件生成的仍然是React元素，但是 type: ƒ Comp()
+// // 如果首字母不大写的话就是普通元素
+// const el2 = (<ClassComp str="ceilf6" num={7}></ClassComp>) // type: class ClassComp
+// console.log(el2)
+// const allEl = (
+//     <>
+//         {el}
+//         {el2}
+//         {<FuncComp useless={false} useful
+//             obj={{ name: "ceilf6", age: 20, ui: (<div>nihao</div>) }}
+//         >
+//         </FuncComp >}
+//     </>
+// )
+// ReactDOM.render(allEl, document.getElementById('root'))
+
+import NumState from './test/NumState';
+
+ReactDOM.render(<NumState number={10}></NumState>, document.getElementById('root'))
