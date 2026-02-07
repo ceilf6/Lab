@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        console.log(this.name);
+        var a = 2;
+        function A() {
+            this.abc = 123;
+
+            function B() {
+                console.log(this); // window: 直接调用函数，this指向全局对象
+            }
+            B();
+        }
+        var a = new A(); // this 跟随 new 绑定到了 A 实例上
+
+        console.log(a.abc); // 123
+    </script>
+</body>
+
+</html>
