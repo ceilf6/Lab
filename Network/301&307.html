@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="http://www.douyutv.com" method="get">
+        <button>提交</button>
+    </form>
+
+    多层重定向链路
+    www.douyutv.com --307
+    www.douyutv.com --307
+    www.douyutv.com/? --301
+    www.douyu.com --200
+
+    • CDN / WAF 层：用 307（灵活、可控） 两次 307 是“临时策略跳转”（安全 / CDN / 协议 / 校验）
+    • 业务层：用 301（SEO + 长期策略） 一次 301 是“最终域名归一化”（SEO / 权威域）
+    • 出问题可以只改某一层
+
+
+    响应头:
+    HTTP/1.1 301 Moved Permanently
+    Content-Length: 236
+    Ali-Swift-Global-Savetime: 1769528580
+    Connection: keep-alive
+    Content-Type: text/html
+    Date: Tue, 27 Jan 2026 15:43:00 GMT
+    Eagleid: 24973dab17695285803783235e
+    Keep-Alive: timeout=4
+
+    Location: https://www.douyu.com/
+    <!-- 会自动重定向请求 -->
+
+    Proxy-Connection: keep-alive
+    Server: Tengine
+    Timing-Allow-Origin: *
+    Via: cache74.l2cn3022[55,55,301-0,M], cache63.l2cn3022[57,0], ens-cache8.cn8109[137,137,301-0,M],
+    ens-cache23.cn8109[152,0]
+    X-Cache: MISS TCP_MISS dirn:-2:-2
+    X-Request-Id: d391a23c-1eec-44fd-b232-ac732c675717
+    X-Swift-Cachetime: 0
+    X-Swift-Savetime: Tue, 27 Jan 2026 15:43:00 GMT
+</body>
+
+</html>

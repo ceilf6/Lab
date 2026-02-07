@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>
+        账号:
+        <input type="text" id="LoginId">
+    </p>
+    <p>
+        密码:
+        <input type="text" id="LoginPwd">
+    </p>
+    <p>
+        <button>登陆</button>
+    </p>
+</body>
+
+<script type="module">
+    import "../../../env.js"
+    const BASE_URL = window._ENV.BASE_URL;
+    const MOCK_URL = window._ENV.MOCK_URL;
+    const url = BASE_URL + "api/user/login";
+
+    const btn = document.querySelector('button');
+    const LoginId = document.querySelector('#LoginId');
+    const LoginPwd = document.querySelector('#LoginPwd');
+
+    btn.onclick = async function () {
+        const LoginIdValue = LoginId.value;
+        const LoginPwdValue = LoginPwd.value;
+        const obj = {
+            loginId: LoginIdValue,
+            loginPwd: LoginPwdValue
+        }
+        const jsonObj = JSON.stringify(obj)
+
+        const res = await fetch(url, {
+            method: "POST",
+            headers: { "content-type": "application/json", },
+            body: jsonObj
+        })
+        console.log(res);
+        // 注意 json 也是 promise 别忘记 await
+        const json = await res.json();
+
+        if (json.code != 0) {
+            // 业务状态码只有在 0 的时候才表示成功
+            alert(json.msg);
+        }
+    }
+</script>
+
+</html>
