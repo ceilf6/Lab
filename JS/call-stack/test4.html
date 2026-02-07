@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var foo = 1;
+        function bar() {
+            console.log(foo);  //undefined
+            if (!foo) {
+                var foo = 10; // 区别于外部的、内部自己的提升到顶部，初始化为 undefined
+            }
+            console.log(foo); //10
+        }
+
+        bar();
+    </script>
+</body>
+
+</html>

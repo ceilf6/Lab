@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var foo = 1;
+
+        function bar(a) {
+            var a1 = a;
+            var a = foo;
+            function a() {
+                console.log(a); // 1
+            }
+            a1();
+        }
+
+        bar(3);
+
+        /*
+
+        GO:
+            foo: undefined 执行=> 1
+            bar: fn
+
+        AO:
+            a: 3 函数字面量覆盖=> fn-a 执行赋值=> 找到上一层的foo=1
+            a1: undefined 执行赋值=> fn-a
+
+        */
+    </script>
+</body>
+
+</html>

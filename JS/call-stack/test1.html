@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        this.a = 1
+        var b;
+        this.console.log(this.a, this.b)
+
+        var c = function () {
+            console.log(a)
+        }
+        var c = function () {
+            console.log("get from Global Object => a:", a)
+        }
+        console.log("=== c", c)
+        c()
+
+        console.log("=== d", d) // 不会报错，因为 var 有变量提升: undefined
+        var d = "d";
+        console.log("=== d", d) // d
+
+
+        console.log(this)
+
+        console.log("Global: 代码开始执行，console.log 入栈，执行完后出栈", this);
+
+        function A() {
+            console.log("A() 被调用 → A 入栈，console.log 入栈，执行完后 console.log 出栈", this);
+
+            function B() {
+                console.log("B() 被调用 → B 入栈，console.log 入栈，执行完后 console.log 出栈", this);
+            }
+
+            B(); // 调用 B → B 入栈
+        } // A 执行结束 → A 出栈
+
+        A(); // 调用 A → A 入栈
+    </script>
+</body>
+
+</html>

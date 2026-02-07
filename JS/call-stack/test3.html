@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var g1 = 123;
+        var a = 2;
+        function A(a, b) {
+            console.log(a, b); // 1, fn(被函数字面量声明覆盖了)
+
+            console.log(g1, g2, g3) // 不存在属性，向上一层上下文找到了
+
+            var b = 123; // 赋值覆盖了
+
+            function b() { }
+
+            var a = function () { } // 赋值覆盖了
+
+            console.log(a, b); // fn, 123
+        }
+        var g2 = 456;
+
+        var g3 = function () { }
+
+        A(1, 2);
+    </script>
+</body>
+
+</html>

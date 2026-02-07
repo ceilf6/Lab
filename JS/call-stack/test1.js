@@ -1,10 +1,12 @@
-console.log("Global: 代码开始执行，console.log 入栈，执行完后出栈");
+console.log(this)
+
+console.log("Global: 代码开始执行，console.log 入栈，执行完后出栈", this);
 
 function A() {
-    console.log("A() 被调用 → A 入栈，console.log 入栈，执行完后 console.log 出栈");
+    console.log("A() 被调用 → A 入栈，console.log 入栈，执行完后 console.log 出栈", this);
 
     function B() {
-        console.log("B() 被调用 → B 入栈，console.log 入栈，执行完后 console.log 出栈");
+        console.log("B() 被调用 → B 入栈，console.log 入栈，执行完后 console.log 出栈", this);
     }
 
     B(); // 调用 B → B 入栈
