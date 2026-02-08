@@ -58,3 +58,4 @@
 - [如果setState改变状态的代码处于某个HTML元素的事件中，则其是异步的，否则是同步 如果要使用改变之后的状态，需要使用回调函数 如果新的状态要根据之前的状态链式作用，需要使用函数的方式改变状态 同时React会对异步的setState进行优化，将多次setState进行合并](https://github.com/ceilf6/Lab/commit/d04fd3df98317da48d47380ab49ae44c4e042669)
 - [React 通过 props.children 实现 Vue 插槽功能 具名插槽区分 1. 直接传对象 2. 函数对象属性 3. 直接传递一个 render 函数 => ( JSX )](https://github.com/ceilf6/Lab/commit/d719805fda688bb389a31ff3db44e65f7ab81fb3)
 - [默认情况下，Form 对在里面的所有的 Input 都传递了 handleChange, 当其中一个变化时，直接修改了 Form 的 state, 那么整个 Form 、 Form 中所有的 Input 都会 re-rende 通过 useForm 内部管理的 _formValues 实现字段级别订阅更新、 _formState 表单整体状态的观察者模式](https://github.com/ceilf6/Lab/commit/c856c39f9cbacee376616c6774c8e7fd567ba8f9)
+- [以数组作为下标的影响: 数组变化后，相同位置的元素 key 相同，Vue 会认为是同一个元素，直接复用 DOM 但实际上数据已经变了，导致 DOM 和数据错位 特别是表单元素（input、select、textarea），它们的值存储在 DOM 节点上，不是响应式的，复用 DOM 后值就乱了，导致每次删除的都只可能是最后一个](https://github.com/ceilf6/Lab/commit/a566dac46f44788660fcb7c369be272d59b10401)
