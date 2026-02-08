@@ -4,6 +4,7 @@ import React from 'react';
 // import CoverButton from './test/CoverButton';
 import Father from './test/Father';
 import Form from './components/Form';
+import { FileUpload } from './components';
 
 const el = (
     // 写在 组件中间{ }中的 会自动传入到 props.children
@@ -15,7 +16,14 @@ const el = (
     // </CoverButton>
 
     // <Father />
-    <Form legend={['name','key']}/>
+    // <Form legend={['name','key']}/>
+    <FileUpload
+        accept=".png,.jpg,.pdf"
+        multiple
+        onUpload={(files) => {
+            console.log(files);
+        }}
+    />
 )
 
 

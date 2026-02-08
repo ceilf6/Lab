@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Layout({ children }) {
+export default function Layout({ children }) {
   return <div>{children}</div>;
 }
 
