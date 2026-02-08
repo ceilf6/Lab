@@ -1,0 +1,15 @@
+const io = require("socket.io")(3000);
+
+io.on("connection", (socket) => {
+  console.log("用户连接成功:", socket.id);
+
+  socket.on("message", (data) => {
+    console.log("收到消息:", data);
+
+    socket.emit("reply", "服务器收到！");
+  });
+
+  socket.on("disconnect", () => {
+    console.log("用户断开连接");
+  });
+});
