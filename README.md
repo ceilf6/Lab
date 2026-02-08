@@ -56,3 +56,4 @@
 - [当找不到某个属性时，执行上下文通过函数对象的隐藏属性 \[\[Environment\]\] (之前叫 \[\[scope\]\] )指针连接外层词法环境形成作用域链，然后往上寻找 => 即使 outer 执行完了，inner 仍然保留对 outer 变量的引用、导致GC失败 => 闭包 \[ => 内存泄漏风险 \]](https://github.com/ceilf6/Lab/commit/1dae95e5ea6a478353708e30340e91fac2b7e13a)
 - [CSRF danger example and 5 ways to solve](https://github.com/ceilf6/Lab/commit/3d687dd1827e287694ecd0bb5efbeef6265f0ef4)
 - [如果setState改变状态的代码处于某个HTML元素的事件中，则其是异步的，否则是同步 如果要使用改变之后的状态，需要使用回调函数 如果新的状态要根据之前的状态链式作用，需要使用函数的方式改变状态 同时React会对异步的setState进行优化，将多次setState进行合并](https://github.com/ceilf6/Lab/commit/d04fd3df98317da48d47380ab49ae44c4e042669)
+- [React 通过 props.children 实现 Vue 插槽功能 具名插槽区分 1. 直接传对象 2. 函数对象属性 3. 直接传递一个 render 函数 => ( JSX )](https://github.com/ceilf6/Lab/commit/d719805fda688bb389a31ff3db44e65f7ab81fb3)
