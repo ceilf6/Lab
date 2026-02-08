@@ -23,7 +23,6 @@ import ReactDOM from 'react-dom';
 //     </>
 // )
 
-import StateInEvent from './test/StateInEvent';
 
 // import { Btn, MyBtn } from './test/Event';
 
@@ -51,10 +50,12 @@ import StateInEvent from './test/StateInEvent';
 //     </>
 // )
 
-import AppOldLifeCylcle from './test/AppOldLifeCylcle'
+// import AppOldLifeCylcle from './test/AppOldLifeCylcle'
 
-const el = (
-    <AppOldLifeCylcle />
-)
+// const el = (
+//     <AppOldLifeCylcle />
+// )
 
-ReactDOM.render(el, document.getElementById('root'))
+import App from './App'
+
+ReactDOM.render(<App />, document.getElementById('root'))
