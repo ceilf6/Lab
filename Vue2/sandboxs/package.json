@@ -17,7 +17,8 @@
     "test:FetchData": "vue serve ./test/lifecycle/FetchData.vue",
     "test:Loading": "vue serve ./src/components/Loading/test.vue",
     "test:vLoading": "vue serve ./src/directives/loading/test.vue",
-    "test:TreeListMenu": "vue serve ./src/components/TreeListMenu/test.vue"
+    "test:TreeListMenu": "vue serve ./src/components/TreeListMenu/test.vue",
+    "test:ListKey": "vue serve ./test/ListKey.vue"
   },
   "dependencies": {
     "axios": "^1.13.4",

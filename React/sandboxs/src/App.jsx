@@ -7,6 +7,8 @@ import React from 'react';
 // import { FileUpload } from './components';
 import Timer from './test/Timer';
 
+import ListKey from './test/ListKey';
+
 const el = (
     // 写在 组件中间{ }中的 会自动传入到 props.children
     // <CoverButton>
@@ -27,7 +29,8 @@ const el = (
     //     }}
     // />
 
-    <Timer />
+    // <Timer />
+    <ListKey />
 )
 
 
