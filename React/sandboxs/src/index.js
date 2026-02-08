@@ -23,15 +23,32 @@ import ReactDOM from 'react-dom';
 //     </>
 // )
 
-// import NumState from './test/NumState';
+import StateInEvent from './test/StateInEvent';
 
-import { Btn, MyBtn } from './test/Event';
+// import { Btn, MyBtn } from './test/Event';
 
-const callback = () => console.log("我被电击了")
+// const callback = () => console.log("我被电击了")
+// const el = (
+//     <div>
+//         {Btn()}
+//         <MyBtn callback={callback} onClick={() => console.log("自定义组件的onClick")} />
+//     </div>
+// )
+
+import StateNotInEvent from './test/StateNotInEvent'
+import StateMulCallBack from './test/StateMulCallBack'
+import StateMulNotSync from './test/StateMulNotSync'
 const el = (
-    <div>
-        {Btn()}
-        <MyBtn callback={callback} onClick={() => console.log("自定义组件的onClick")} />
-    </div>
+    <>
+        <h1>StateInEvent</h1>
+        <StateInEvent number={5} />
+        <h1>StateNotInEvent</h1>
+        <StateNotInEvent number={5} />
+        <h1>StateMulCallBack</h1>
+        <StateMulCallBack number={5} />
+        <h1>StateMulNotSync</h1>
+        <StateMulNotSync number={5} />
+    </>
 )
+
 ReactDOM.render(el, document.getElementById('root'))
