@@ -14,9 +14,11 @@ export default class NumState extends React.Component {
         // }
         this.timer = setInterval(() => {
             if (!this.state.num) clearInterval(this.timer)
-            this.setState({ num: --this.state.num }) // 通知 React 状态变化
+            this.setState({ num: this.state.num - 1 }) // 通知 React 状态变化
             // Object.assign()
         }, 1000)
+
+        // 避免在 contructor 初始化阶段使用 setState
     }
     render() {
         return (

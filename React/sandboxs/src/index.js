@@ -35,20 +35,26 @@ import StateInEvent from './test/StateInEvent';
 //     </div>
 // )
 
-import StateNotInEvent from './test/StateNotInEvent'
-import StateMulCallBack from './test/StateMulCallBack'
-import StateMulNotSync from './test/StateMulNotSync'
+// import StateNotInEvent from './test/StateNotInEvent'
+// import StateMulCallBack from './test/StateMulCallBack'
+// import StateMulNotSync from './test/StateMulNotSync'
+// const el = (
+//     <>
+//         <h1>StateInEvent</h1>
+//         <StateInEvent number={5} />
+//         <h1>StateNotInEvent</h1>
+//         <StateNotInEvent number={5} />
+//         <h1>StateMulCallBack</h1>
+//         <StateMulCallBack number={5} />
+//         <h1>StateMulNotSync</h1>
+//         <StateMulNotSync number={5} />
+//     </>
+// )
+
+import AppOldLifeCylcle from './test/AppOldLifeCylcle'
+
 const el = (
-    <>
-        <h1>StateInEvent</h1>
-        <StateInEvent number={5} />
-        <h1>StateNotInEvent</h1>
-        <StateNotInEvent number={5} />
-        <h1>StateMulCallBack</h1>
-        <StateMulCallBack number={5} />
-        <h1>StateMulNotSync</h1>
-        <StateMulNotSync number={5} />
-    </>
+    <AppOldLifeCylcle />
 )
 
 ReactDOM.render(el, document.getElementById('root'))
