@@ -6,7 +6,7 @@ function getFieldName(index) {
     return `field_${index}`;
 }
 
-const FormField = React.memo(function FormField({ control, name, legend }) {
+const FormField = React.memo(function FormField({ control, name, legend, state }) {
     const { field } = useController({
         name,
         control,
@@ -18,6 +18,7 @@ const FormField = React.memo(function FormField({ control, name, legend }) {
             legend={legend}
             value={field.value}
             transform={field.onChange}
+            state={state}
         />
     );
 });
@@ -32,6 +33,31 @@ function Form({ legend }) {
             result[getFieldName(index)] = '';
             return result;
         }, {});
+    }, [legendList]);
+
+    // 通过对 props.state 的限制实现输入内容约束
+    const fieldStates = React.useMemo(() => {
+        return legendList.map((item, index) => {
+            const key = String(item).toLowerCase();
+
+            if (key === 'name' || index === 0) {
+                return {
+                    maxLength: 12,
+                    allowRegex: /^[a-zA-Z]*$/
+                };
+            }
+
+            if (key === 'key' || index === 1) {
+                return {
+                    maxLength: 6,
+                    allowRegex: /^\d*$/
+                };
+            }
+
+            return {
+                maxLength: 20
+            };
+        });
     }, [legendList]);
 
     const { control, handleSubmit, reset } = useForm({
@@ -58,6 +84,7 @@ function Form({ legend }) {
                     control={control}
                     legend={item}
                     name={getFieldName(index)}
+                    state={fieldStates[index]}
                 />
             ))}
             <button type="submit">submit</button>
