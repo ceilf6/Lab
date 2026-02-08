@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+    <script>
+        const socket = io("http://localhost:3000");
+
+        socket.emit("message", "你好服务器！");
+
+        socket.on("reply", (msg) => {
+            console.log("服务器回复:", msg);
+        });
+    </script>
+</body>
+
+</html>
