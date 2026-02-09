@@ -61,3 +61,4 @@
 - [以数组作为下标的影响: 数组变化后，相同位置的元素 key 相同，Vue 会认为是同一个元素，直接复用 DOM 但实际上数据已经变了，导致 DOM 和数据错位 特别是表单元素（input、select、textarea），它们的值存储在 DOM 节点上，不是响应式的，复用 DOM 后值就乱了，导致每次删除的都只可能是最后一个](https://github.com/ceilf6/Lab/commit/a566dac46f44788660fcb7c369be272d59b10401)
 - [a 被 B 引用了，形成了闭包，B函数携带了 a 创建时的词法环境，所以其存储于堆内存中、不被回收（如果在栈内存上会导致需要引用的时候已经出栈了）；b 没有被引用，只会在 A 的执行上下文中、短暂的存在栈内存中，在 A 执行结束后变得不可达](https://github.com/ceilf6/Lab/commit/55cf74ffe5e2468376021b0b6efddcc878ec721e)
 - [父组件异步处理后返回子组件 1. emit 中回调函数，类似于 React 中父组件传递给子组件处理函数、提供权力子组件影响父组件的数据 2. 父组件返回Promise，子组件通过 .$listeners 拿到父组件的 handle 函数引用（但是 listener 是直接调用的函数，没有触发事件的上报） 3. 父组件直接 props 传下去处理函数，处理函数和 2 一样都是返回的 Promise](https://github.com/ceilf6/Lab/commit/cc063d8d86a63c6b6397662e2c9bff8ff68c770b)
+- [v-model + event-modifiers v-model 默认是 input 事件，在事件修饰符之后 v-model.lazy 是change 事件 开启 .number 修饰自动将事件value转为数字](https://github.com/ceilf6/Lab/commit/761e9c704e8650a982d33e17bab0fbaf6fe02fb6)
