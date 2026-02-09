@@ -18,7 +18,8 @@
     "test:Loading": "vue serve ./src/components/Loading/test.vue",
     "test:vLoading": "vue serve ./src/directives/loading/test.vue",
     "test:TreeListMenu": "vue serve ./src/components/TreeListMenu/test.vue",
-    "test:ListKey": "vue serve ./test/ListKey.vue"
+    "test:ListKey": "vue serve ./test/ListKey.vue",
+    "test:LoadingButton": "vue serve ./src/components/LoadingButton/test.vue"
   },
   "dependencies": {
     "axios": "^1.13.4",
