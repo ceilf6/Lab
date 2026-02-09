@@ -62,3 +62,5 @@
 - [a 被 B 引用了，形成了闭包，B函数携带了 a 创建时的词法环境，所以其存储于堆内存中、不被回收（如果在栈内存上会导致需要引用的时候已经出栈了）；b 没有被引用，只会在 A 的执行上下文中、短暂的存在栈内存中，在 A 执行结束后变得不可达](https://github.com/ceilf6/Lab/commit/55cf74ffe5e2468376021b0b6efddcc878ec721e)
 - [父组件异步处理后返回子组件 1. emit 中回调函数，类似于 React 中父组件传递给子组件处理函数、提供权力子组件影响父组件的数据 2. 父组件返回Promise，子组件通过 .$listeners 拿到父组件的 handle 函数引用（但是 listener 是直接调用的函数，没有触发事件的上报） 3. 父组件直接 props 传下去处理函数，处理函数和 2 一样都是返回的 Promise](https://github.com/ceilf6/Lab/commit/cc063d8d86a63c6b6397662e2c9bff8ff68c770b)
 - [v-model + event-modifiers v-model 默认是 input 事件，在事件修饰符之后 v-model.lazy 是change 事件 开启 .number 修饰自动将事件value转为数字](https://github.com/ceilf6/Lab/commit/761e9c704e8650a982d33e17bab0fbaf6fe02fb6)
+- [手动实现观察者模式 => 事件总线 方便组件之间通信、组件和普通模块通信、事件处理 ( Vue 自带 $emit, $on, $off 实例成员，直接导出一个 Vue 实例都可以 )](https://github.com/ceilf6/Lab/commit/965fd30b27e265aa759d8ba2e9794c18114213c9)
+- [事件总线实现 - 观察者模式](https://github.com/ceilf6/Lab/commit/6d91ed0034c7703c43c5157ce9c111cf38f1dfe9)
