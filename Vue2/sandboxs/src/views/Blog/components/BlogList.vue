@@ -1,5 +1,7 @@
 <template>
-  <div class="blog-list-container" ref="container" v-loading="isLoading">
+  <div class="blog-list-container" ref="mainContainer" v-loading="isLoading">
+    <!-- @scroll="handleScroll"> -->
+
     <!-- isLoading 是从混入 fetchData 中拿到的 -->
     <!-- Vue3 的 composition 组合式更便利 -->
     <ul>
@@ -7,7 +9,7 @@
         <div class="thumb" v-if="item.thumb">
           <!-- 循环的元素，不是切换显示，v-show 不合适 -->
           <a href="">
-            <img :src="item.thumb" :alt="item.title" :title="item.title" />
+            <img v-lazy="item.thumb" :alt="item.title" :title="item.title" />
           </a>
         </div>
         <div class="main">
@@ -41,11 +43,12 @@
 
 <script>
 import Pager from "@/components/Pager";
-import fetchData from "@/mixins/fetchData.js";
+import { fetchData, mainScroll } from "@/mixins";
 import { getBlogs } from "@/api/blog.js";
 import { formatDate } from "@/utils";
+// import eventBus from "@/eventBus";
 export default {
-  mixins: [fetchData({})],
+  mixins: [fetchData({}), mainScroll("mainContainer")],
   components: {
     Pager,
   },
@@ -64,6 +67,9 @@ export default {
   },
   methods: {
     formatDate, // 导入后记得配置到组件中，否则模版中不能用
+    // handleScroll() {
+    //   eventBus.$emit("scroll");
+    // },
     async fetchData() {
       console.log("=== BlogList fetchData 方法被调用", this.routeInfo);
       // 将路由信息传入 fetch 参数
@@ -108,7 +114,7 @@ export default {
       async handler() {
         this.isLoading = true;
         // 设置滚动高度为0 ，往上切
-        this.$refs.container.scrollTop = 0;
+        this.$refs.mainContainer.scrollTop = 0;
         this.data = await this.fetchData(); // 不需要参数，fetchData 内部就用的 计算属性
         this.isLoading = false;
       },

@@ -33,8 +33,8 @@ Mock.mock(/^\/api\/blog(\?.+)?$/, "get", function (options) {
                     "scanNumber|0-3000": 0,
                     "commentNumber|0-300": 30,
                     "thumb|1": [
-                        Mock.Random.image("300x250", "#000", "#fff", "Random Image"),
-                        null,
+                        "@image(300x250, @color, #fff, @natural)", // 通过调用函数防止 mock 的都用缓存
+                        // null, // 直接都显示看极端情况的性能
                     ],
                     createDate: `@date('T')`,
                 },
