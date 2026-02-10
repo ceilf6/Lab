@@ -20,7 +20,7 @@
     "test:TreeListMenu": "vue serve ./src/components/TreeListMenu/test.vue",
     "test:ListKey": "vue serve ./test/ListKey.vue",
     "test:LoadingButton": "vue serve ./src/components/LoadingButton/test.vue",
-    "test:v-model":"vue serve ./test/v-model.vue"
+    "test:v-model": "vue serve ./test/v-model.vue"
   },
   "dependencies": {
     "axios": "^1.13.4",
@@ -28,7 +28,8 @@
     "mockjs": "^1.1.0",
     "querystring": "^0.2.1",
     "vue": "^2.6.11",
-    "vue-router": "^3.6.5"
+    "vue-router": "^3.6.5",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.8",

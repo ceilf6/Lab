@@ -14,7 +14,10 @@ import { vLoading, vLazy } from './directives'
 Vue.directive("loading", vLoading)
 Vue.directive('lazy', vLazy)
 
+import store from './store'
+
 new Vue({
+  store, // 注册 vuex 数据仓库
   router: router,
   render: h => h(App),
 }).$mount('#app')
