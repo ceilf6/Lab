@@ -8,7 +8,7 @@
       <li v-for="item in data.rows" :key="item.id">
         <div class="thumb" v-if="item.thumb">
           <!-- 循环的元素，不是切换显示，v-show 不合适 -->
-          <a href="">
+          <a @click="simulateNotFound">
             <img v-lazy="item.thumb" :alt="item.title" :title="item.title" />
           </a>
         </div>
@@ -70,6 +70,11 @@ export default {
     },
   },
   methods: {
+    simulateNotFound() {
+      // 模拟页面数据未找到
+      this.$router.push("/404"); // ({ name: "notFound" });
+      // 反正最后是通配的，404观感比没有后缀好
+    },
     formatDate, // 导入后记得配置到组件中，否则模版中不能用
     // handleScroll() {
     //   eventBus.$emit("scroll");

@@ -33,5 +33,6 @@ export default [
             }
         ]
     },
-    { name: "Loading", path: "/loading", component: syncGetComp(() => import(/* webpackChunkName: "loading" */ "@/views/Loading")), }
+    { name: "Loading", path: "/loading", component: syncGetComp(() => import(/* webpackChunkName: "loading" */ "@/views/Loading")), },
+    { name: "notFound", path: '*', component: syncGetComp(() => import(/* webpackChunkName: "notFound" */ "@/views/NotFound")) }
 ]
