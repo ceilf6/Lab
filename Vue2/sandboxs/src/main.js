@@ -16,6 +16,9 @@ Vue.directive('lazy', vLazy)
 
 import store from './store'
 
+// 恢复登录状态
+store.dispatch("loginAdmin/whoAmI")
+
 new Vue({
   store, // 注册 vuex 数据仓库
   router: router,

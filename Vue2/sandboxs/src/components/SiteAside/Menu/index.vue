@@ -49,6 +49,12 @@ export default {
           icon: "chat",
           exact: true,
         },
+        {
+          name: "Admin",
+          title: "管理员",
+          icon: "code",
+          exact: true,
+        },
       ],
     };
   },
