@@ -66,3 +66,4 @@
 - 利用浏览器资源缓存，实现 v-lazy 自定义懒加载图片指令 其中滚轮视图事件通过事件总线管理，抽离出mixin统一上抛事件 [link](https://github.com/ceilf6/Lab/commit/2e70841c9483f1119901e7f9fd9a8093b7517310)
 - [通过 vuex 进行共享数据管理 mutations 方法中不允许副作用操作 通过在 actions 中 dispatch 实现副作用操作](https://github.com/ceilf6/Lab/commit/bcadabcdf485eff395a109c814578c9aed4c0ed1)
 - [通过 vuex 和 router 管理 登陆、注销 vuex. module 实现模块化 开启命名空间防止命名冲突 开启严格模式后，只允许通过 mutations 改变状态 getters 计算属性 mapState 简化命名空间相关代码 通过 template 逻辑容器处理同级元素](https://github.com/ceilf6/Lab/commit/5c77685db2f57937d161d20ac8152c08558d82a9)
+- [使用 route 对 vuex 的登陆态进行路由守卫、鉴权拦截 在路由对象中带上目标页信息，方便在登录之后重定向、鉴权 添加 exact-path 防止路由中 hash 和 query 对样式匹配的影响](https://github.com/ceilf6/Lab/commit/290f01b2b9d7a15321b3823007e559d90d8babfc)
