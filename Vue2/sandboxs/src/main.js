@@ -3,7 +3,10 @@ import App from './App.vue'
 
 import './styles/global.less'
 
-import './mock'      // 注意得在最开始配置mock拦截，后面目标XHR才会被扼杀
+// 生产环境肯定不需要 mock
+if (process.env.NODE_ENV === 'development') {
+  import('./mock')      // 注意得在最开始配置mock拦截，后面目标XHR才会被扼杀
+}
 
 import router from './router'
 import { toast } from './utils'

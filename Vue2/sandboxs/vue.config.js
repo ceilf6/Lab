@@ -15,5 +15,6 @@ module.exports = {
                 pathRewrite: { '^/api/image': '' }
             }
         }
-    }
+    },
+    configureWebpack: require('./webpack.config')
 }

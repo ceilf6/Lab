@@ -15,7 +15,7 @@ import {
   FetchData,
   mountedDOM,
   timerDestroyed,
-} from "../../../test/Lifecycle";
+} from "@/test/Lifecycle";
 
 export default {
   components: {

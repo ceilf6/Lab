@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import A from "../../../test/A.vue";
-import B from "../../../test/B.vue";
+import A from "@/test/A.vue";
+import B from "@/test/B.vue";
 
 export default {
   components: {
