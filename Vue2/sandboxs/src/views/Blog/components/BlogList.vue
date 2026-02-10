@@ -28,6 +28,9 @@
         </div>
       </li>
     </ul>
+
+    <Empty v-if="data?.rows?.length === 0 && !isLoading" />
+
     <!-- 路由信息 => 分页参数 -->
     <!-- fetchData => 总数据量 -->
     <Pager
@@ -42,7 +45,7 @@
 </template>
 
 <script>
-import Pager from "@/components/Pager";
+import { Pager, Empty } from "@/components";
 import { fetchData, mainScroll } from "@/mixins";
 import { getBlogs } from "@/api/blog.js";
 import { formatDate } from "@/utils";
@@ -51,6 +54,7 @@ export default {
   mixins: [fetchData({}), mainScroll("mainContainer")],
   components: {
     Pager,
+    Empty,
   },
   computed: {
     // 获取路由信息
@@ -115,7 +119,11 @@ export default {
         this.isLoading = true;
         // 设置滚动高度为0 ，往上切
         this.$refs.mainContainer.scrollTop = 0;
-        this.data = await this.fetchData(); // 不需要参数，fetchData 内部就用的 计算属性
+        this.data = this.data = await this.fetchData(); // 不需要参数，fetchData 内部就用的 计算属性
+        // {
+        //   total: 0,
+        //   rows: [],
+        // };
         this.isLoading = false;
       },
     },
