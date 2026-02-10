@@ -4,11 +4,20 @@ import Vue from 'vue'
 Vue.use(Vuex); // 注册 Vuex 插件到 Vue 中
 
 import { delay } from '@/utils' // utils 是具名导出的
+import loginAdmin from './loginAdmin';
 
 const store = new Vuex.Store({
+    strict: true, // 开启严格模式后，只允许通过 mutations 改变状态
     // 仓库配置对象
+    modules: { // 注意是 modules ，没有 s 会导致注册失败
+        loginAdmin
+    },
     state: {
-        count: 0
+        count: 0,
+        // loginUser: { // 登陆态
+        //     loading: false,
+        //     user: null // 当前登录者
+        // }
     },
     mutations: { // 配置状态变更方法：监控状态变更
         increase(state) { // state 是默认参数，自动将当前状态传入
