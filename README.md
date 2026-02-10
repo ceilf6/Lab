@@ -70,3 +70,4 @@
 - [公共库体积优化 利用 tree-shaking 优化 Vuex 利用 CDN: 对 webpack 声明不要对公共库进行打包（私有的要收费） 通过模版代码在index中进行分流，否则开发环境也用CDN资源就无法使用Vue-dev 生产环境传统CDN导入会自动"污染"全局 --modern 开启现代模式打包](https://github.com/ceilf6/Lab/commit/475030a855b06fd49e0bb7943a4ec25a38c2d1a3)
 - [项目包体积优化 利用webpack对动态import的支持实现页面分包](https://github.com/ceilf6/Lab/commit/a9ad2ba0c1c58f6e711b671919dd5ac814f5ef54)
 - [通过 defaultImg 粗略优化首屏体验](https://github.com/ceilf6/Lab/commit/49857fe2ab326d9c7157f49ffe02776a4ea19441)
+- [异步组件 + 进度条](https://github.com/ceilf6/Lab/commit/623b5b9a6d17c4e413af8fd240ac1e55ed64db61)
