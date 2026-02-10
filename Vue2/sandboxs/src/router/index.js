@@ -4,7 +4,11 @@ import routes from './routes';
 
 import store from '../store'
 
-Vue.use(VueRouter); // 使用Vue插件 - Router
+// 生产环境传统CDN导入会自动"污染"全局
+if (!window.VueRouter) {
+    Vue.use(VueRouter); // 使用Vue插件 - Router
+}
+
 // 本质是构造函数
 const router = new VueRouter({
     // 插件配置

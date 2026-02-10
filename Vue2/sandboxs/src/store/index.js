@@ -1,12 +1,21 @@
 // 数据仓库模块
-import Vuex from 'vuex'
+import {
+    // 树摇优化
+    Store, // 数据管理仓库
+    install // 安装插件到Vue
+} from 'vuex'
 import Vue from 'vue'
-Vue.use(Vuex); // 注册 Vuex 插件到 Vue 中
+
+// 生产环境传统CDN导入会自动"污染"全局
+if (!window.vuex) {
+    // Vue.use(Vuex); // 注册 Vuex 插件到 Vue 中
+    install(Vue)
+}
 
 import { delay } from '@/utils' // utils 是具名导出的
 import loginAdmin from './loginAdmin';
 
-const store = new Vuex.Store({
+const store = new Store({
     strict: true, // 开启严格模式后，只允许通过 mutations 改变状态
     // 仓库配置对象
     modules: { // 注意是 modules ，没有 s 会导致注册失败
