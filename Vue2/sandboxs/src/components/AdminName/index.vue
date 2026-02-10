@@ -5,7 +5,10 @@
       <span>{{ admin.name }}</span>
       <a href="" @click.prevent="handleLoginOut">登出</a>
     </template>
-    <router-link v-else :to="{ name: 'AdminLogin' }">Login</router-link>
+    <router-link v-else :to="{ name: 'AdminLogin' }" exact-path
+      >Login</router-link
+    >
+    <!-- 添加 exact-path 防止路由中 hash 和 query 对样式匹配的影响 -->
   </div>
 </template>
 
@@ -18,7 +21,8 @@ export default {
   },
   methods: {
     async handleLoginOut() {
-      await this.$store.dispatch("loginOut");
+      // 注意别忘记命名空间前缀
+      await this.$store.dispatch("loginAdmin/loginOut");
       this.$router.push("/admin/login");
     },
   },
