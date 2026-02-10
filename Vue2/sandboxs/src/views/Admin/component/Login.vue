@@ -52,7 +52,7 @@ export default {
       if (resp) {
         // "服务器"如果返回成功就进行跳转
         alert("登录成功");
-        this.$router.push(this.$route.query.returnurl ?? "/admin/action");
+        this.$router.push(this.$route.query.returnurl ?? "/admin/action"); // 再次尝试进入目标页
       } else {
         for (const el of document.querySelectorAll(".form-item input")) // 清空输入
           el.value = "";

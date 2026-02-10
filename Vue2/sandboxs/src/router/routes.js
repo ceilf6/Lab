@@ -6,6 +6,7 @@ import Admin from '../views/Admin'
 import AdminHome from '../views/Admin/component/Home.vue'
 import AdminLogin from '../views/Admin/component/Login.vue'
 import AdminAction from '../views/Admin/component/AdminAction.vue'
+import Loading from '../views/Loading'
 
 export default [
     { name: "Home", path: "/", component: Home }, // 一个对象就是一条匹配规则
@@ -23,7 +24,11 @@ export default [
         children: [
             { name: "AdminHome", path: "home", component: AdminHome },
             { name: "AdminLogin", path: "login", component: AdminLogin },
-            { name: "AdminAction", path: "action", component: AdminAction }
+            {
+                name: "AdminAction", path: "action", component: AdminAction,
+                meta: { auth: true } // 挂上额外信息 meta 用于 to 路由鉴权
+            }
         ]
-    }
+    },
+    { name: "Loading", path: "/loading", component: Loading }
 ]
