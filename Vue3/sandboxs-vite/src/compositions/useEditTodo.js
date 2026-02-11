@@ -1,6 +1,6 @@
 import { ref, computed } from "vue";
 
-export default function useEditTodo(TodoRef) {
+export default function useEditTodo(todoRef) {
     const nowEditing = ref(null)
 
     let originCache = null // 存储原先值用于取消更改后恢复
@@ -11,8 +11,18 @@ export default function useEditTodo(TodoRef) {
         originCache = todo.title
     }
 
-    const doneEdit = () => {
-        nowEditing.value = null
+    const doneEdit = (todo) => {
+        nowEditing.value = null;
+        const title = todo.title.trim();
+        if (title) {
+            todo.title = title;
+        } else {
+            // 删除
+            const index = todoRef.value.indexOf(todo);
+            if (index >= 0) {
+                todoRef.value.splice(index, 1);
+            }
+        }
     }
 
     const cancelEdit = (todo) => {
@@ -22,12 +32,12 @@ export default function useEditTodo(TodoRef) {
 
     // 用于处理页面刷新后 :checked 样式
     const allDoneRef = computed(() => {
-        var val = TodoRef.value.filter((it) => !it.completed).length === 0;
+        var val = todoRef.value.filter((it) => !it.completed).length === 0;
         return val;
     });
 
     function setAllChecked(checked) {
-        TodoRef.value.forEach((todo) => {
+        todoRef.value.forEach((todo) => {
             todo.completed = checked;
         });
     }

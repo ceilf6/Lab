@@ -44,19 +44,18 @@
               class="edit"
               type="text"
               v-model="todo.title"
-              @blue="doneEdit"
-              @keyup.enter="doneEdit"
+              @blue="() => doneEdit(todo)"
+              @keyup.enter="() => doneEdit(todo)"
               @keyup.escape="() => cancelEdit(todo)"
             />
             <!-- 双向绑定之后，todoRef 变化 => 自动执行监控副作用 todoStorage.saveTodos -->
           </li>
         </ul>
       </section>
-      <footer class="footer">
+      <footer class="footer" v-show="todoRef.length > 0">
         <span class="todo-count">
           <strong>{{ remainingRef }}</strong>
           <span>item{{ remainingRef === 1 ? "" : "s" }} left</span>
-          <!-- 小细节，是否复数 s -->
         </span>
         <ul class="filters">
           <li>
@@ -76,8 +75,11 @@
             </a>
           </li>
         </ul>
-        <!-- 是否显示 clear 取决于 是否有完成任务，变化频繁用 v-show -->
-        <button class="clear-completed" v-show="completedRef > 0">
+        <button
+          @click="removeCompleted"
+          class="clear-completed"
+          v-show="completedRef > 0"
+        >
           Clear completed
         </button>
       </footer>
@@ -91,6 +93,7 @@ import {
   useTodoList,
   useFilter,
   useEditTodo,
+  useRemoveTodo,
 } from "../compositions";
 
 export default {
@@ -102,6 +105,7 @@ export default {
       ...useNewTodo(todoRef),
       ...useFilter(todoRef),
       ...useEditTodo(todoRef),
+      ...useRemoveTodo(todoRef),
     };
   },
 };
