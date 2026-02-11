@@ -83,3 +83,4 @@
 - [Vue3 不会对静态节点反复创建渲染函数，而是上提、然后在render中重复使用](https://github.com/ceilf6/Lab/commit/4739a9fe8e1604dd5900b018e5ee20b2976bc821)
 - [Vue3 预字符串化](https://github.com/ceilf6/Lab/commit/824ff9a8c1a4abf9790fcc743df5597616f15415)
 - [Vue3 打标是动态节点还是静态节点 如图是动态](https://github.com/ceilf6/Lab/commit/21ad93653369b624afb3145b8033429902331b01)
+- [Vue3 中属性的静动态打标区分](https://github.com/ceilf6/Lab/commit/d641f1daee8ef981c8e4d069c111b0c79416d7ea)
