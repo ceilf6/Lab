@@ -1,13 +1,9 @@
 <template>
-  <Composition />
+  <div id="app"></div>
 </template>
 
 <script>
-import Composition from "./test/Composition.vue";
-
-export default {
-  components: { Composition },
-};
+export default {};
 </script>
 
 <style></style>
