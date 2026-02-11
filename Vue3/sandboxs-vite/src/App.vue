@@ -8,7 +8,10 @@
           autofocus=""
           autocomplete="off"
           placeholder="What needs to be done?"
+          v-model="newTodoRef"
+          @keyup.enter="addTodo"
         />
+        <!-- 通过 enter 修饰符，当回车时 -->
       </header>
       <section class="main">
         <input id="toggle-all" class="toggle-all" type="checkbox" />
@@ -59,18 +62,16 @@
 </template>
 
 <script>
-import { ref, watchEffect } from "vue";
-import * as todoStorage from "./utils/todoStorage";
+import { useNewTodo, useTodoList } from "./components";
 
 export default {
   setup() {
-    const todoRef = ref(todoStorage.fetchTodos());
-    // 监控副作用
-    // 在 watch 中读取的会自动收集依赖
-    // 当依赖变化时会自动运行该副作用函数
-    watchEffect(() => {
-      todoStorage.saveTodos(todoRef.value);
-    });
+    const { todoRef } = useTodoList();
+    return {
+      // todoRef: todoList.todoRef,
+      todoRef,
+      ...useNewTodo(todoRef),
+    };
   },
 };
 </script>

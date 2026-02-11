@@ -19,3 +19,11 @@ export function fetchTodos() {
 export function saveTodos(newTodos) {
     localStorage.setItem(TODOS_KEY, JSON.stringify(newTodos))
 }
+
+/**
+ * 生成任务的唯一ID = 时间戳 + 随机数
+ */
+export function generateID() {
+    return Date.now() + Math.random().toString(16).substring(2, 6)
+    // 已经不推荐 substr 第二个参数为长度，推荐 substring 第二个参数为结束位置更直观
+}
