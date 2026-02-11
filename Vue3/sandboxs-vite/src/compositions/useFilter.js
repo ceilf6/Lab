@@ -26,11 +26,13 @@ export default function useFilter(todoRef) {
         window.removeEventListener("hashchange", onHashChange)
     })
 
-    const filteredTodoRef = computed({
-        get() {
+    const filteredTodoRef = computed(
+        // {get() 
+        () => {
             return filter(todoRef.value, filterRef.value) // 别忘记 .value
         }
-    })
+        // }
+    )
 
     const remainingRef = computed(() => {
         return filter(todoRef.value, "active").length;
