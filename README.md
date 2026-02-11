@@ -72,3 +72,4 @@
 - [通过 defaultImg 粗略优化首屏体验](https://github.com/ceilf6/Lab/commit/49857fe2ab326d9c7157f49ffe02776a4ea19441)
 - [异步组件 + 进度条](https://github.com/ceilf6/Lab/commit/623b5b9a6d17c4e413af8fd240ac1e55ed64db61)
 - [通过通配符 * 匹配 404 页面](https://github.com/ceilf6/Lab/commit/e60c6d9e1f16434cee4b9273c8b770601c97ebf4)
+- [Vue3 较 2 的 diff 构造函数 this指向 组合内聚](https://github.com/ceilf6/Lab/commit/83edd69a89a8cff811c8a1c6986525f650280d15)
