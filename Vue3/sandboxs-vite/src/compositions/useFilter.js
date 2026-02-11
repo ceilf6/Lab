@@ -1,4 +1,5 @@
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
+import filter from '../utils/todoStorage'
 
 const filterEnum = ["all", "active", "completed"]
 
@@ -25,7 +26,24 @@ export default function useFilter(todoRef) {
         window.removeEventListener("hashchange", onHashChange)
     })
 
+    const filteredTodoRef = computed({
+        get() {
+            return filter(todoRef.value, filterRef)
+        }
+    })
+
+    const remainingRef = computed(() => {
+        return filter(todosRef.value, "active").length;
+    });
+
+    const completedRef = computed(() => {
+        return filter(todosRef.value, "completed").length;
+    });
+
     return {
-        filterRef
+        filterRef,
+        filteredTodoRef,
+        remainingRef,
+        completedRef,
     }
 }
