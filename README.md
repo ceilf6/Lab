@@ -75,3 +75,4 @@
 - [Vue3 较 2 的 diff 构造函数 this指向 组合内聚](https://github.com/ceilf6/Lab/commit/83edd69a89a8cff811c8a1c6986525f650280d15)
 - [虽然 Vue2-mixins 能实现内聚，但是存在混合之间层次扁平化、执行顺序等问题 而 Vue3 composition 可以直接进行 函数级别的交互](https://github.com/ceilf6/Lab/commit/e8d98d705ca017baa9b5a4fd2f9621f1f363002c)
 - [Vue3 将 LifeCycle Function 都抽离成普通函数了，不需要再限定在配置中](https://github.com/ceilf6/Lab/commit/2c36fc2ac27de4d135984f1b0572e9db3d41fa1b)
+- [like LifeCycle, Vue3 has computed() func](https://github.com/ceilf6/Lab/commit/850b9924b43558f09cbe9736562b52293524ada6)
