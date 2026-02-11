@@ -49,9 +49,22 @@
           <span>items left</span>
         </span>
         <ul class="filters">
-          <li><a href="#/all" class="selected">All</a></li>
-          <li><a href="#/active" class="">Active</a></li>
-          <li><a href="#/completed" class="">Completed</a></li>
+          <li>
+            <!-- 注意动态 class 要用对象，同时别忘记 v-bind 的 : -->
+            <a href="#/all" :class="{ selected: filterRef === 'all' }">All</a>
+          </li>
+          <li>
+            <a href="#/active" :class="{ selected: filterRef === 'active' }"
+              >Active</a
+            >
+          </li>
+          <li>
+            <a
+              href="#/completed"
+              :class="{ selected: filterRef === 'completed' }"
+              >Completed</a
+            >
+          </li>
         </ul>
         <button class="clear-completed" style="display: none">
           Clear completed
@@ -62,7 +75,7 @@
 </template>
 
 <script>
-import { useNewTodo, useTodoList } from "../compositions";
+import { useNewTodo, useTodoList, useFilter } from "../compositions";
 
 export default {
   setup() {
@@ -71,6 +84,7 @@ export default {
       // todoRef: todoList.todoRef,
       todoRef,
       ...useNewTodo(todoRef),
+      ...useFilter(todoRef),
     };
   },
 };
