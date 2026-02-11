@@ -78,3 +78,4 @@
 - [like LifeCycle, Vue3 has computed() func](https://github.com/ceilf6/Lab/commit/850b9924b43558f09cbe9736562b52293524ada6)
 - [Vue2 中计算属性可以通过 set 影响原始数据 Vue3 的 computed 最佳设计只设置 get 视为是只读的快照](https://github.com/ceilf6/Lab/commit/421e1ac98192549ffcb2a017f1310f907209c39f)
 - [template 预编译 => render() Vite 本地开发时直接请求、快于 webpack css => str vue => js](https://github.com/ceilf6/Lab/commit/51c2bd081b77f5da04db72f2c55f4eeaa2761d8f)
+- [因为 Vite 利用的是“现代浏览器支持ESM”这一特性，在开发时将模块文件直接传输给浏览器，不需要打包，是实时编译 所以 CMJ 是不支持的](https://github.com/ceilf6/Lab/commit/cb2fdc3c61d2a04a1274a48d0e26a436b30aab30)
