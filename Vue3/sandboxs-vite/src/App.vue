@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { useNewTodo, useTodoList } from "./components";
+import { useNewTodo, useTodoList } from "./compositions";
 
 export default {
   setup() {
