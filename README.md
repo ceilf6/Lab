@@ -71,3 +71,4 @@
 - [项目包体积优化 利用webpack对动态import的支持实现页面分包](https://github.com/ceilf6/Lab/commit/a9ad2ba0c1c58f6e711b671919dd5ac814f5ef54)
 - [通过 defaultImg 粗略优化首屏体验](https://github.com/ceilf6/Lab/commit/49857fe2ab326d9c7157f49ffe02776a4ea19441)
 - [异步组件 + 进度条](https://github.com/ceilf6/Lab/commit/623b5b9a6d17c4e413af8fd240ac1e55ed64db61)
+- [通过通配符 * 匹配 404 页面](https://github.com/ceilf6/Lab/commit/e60c6d9e1f16434cee4b9273c8b770601c97ebf4)
