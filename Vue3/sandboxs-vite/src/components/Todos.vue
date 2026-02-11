@@ -14,23 +14,41 @@
         <!-- 通过 enter 修饰符，当回车时 -->
       </header>
       <section class="main">
-        <input id="toggle-all" class="toggle-all" type="checkbox" />
+        <input
+          id="toggle-all"
+          class="toggle-all"
+          type="checkbox"
+          :checked="allDoneRef"
+          @input="setAllChecked($event.target.checked)"
+        />
+        <!-- 事件源（checkbox）的勾选状态，true/false -->
         <!-- checkbox 是设置了背景图 ⭕️ ，然后设置了本体完全透明（点击仍是本体处理 -->
         <label for="toggle-all">Mark all as complete</label>
         <ul class="todo-list">
           <li
             class="todo"
-            :class="{ completed: todo.completed }"
+            :class="{ completed: todo.completed, editing: todo === nowEditing }"
             v-for="todo in filteredTodoRef"
             :key="todo.id"
           >
-            <!-- li 自带类样式 completed -->
+            <!-- li 自带类样式 completed 和 editing -->
             <div class="view">
               <input class="toggle" type="checkbox" v-model="todo.completed" />
-              <label>{{ todo.title }}</label>
+              <label @dblclick="() => handleDBLClick(todo)">{{
+                todo.title
+              }}</label>
+              <!-- double left click -->
               <button class="destroy"></button>
             </div>
-            <input class="edit" type="text" />
+            <input
+              class="edit"
+              type="text"
+              v-model="todo.title"
+              @blue="doneEdit"
+              @keyup.enter="doneEdit"
+              @keyup.escape="() => cancelEdit(todo)"
+            />
+            <!-- 双向绑定之后，todoRef 变化 => 自动执行监控副作用 todoStorage.saveTodos -->
           </li>
         </ul>
       </section>
@@ -68,7 +86,12 @@
 </template>
 
 <script>
-import { useNewTodo, useTodoList, useFilter } from "../compositions";
+import {
+  useNewTodo,
+  useTodoList,
+  useFilter,
+  useEditTodo,
+} from "../compositions";
 
 export default {
   setup() {
@@ -78,6 +101,7 @@ export default {
       todoRef,
       ...useNewTodo(todoRef),
       ...useFilter(todoRef),
+      ...useEditTodo(todoRef),
     };
   },
 };
