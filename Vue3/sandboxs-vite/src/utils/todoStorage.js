@@ -27,3 +27,14 @@ export function generateID() {
     return Date.now() + Math.random().toString(16).substring(2, 6)
     // 已经不推荐 substr 第二个参数为长度，推荐 substring 第二个参数为结束位置更直观
 }
+
+export function filter(todos, visibility = "all") {
+    if (visibility === "all") {
+        return todos;
+    } else if (visibility === "active") {
+        return todos.filter((it) => !it.completed);
+    } else if (visibility === "completed") {
+        return todos.filter((it) => it.completed);
+    }
+    throw new Error("invalid visibility value");
+}
