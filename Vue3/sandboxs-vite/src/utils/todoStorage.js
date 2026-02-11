@@ -28,13 +28,13 @@ export function generateID() {
     // 已经不推荐 substr 第二个参数为长度，推荐 substring 第二个参数为结束位置更直观
 }
 
-export function filter(todos, visibility = "all") {
-    if (visibility === "all") {
+export function filter(todos, filter = "all") {
+    if (filter === "all") {
         return todos;
-    } else if (visibility === "active") {
+    } else if (filter === "active") {
         return todos.filter((it) => !it.completed);
-    } else if (visibility === "completed") {
+    } else if (filter === "completed") {
         return todos.filter((it) => it.completed);
     }
-    throw new Error("invalid visibility value");
+    throw new Error("invalid filter value");
 }
