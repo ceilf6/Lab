@@ -84,3 +84,4 @@
 - [Vue3 预字符串化](https://github.com/ceilf6/Lab/commit/824ff9a8c1a4abf9790fcc743df5597616f15415)
 - [Vue3 打标是动态节点还是静态节点 如图是动态](https://github.com/ceilf6/Lab/commit/21ad93653369b624afb3145b8033429902331b01)
 - [Vue3 中属性的静动态打标区分](https://github.com/ceilf6/Lab/commit/d641f1daee8ef981c8e4d069c111b0c79416d7ea)
+- [Vue3 双向绑定 v-model :modelValue , @update:modelValue v-model修饰符](https://github.com/ceilf6/Lab/commit/766830c8aa1a052e97ad2b6956f4188caf95f0ce)
