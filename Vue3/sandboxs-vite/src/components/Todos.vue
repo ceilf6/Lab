@@ -15,28 +15,19 @@
       </header>
       <section class="main">
         <input id="toggle-all" class="toggle-all" type="checkbox" />
+        <!-- checkbox 是设置了背景图 ⭕️ ，然后设置了本体完全透明（点击仍是本体处理 -->
         <label for="toggle-all">Mark all as complete</label>
         <ul class="todo-list">
-          <li class="todo">
+          <li
+            class="todo"
+            :class="{ completed: todo.completed }"
+            v-for="todo in filteredTodoRef"
+            :key="todo.id"
+          >
+            <!-- li 自带类样式 completed -->
             <div class="view">
-              <input class="toggle" type="checkbox" />
-              <label>composition api demo</label>
-              <button class="destroy"></button>
-            </div>
-            <input class="edit" type="text" />
-          </li>
-          <li class="todo">
-            <div class="view">
-              <input class="toggle" type="checkbox" />
-              <label>写简历</label>
-              <button class="destroy"></button>
-            </div>
-            <input class="edit" type="text" />
-          </li>
-          <li class="todo">
-            <div class="view">
-              <input class="toggle" type="checkbox" />
-              <label>下午3点参加面试</label>
+              <input class="toggle" type="checkbox" v-model="todo.completed" />
+              <label>{{ todo.title }}</label>
               <button class="destroy"></button>
             </div>
             <input class="edit" type="text" />
@@ -45,28 +36,30 @@
       </section>
       <footer class="footer">
         <span class="todo-count">
-          <strong>3</strong>
-          <span>items left</span>
+          <strong>{{ remainingRef }}</strong>
+          <span>item{{ remainingRef === 1 ? "" : "s" }} left</span>
+          <!-- 小细节，是否复数 s -->
         </span>
         <ul class="filters">
           <li>
-            <!-- 注意动态 class 要用对象，同时别忘记 v-bind 的 : -->
-            <a href="#/all" :class="{ selected: filterRef === 'all' }">All</a>
+            <a href="#/all" :class="{ selected: filterRef === 'all' }"> All </a>
           </li>
           <li>
-            <a href="#/active" :class="{ selected: filterRef === 'active' }"
-              >Active</a
-            >
+            <a href="#/active" :class="{ selected: filterRef === 'active' }">
+              Active
+            </a>
           </li>
           <li>
             <a
               href="#/completed"
               :class="{ selected: filterRef === 'completed' }"
-              >Completed</a
             >
+              Completed
+            </a>
           </li>
         </ul>
-        <button class="clear-completed" style="display: none">
+        <!-- 是否显示 clear 取决于 是否有完成任务，变化频繁用 v-show -->
+        <button class="clear-completed" v-show="completedRef > 0">
           Clear completed
         </button>
       </footer>
