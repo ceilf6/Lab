@@ -6,6 +6,8 @@
     <FetchData></FetchData>
     <mountedDOM />
     <timerDestroyed></timerDestroyed>
+
+    <IfElse></IfElse>
   </div>
 </template>
 
@@ -16,6 +18,7 @@ import {
   mountedDOM,
   timerDestroyed,
 } from "@/test/Lifecycle";
+import IfElse from "../../test/IfElse.vue";
 
 export default {
   components: {
@@ -23,6 +26,7 @@ export default {
     FetchData,
     mountedDOM,
     timerDestroyed,
+    IfElse,
   },
   methods: {
     showToast() {
