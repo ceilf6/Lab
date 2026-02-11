@@ -85,3 +85,4 @@
 - [Vue3 打标是动态节点还是静态节点 如图是动态](https://github.com/ceilf6/Lab/commit/21ad93653369b624afb3145b8033429902331b01)
 - [Vue3 中属性的静动态打标区分](https://github.com/ceilf6/Lab/commit/d641f1daee8ef981c8e4d069c111b0c79416d7ea)
 - [Vue3 双向绑定 v-model :modelValue , @update:modelValue v-model修饰符](https://github.com/ceilf6/Lab/commit/766830c8aa1a052e97ad2b6956f4188caf95f0ce)
+- [虽然 Vue2 v-for > v-if ，但是每次变更后都需要重新循环判断 Vue3直接交换了优先级、报错[vue/no-use-v-if-with-v-for] 正确应该通过计算属性进行判断 当使用<template>进行v-for循环时，需要把key值放到<template>中，而不是它的子元素中](https://github.com/ceilf6/Lab/commit/0fd235a7780f81c54d9ef82eb31fa329ac114c02)
