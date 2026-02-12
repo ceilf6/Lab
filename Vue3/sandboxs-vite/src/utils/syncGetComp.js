@@ -1,5 +1,5 @@
 import { ErrorComp, Loading } from '../components'
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, h } from 'vue'
 
 export default (path, errorMsg = "加载出错了！") => defineAsyncComponent({
     loader: async () => {
