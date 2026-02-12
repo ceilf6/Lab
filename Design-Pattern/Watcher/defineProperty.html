@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="container">
+        <p>
+            <span>name</span>
+        </p>
+
+        <p>
+            <span>age</span>
+        </p>
+    </div>
+
+    <script>
+        const div = document.getElementById("container");
+
+        // 创建一个观察者对象
+        function observer(target) {
+            function render() {
+                let html = ""
+                for (const prop of Object.keys(ob)) {
+                    html += `
+                    <p><span>${prop}: </span><span>${ob[prop]}</span></p>
+                `
+                }
+                div.innerHTML = html;
+            }
+
+            const ob = {}
+            const props = Object.keys(target) // 获得所有属性名
+            for (const prop of props) {
+                Object.defineProperty(ob, prop, { // 遍历委托人为观察者添加存取器属性
+                    get() {
+                        return target[prop]
+                    },
+                    set(val) {
+                        target[prop] = val
+                        render() // 更新后触发重新渲染
+                    },
+                    enumerable: true
+                    // 得开启 enumerable 否则在 render 中就找不到prop属性了
+                })
+            }
+            render(); // 首次渲染
+            return ob
+        }
+
+        const target = {
+            name: 'ceilf6',
+            age: 20
+        }
+        const obj = observer(target)
+    </script>
+</body>
+
+</html>
