@@ -30,10 +30,10 @@
 
             // 辅助函数：递归渲染对象
             function renderValue(val, indent = 0) {
-                if (!isObject(val)) {
+                if (!isObject(val)) { // 递归边界
                     return val
                 }
-                const spacing = '&nbsp;&nbsp;'.repeat(indent)
+                const spacing = '&nbsp;&nbsp;'.repeat(indent) // 根据深度决定缩进
                 let result = '{'
                 for (const key of Object.keys(val)) {
                     result += `<br>${spacing}&nbsp;&nbsp;${key}: ${renderValue(val[key], indent + 1)}`
