@@ -3,8 +3,14 @@
     <div class="block">
       <h2>区域1</h2>
       <p>
-        <button>打开朦层</button>
+        <button @click="ModalVisible = true">打开朦层</button>
       </p>
+      <!-- teleport 的 to 写的是 CSS 选择器 -->
+      <Teleport to="body">
+        <Modal v-if="ModalVisible">
+          <button @click="ModalVisible = false">关闭朦层</button>
+        </Modal>
+      </Teleport>
     </div>
     <div class="block mid">
       <h2>区域2</h2>
@@ -19,7 +25,8 @@
 </template>
 
 <script>
-import { Loading, ErrorComp } from "../../components";
+import { Loading, ErrorComp, Modal } from "../../components";
+import useModal from "../../compositions/useModal";
 
 import { defineAsyncComponent, h } from "vue"; // h函数具名了，方便随时创建虚拟节点
 // 类似于 Vue2/sandboxs/src/utils/syncGetComp.js 也是传入一个 Promise任务
@@ -69,6 +76,12 @@ export default {
     Block3,
     // Block5,
     AsyncBlock5,
+    Modal,
+  },
+  setup() {
+    return {
+      ...useModal(),
+    };
   },
 };
 </script>
