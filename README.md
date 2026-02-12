@@ -98,3 +98,4 @@
 - [通过 Object.defineProperty 实现浅层观察者模式 设置了两个对象，无法时时刻刻保证两个对象一致性（所以 vue2 有 $set 和 $delete 用于在 mounted 之后的属性更改）](https://github.com/ceilf6/Lab/commit/588438566d7879136ed778924e109578576da21f)
 - [递归实现深层观察者模式](https://github.com/ceilf6/Lab/commit/5ee0c12a0109eb9b2a6e0c764225a539d0dc2c38)
 - [虽然 defineProperty 可以直接通过覆盖 target 来避免 ob 的创建，但是会导致污染原先对象 最佳实践还是 Proxy](https://github.com/ceilf6/Lab/commit/89778f849e4ef2d1ddeba52822634cb8b3fd72d2)
+- [类代理，自动进行任何构造函数属性赋值](https://github.com/ceilf6/Lab/commit/22108b52f6a73efab0d37f9af977134c23a9fd2a)
