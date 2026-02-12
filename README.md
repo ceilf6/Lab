@@ -94,3 +94,4 @@
 - [朦层 通过 Teleport 修改在真实DOM中的位置](https://github.com/ceilf6/Lab/commit/24c3744fa6b8b997c80c9d9f527349242ca34a77)
 - [property-descriptor 属性描述符对象 设置 set/get => 存取器属性“Invoke property getter”: 不再是在内存中管理 obj.a ，而是类似于 直接运行get()和set(val) 预检 通过innerText => UI和数据双向绑定](https://github.com/ceilf6/Lab/commit/4bbf99a0344b1c1bdbe93e597895211b0d719cc7)
 - [ES6 => Reflect => 函数式编程、JS底层能力API](https://github.com/ceilf6/Lab/commit/19d0ecd467ecac47565c7aa47c0990b6cab7a9d7)
+- [可以通过 proxy 在 Reflect 的底层实现基础上做想做的](https://github.com/ceilf6/Lab/commit/030ed37fc99142ab4e611f3ad3523df2daa3514a)
