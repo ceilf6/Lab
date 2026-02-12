@@ -96,3 +96,4 @@
 - [ES6 => Reflect => 函数式编程、JS底层能力API](https://github.com/ceilf6/Lab/commit/19d0ecd467ecac47565c7aa47c0990b6cab7a9d7)
 - [可以通过 proxy 在 Reflect 的底层实现基础上做想做的](https://github.com/ceilf6/Lab/commit/030ed37fc99142ab4e611f3ad3523df2daa3514a)
 - [通过 Object.defineProperty 实现浅层观察者模式 设置了两个对象，无法时时刻刻保证两个对象一致性（所以 vue2 有 $set 和 $delete 用于在 mounted 之后的属性更改）](https://github.com/ceilf6/Lab/commit/588438566d7879136ed778924e109578576da21f)
+- [递归实现深层观察者模式](https://github.com/ceilf6/Lab/commit/5ee0c12a0109eb9b2a6e0c764225a539d0dc2c38)
