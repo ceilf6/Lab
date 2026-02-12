@@ -89,3 +89,4 @@
 - [当使用`v-if v-else-if v-else`分支的时候，不再需要像Vue2一样指定`key`值（否则可能数据没清空) vue3会自动给予每个分支一个唯一的key 即便要手工给予key值，也必须给予每个分支唯一的key，不能因为要重用分支而给予相同的key，否则就无法切换了（Block了、编译成静态节点了）](https://github.com/ceilf6/Lab/commit/f61c7eb9f6087d7de40360596ee860757a433b79)
 - [Vue3 的 router](https://github.com/ceilf6/Lab/commit/913c49bc82d57738a51182aca6e61136fedcac66)
 - [Vue3 异步加载组件](https://github.com/ceilf6/Lab/commit/26d8f16016337bb123efb9c240652efad093c913)
+- [通过配置 defineAsyncComponent 对象设置 loading 和 error, Vue3 的 util syncGetComp 比 Vue2的 多等待和错误状态 Vue3 h函数具名了，方便随时创建虚拟节点](https://github.com/ceilf6/Lab/commit/dc5f60bd3314dbeda794008915c6928807f1eafb)
