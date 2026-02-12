@@ -15,4 +15,8 @@ new Vue({
 }).$mount('#app')
 */
 const app = createApp(App)
+
+import router from './router'
+app.use(router) // 使用插件
+
 app.mount('#app')
