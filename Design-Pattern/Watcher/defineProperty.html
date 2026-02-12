@@ -21,13 +21,32 @@
     <script>
         const div = document.getElementById("container");
 
-        // 创建一个观察者对象
+        // 创建一个深层观察者对象
         function observer(target) {
+            // 辅助函数：判断是否为对象（排除 null）
+            function isObject(val) {
+                return val !== null && typeof val === 'object'
+            }
+
+            // 辅助函数：递归渲染对象
+            function renderValue(val, indent = 0) {
+                if (!isObject(val)) {
+                    return val
+                }
+                const spacing = '&nbsp;&nbsp;'.repeat(indent)
+                let result = '{'
+                for (const key of Object.keys(val)) {
+                    result += `<br>${spacing}&nbsp;&nbsp;${key}: ${renderValue(val[key], indent + 1)}`
+                }
+                result += `<br>${spacing}}`
+                return result
+            }
+
             function render() {
                 let html = ""
                 for (const prop of Object.keys(ob)) {
                     html += `
-                    <p><span>${prop}: </span><span>${ob[prop]}</span></p>
+                    <p><span>${prop}: </span><span>${renderValue(ob[prop])}</span></p>
                 `
                 }
                 div.innerHTML = html;
@@ -36,11 +55,16 @@
             const ob = {}
             const props = Object.keys(target) // 获得所有属性名
             for (const prop of props) {
+                // 如果属性值是对象，递归观察
+                let value = isObject(target[prop]) ? observer(target[prop]) : target[prop] // 闭包
+
                 Object.defineProperty(ob, prop, { // 遍历委托人为观察者添加存取器属性
                     get() {
-                        return target[prop]
+                        return value
                     },
                     set(val) {
+                        // 如果新值是对象，也需要进行观察
+                        value = isObject(val) ? observer(val) : val
                         target[prop] = val
                         render() // 更新后触发重新渲染
                     },
@@ -54,9 +78,38 @@
 
         const target = {
             name: 'ceilf6',
-            age: 20
+            age: 20,
+            address: {
+                city: 'Beijing',
+                street: {
+                    name: 'Main Street',
+                    number: 123
+                }
+            },
+            hobbies: ['coding', 'reading']
         }
         const obj = observer(target)
+
+        // 测试深层响应
+        console.log('初始对象:', obj)
+
+        // 3秒后修改嵌套对象的属性
+        setTimeout(() => {
+            console.log('修改 city')
+            obj.address.city = 'Shanghai'
+        }, 3000)
+
+        // 6秒后修改更深层的属性
+        setTimeout(() => {
+            console.log('修改 street.name')
+            obj.address.street.name = 'Second Street'
+        }, 6000)
+
+        // 9秒后修改顶层属性
+        setTimeout(() => {
+            console.log('修改 name')
+            obj.name = 'Updated Name'
+        }, 9000)
     </script>
 </body>
 
