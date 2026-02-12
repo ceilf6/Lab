@@ -1,16 +1,12 @@
 <template>
-  <Checkbox />
-  <IfElse />
+  <Page></Page>
 </template>
 
 <script>
-import { Checkbox } from "./components";
-import IfElse from "./test/IfElse.vue";
-
+import Page from "./test/Page.vue";
 export default {
   components: {
-    Checkbox,
-    IfElse,
+    Page,
   },
 };
 </script>
