@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const targetObj = {
+            name: 'ceilf6',
+            age: 20
+        }
+
+        const proxyObj = new Proxy(targetObj, {
+            set(target, propertyKey, value, receiver) {
+                console.log(target, propertyKey, value)
+                // { name: 'ceilf6', age: 20 } name ceilf7
+
+                // 代理做的事情
+
+                // target[propertyKey] = value
+                Reflect.set(target, propertyKey, value)
+                // 在代理内部和委托人沟通
+
+                return true // set 不返回 true 会报错
+            },
+            get(target, propertyKey) {
+                if (Reflect.has(target, propertyKey)) {
+                    return Reflect.get(target, propertyKey);
+                } else {
+                    return -1;
+                }
+            },
+            has(target, propertyKey) {
+                return false;
+            },
+            apply() {
+
+            },
+        })
+
+        console.log(proxyObj)
+
+        // targetObj.name = 'ceilf7'
+        proxyObj.name = 'ceilf7' // 注意外界只应该和代理打交道
+
+        // console.log(targetObj.name)
+    </script>
+</body>
+
+</html>
