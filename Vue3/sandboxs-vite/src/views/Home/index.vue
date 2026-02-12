@@ -19,9 +19,25 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from "vue";
+import { Loading, ErrorComp } from "../../components";
+
+import { defineAsyncComponent, h } from "vue"; // h函数具名了，方便随时创建虚拟节点
 // 类似于 Vue2/sandboxs/src/utils/syncGetComp.js 也是传入一个 Promise任务
-const Block3 = defineAsyncComponent(() => import("../../test/Block3.vue"));
+// const Block3 = defineAsyncComponent(() => import("../../test/Block3.vue"));
+const Block3 = defineAsyncComponent({
+  loader: async () => {
+    // 别忘记 async 返回一个 Promise
+    throw new Error("抱歉，你得出错");
+    import("../../test/Block3.vue");
+  },
+  // errorComponent: ErrorComp,
+  errorComponent: {
+    render() {
+      return h(ErrorComp, "加载出错了！");
+    },
+  }, // 想要注入的话就像配置对象一样
+});
+
 // const Block5 = defineAsyncComponent(() => import("../../test/Block5.vue"));
 const Block5 = defineAsyncComponent(() => {
   return new Promise((resolve) => {
@@ -34,15 +50,20 @@ const Block5 = defineAsyncComponent(() => {
     }, 3000);
   });
 });
-const AsyncBlock5 = defineAsyncComponent(async () => {
-  console.log("开始异步加载组件");
-  // await setTimeout(() => {}, 3000); // setTimeout 返回的是定时器
-  await new Promise((resolve) => {
-    // 应该包在一个 Promise 中 await
-    setTimeout(resolve, 3000);
-  });
-  return await import("../../test/Block5.vue");
+const AsyncBlock5 = defineAsyncComponent({
+  loader: async () => {
+    console.log("开始异步加载组件");
+    // await setTimeout(() => {}, 3000); // setTimeout 返回的是定时器
+    await new Promise((resolve) => {
+      // 应该包在一个 Promise 中 await
+      setTimeout(resolve, 3000);
+    });
+    return await import("../../test/Block5.vue");
+  },
+  loadingComponent: Loading, // loader 的 Promise 在 pending 状态时显示的组件
 });
+import { syncGetComp } from "../../utils";
+const syncGetBlock5 = syncGetComp("@/test/Block5.vue", "Block5加载出错了");
 export default {
   components: {
     Block3,
