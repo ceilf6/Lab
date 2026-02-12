@@ -90,3 +90,4 @@
 - [Vue3 的 router](https://github.com/ceilf6/Lab/commit/913c49bc82d57738a51182aca6e61136fedcac66)
 - [Vue3 异步加载组件](https://github.com/ceilf6/Lab/commit/26d8f16016337bb123efb9c240652efad093c913)
 - [通过配置 defineAsyncComponent 对象设置 loading 和 error, Vue3 的 util syncGetComp 比 Vue2的 多等待和错误状态 Vue3 h函数具名了，方便随时创建虚拟节点](https://github.com/ceilf6/Lab/commit/dc5f60bd3314dbeda794008915c6928807f1eafb)
+- [异步加载页面（本质就是异步加载组件）](https://github.com/ceilf6/Lab/commit/af1bc8ac862a196a3be1a9f4eba292de4d8e1407)
