@@ -1,6 +1,6 @@
 <template>
   <div class="bar1">
-    <div class="item" v-for="item in bars">
+    <div class="item" v-for="item in bars" :key="item.country">
       <label>{{ item.country }}</label>
       <div
         class="bar"
@@ -53,4 +53,3 @@ export default {
   flex: 0 0 auto;
 }
 </style>
-

@@ -1,6 +1,6 @@
 <template>
   <div class="bar2">
-    <div class="item" v-for="item in bars">
+    <div class="item" v-for="item in bars" :key="item.country">
       <label>{{ item.country }} {{ item.value }}</label>
       <div
         class="bar"
@@ -62,4 +62,3 @@ export default {
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
 }
 </style>
-
