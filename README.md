@@ -110,5 +110,5 @@
         2. 对象 ⇒ 使用 reactive
         3. proxy实例 ⇒ 直接用该代理
     - computed 在监听对象改变后第一次会触发计算函数，后面都是用的缓存
-    (link)[https://github.com/ceilf6/Lab/commit/1c6f732a7cb6face6f9ba700979f17bc68bf5188]
+    [link](https://github.com/ceilf6/Lab/commit/1c6f732a7cb6face6f9ba700979f17bc68bf5188)
 
