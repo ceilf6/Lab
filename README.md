@@ -112,3 +112,4 @@
     - computed 在监听对象改变后第一次会触发计算函数，后面都是用的缓存
     [link](https://github.com/ceilf6/Lab/commit/1c6f732a7cb6face6f9ba700979f17bc68bf5188)
 
+- [readonly - 类似于 vuex 不允许外部直接更改数据，得调用暴露的API上报](https://github.com/ceilf6/Lab/commit/80296e75fe24adec324225579cce27d1ec00dc30)
