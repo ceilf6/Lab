@@ -20,12 +20,28 @@ count.value++;
 
 setTimeout(() => {
     stop(); // 返回的函数是用于停止监听的
-    state.a++;
-    // 无事发生
-}, 0)
+    state.a = 100; // 无事发生
+}, 1000)
+
+state.a++; // 属于同步代码，仍会进入到微任务队列中
 
 /*
+输出：
 1 0 
-3 2 
+4 2 
+
 因为我将 stop 放到了宏任务中，stop不会影响之前的微任务执行
+
+执行流程：
+1. 同步代码阶段：
+   → watchEffect 立即执行 => 输出 1 0
+   → 修改 state.a, count.value（触发依赖更新，watchEffect 回调加入微任务队列）
+   → 调用 setTimeout（同步执行，注册定时器，1000ms 后将回调加入宏任务队列）
+   → state.a++（继续触发更新，合并到微任务队列）
+
+2. 微任务队列执行：
+   → watchEffect 回调执行 => 输出 4 2
+
+3. 1000ms 后，宏任务执行：
+   → setTimeout 的回调执行：stop() + state.a = 100（已停止，无输出）
 */

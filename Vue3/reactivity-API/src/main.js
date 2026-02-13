@@ -1,3 +1,4 @@
 // import './watch/withoutStop'
-// import './watch/stopInMacro'
-import './watch/watch'
+// import './watch/watchEffect/stopInMacro'
+// import './watch/watch'
+import './watch/test'
