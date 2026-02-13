@@ -101,7 +101,7 @@
 - [类代理，自动进行任何构造函数属性赋值](https://github.com/ceilf6/Lab/commit/22108b52f6a73efab0d37f9af977134c23a9fd2a)
 - [通过代理校验实现类似TS的JS](https://github.com/ceilf6/Lab/commit/891e300778eecdbd87b4b8661e80e8f4837f3834)
 
-[#7](https://github.com/ceilf6/Lab/discussions/7)
+- [#7](https://github.com/ceilf6/Lab/discussions/7)
 - reactive ⇒ proxy实例
 - readonly ⇒ 返回了新的 proxy 实例，set 和 deleteProperty 做了特殊处理
 - ref 可以代理任何数据类型，封装到一个对象 value 属性上
@@ -111,3 +111,4 @@
     3. proxy实例 ⇒ 直接用该代理
 - computed 在监听对象改变后第一次会触发计算函数，后面都是用的缓存
 (link)[https://github.com/ceilf6/Lab/commit/1c6f732a7cb6face6f9ba700979f17bc68bf5188]
+
