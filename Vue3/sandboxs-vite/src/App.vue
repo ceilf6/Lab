@@ -5,7 +5,7 @@
 
 <script>
 // import Page from "./test/Page.vue";
-import RenderTracked from "./test/RenderTracked.vue";
+import RenderTracked from "./test/LifeCycle/RenderTracked.vue";
 export default {
   components: {
     RenderTracked,
