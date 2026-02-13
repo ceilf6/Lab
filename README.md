@@ -100,3 +100,4 @@
 - [虽然 defineProperty 可以直接通过覆盖 target 来避免 ob 的创建，但是会导致污染原先对象 最佳实践还是 Proxy](https://github.com/ceilf6/Lab/commit/89778f849e4ef2d1ddeba52822634cb8b3fd72d2)
 - [类代理，自动进行任何构造函数属性赋值](https://github.com/ceilf6/Lab/commit/22108b52f6a73efab0d37f9af977134c23a9fd2a)
 - [通过代理校验实现类似TS的JS](https://github.com/ceilf6/Lab/commit/891e300778eecdbd87b4b8661e80e8f4837f3834)
+- [trigger workflow to update README](https://github.com/ceilf6/Lab/commit/85c8ba954f3b45badd8ba86e483c4048eac83e91)
