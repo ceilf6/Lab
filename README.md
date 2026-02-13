@@ -117,3 +117,4 @@
 - [watchEffect 的执行是在微任务中回调，配合 stop 的三种情景的对比（有、没有、在宏任务中）](https://github.com/ceilf6/Lab/commit/c55d816eb1120926a632acc29c8ff49b1fa6922d)
 - [watch使用场景 - **不希望回调函数一开始就执行** - 数据改变时，需要**参考旧值** - 需要**监控一些回调函数中不会用到的数据** 其余感觉用 watchEffect 更好](https://github.com/ceilf6/Lab/commit/b3e1286b3e9ff16b428efb93f7521c578860c0fd)
 - [开发纪律规范 => 减少负担 - 最好所有 composition func 都返回的是 ref Obj unref === isRef(val) ? val.value : val](https://github.com/ceilf6/Lab/commit/a8584495812c10d38806ca4d0dc60ffb2ea18046)
+- [Vue3生命周期 在 template ⇒ render 中渲染虚拟节点的时候会对响应式数据收集依赖 renderTracked 在收集到一个依赖就会触发一次](https://github.com/ceilf6/Lab/commit/f9f2bc522c475a5dde838ff16767561c49e917fb)
