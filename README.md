@@ -115,3 +115,4 @@
 - [readonly - 类似于 vuex 不允许外部直接更改数据，得调用暴露的API上报](https://github.com/ceilf6/Lab/commit/80296e75fe24adec324225579cce27d1ec00dc30)
 - [防抖更改响应数据](https://github.com/ceilf6/Lab/commit/d67e7b90e14703b6725a84b6074d225bf47e7de9)
 - [watchEffect 的执行是在微任务中回调，配合 stop 的三种情景的对比（有、没有、在宏任务中）](https://github.com/ceilf6/Lab/commit/c55d816eb1120926a632acc29c8ff49b1fa6922d)
+- [watch使用场景 - **不希望回调函数一开始就执行** - 数据改变时，需要**参考旧值** - 需要**监控一些回调函数中不会用到的数据** 其余感觉用 watchEffect 更好](https://github.com/ceilf6/Lab/commit/b3e1286b3e9ff16b428efb93f7521c578860c0fd)
