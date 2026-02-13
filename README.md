@@ -119,3 +119,4 @@
 - [开发纪律规范 => 减少负担 - 最好所有 composition func 都返回的是 ref Obj unref === isRef(val) ? val.value : val](https://github.com/ceilf6/Lab/commit/a8584495812c10d38806ca4d0dc60ffb2ea18046)
 - [Vue3生命周期 在 template ⇒ render 中渲染虚拟节点的时候会对响应式数据收集依赖 renderTracked 在收集到一个依赖就会触发一次](https://github.com/ceilf6/Lab/commit/f9f2bc522c475a5dde838ff16767561c49e917fb)
 - [renderTriggered 在响应数据每变化一次就会触发一次 这两个生命周期钩子一般用于开发排查](https://github.com/ceilf6/Lab/commit/38c942363d279014cf0c55e545fdd8ec6bdb8c2d)
+- [利用 live-server 启动的服务器 + 文件路径 => 访问本地资源模拟API请求](https://github.com/ceilf6/Lab/commit/20915a8d46f9374977affe5e4db02e774875f6f6)
