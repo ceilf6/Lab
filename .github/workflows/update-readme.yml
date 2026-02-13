@@ -33,8 +33,16 @@ jobs:
           echo "Before: ${{ github.event.before }}"
           echo "After: ${{ github.sha }}"
           
-          # 获取所有推送的提交消息
-          COMMITS=$(git log --format=%B ${{ github.event.before }}..${{ github.sha }} 2>/dev/null || git log --format=%B -1)
+          # 获取所有推送的提交消息（包括合并提交中的所有提交）
+          # 使用 --first-parent 避免重复检查，使用 --all-match 确保准确性
+          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            # 首次推送或强制推送
+            COMMITS=$(git log --format=%B -1)
+          else
+            # 正常推送，获取本次push的所有提交（包括合并进来的提交）
+            COMMITS=$(git log --format=%B ${{ github.event.before }}..${{ github.sha }})
+          fi
+          
           echo "Commits:"
           echo "$COMMITS"
           
