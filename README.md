@@ -113,3 +113,4 @@
     [link](https://github.com/ceilf6/Lab/commit/1c6f732a7cb6face6f9ba700979f17bc68bf5188)
 
 - [readonly - 类似于 vuex 不允许外部直接更改数据，得调用暴露的API上报](https://github.com/ceilf6/Lab/commit/80296e75fe24adec324225579cce27d1ec00dc30)
+- [防抖更改响应数据](https://github.com/ceilf6/Lab/commit/d67e7b90e14703b6725a84b6074d225bf47e7de9)
