@@ -132,3 +132,4 @@
 - [装饰器模式重构 - 抽象横向关注点、抽离重复渲染事情给 HOC，不用重复书写渲染](https://github.com/ceilf6/Lab/commit/56569ad627e3d34650861e3a5b63d56a0336bf4f)
 - [通过 React.createRef() 创建 ref对象 通过 .current 拿到目标](https://github.com/ceilf6/Lab/commit/68ececb7f9d90eb84c92c3bde1c5fcad282c115e)
 - [通过 ref 得到 (类似Vue) React HTML Element 真实 DOM 对象 类组件实例 调用方法](https://github.com/ceilf6/Lab/commit/0f28d78db750cfe4812f1524a7e94d70376be306)
+- [通过 函数ref={el => this.txt = el;} 创建 ref 不再需要 .current 如果不是通过 外部的getRef 那么每次 render 都会重新创建一个新函数，函数会调用两次、旧的函数返回null 现代函数组件推荐使用 useRef() ref 这种直接操作的思想其实是和 React 背道相驰的](https://github.com/ceilf6/Lab/commit/039c17430c5409f185ab6bf49ee8469925144838)
