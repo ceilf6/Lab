@@ -13,6 +13,7 @@ export default class App extends Component {
                 <OldLifeCylcle n={this.state.number} />
                 <p>
                     <button onClick={() => {
+                        console.log("=== 父组件状态变更")
                         this.setState({
                             number: this.state.number + 1
                         })
