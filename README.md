@@ -127,3 +127,4 @@
 - [尝试使用新版 GDSFP 模拟上条反模式，会发现子组件自身属性完全变成了父组件状态的映像，因为每次更新组件都会调用 GDSFP 这个生命周期钩子、变成父组件状态 故而限制了数据来源单一](https://github.com/ceilf6/Lab/commit/e75777e61821a9088d72024b56e00efe7834bde2)
 - [通过 name 属性区分实现单一 handleChange 管理整个表单 别忘记计算属性名](https://github.com/ceilf6/Lab/commit/b0bef7e92b3d2bf0ae982af3b3cbc42aa5f870b0)
 - [React - defaultProps 混合assign](https://github.com/ceilf6/Lab/commit/18e8530f3cddf091e09d3260888d8cf0b4b46745)
+- [TS 直接用 interface 编译期强制规定即可 老项目 JS 的话得用 prop-type 库 ，那么只能在运行时报错 链式调用添加一个 isRequired 函数进行检查](https://github.com/ceilf6/Lab/commit/5a09de9646cb077fa49b82b7ee0d83a28bbfcae4)
