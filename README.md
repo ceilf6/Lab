@@ -124,3 +124,4 @@
 - [React 旧版生命周期（仅类组件有）](https://github.com/ceilf6/Lab/commit/24c7bca885d22fa00b1574e40127489045518593)
 - [React 新版生命周期（同理仅类组件用）](https://github.com/ceilf6/Lab/commit/44f9cb2b6c20b495f61594208b7558a6e0d10a57)
 - [反模式 - 使用姿势不当 - componentWillReceiveProps 导致的数据来源不单一](https://github.com/ceilf6/Lab/commit/ca8871928f27cab436ea20a5111d284d3191eed3)
+- [尝试使用新版 GDSFP 模拟上条反模式，会发现子组件自身属性完全变成了父组件状态的映像，因为每次更新组件都会调用 GDSFP 这个生命周期钩子、变成父组件状态 故而限制了数据来源单一](https://github.com/ceilf6/Lab/commit/e75777e61821a9088d72024b56e00efe7834bde2)
