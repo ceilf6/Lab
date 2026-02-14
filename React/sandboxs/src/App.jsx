@@ -1,6 +1,6 @@
 import React from 'react'
 // import {CheckBoxGroupText,SelectText ,RadioBoxGroupText} from './components'
-import Comp from './test/RefTest copy'
+import Comp from './test/RefTestObj'
 
 const el = (
     <>
