@@ -123,3 +123,4 @@
 - [利用 Vue3 的 reactive API 模拟 vuex 全局的响应式数据、对外暴露的是只读的以及API接口 接口兜底 闭包隐藏 userState](https://github.com/ceilf6/Lab/commit/09a4447ddbb3299d562eb3a531d1bcc86f0b3590)
 - [React 旧版生命周期（仅类组件有）](https://github.com/ceilf6/Lab/commit/24c7bca885d22fa00b1574e40127489045518593)
 - [React 新版生命周期（同理仅类组件用）](https://github.com/ceilf6/Lab/commit/44f9cb2b6c20b495f61594208b7558a6e0d10a57)
+- [反模式 - 使用姿势不当 - componentWillReceiveProps 导致的数据来源不单一](https://github.com/ceilf6/Lab/commit/ca8871928f27cab436ea20a5111d284d3191eed3)
