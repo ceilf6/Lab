@@ -120,3 +120,4 @@
 - [Vue3生命周期 在 template ⇒ render 中渲染虚拟节点的时候会对响应式数据收集依赖 renderTracked 在收集到一个依赖就会触发一次](https://github.com/ceilf6/Lab/commit/f9f2bc522c475a5dde838ff16767561c49e917fb)
 - [renderTriggered 在响应数据每变化一次就会触发一次 这两个生命周期钩子一般用于开发排查](https://github.com/ceilf6/Lab/commit/38c942363d279014cf0c55e545fdd8ec6bdb8c2d)
 - [利用 live-server 启动的服务器 + 文件路径 => 访问本地资源模拟API请求](https://github.com/ceilf6/Lab/commit/20915a8d46f9374977affe5e4db02e774875f6f6)
+- [利用 Vue3 的 reactive API 模拟 vuex 全局的响应式数据、对外暴露的是只读的以及API接口 接口兜底 闭包隐藏 userState](https://github.com/ceilf6/Lab/commit/09a4447ddbb3299d562eb3a531d1bcc86f0b3590)
