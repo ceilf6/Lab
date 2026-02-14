@@ -15,7 +15,7 @@ export default class Test extends Component {
     // 于是新版删掉了 CWRP ，改为 static getDerivedStateFromProps
 
     /*
-    一个数据只能由一个主人
+    一个数据只能由一个主人，只能是 属性 / 状态
     - 要么和父组件的统一，由父组件下放上报事件方法 onChange
     - 要么子组件自己管理
     */
