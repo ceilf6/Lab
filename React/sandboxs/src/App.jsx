@@ -13,7 +13,9 @@ import React from 'react';
 
 // import CheckedBox from './test/CheckedBox';
 
-import FormTest from './test/FormTest';
+// import FormTest from './test/FormTest';
+
+import DefaultPropsFather from './test/DefaultProps';
 
 const el = (
     // 写在 组件中间{ }中的 会自动传入到 props.children
@@ -36,7 +38,7 @@ const el = (
     // />
 
     // <Timer />
-    <FormTest />
+    <DefaultPropsFather />
 )
 
 
