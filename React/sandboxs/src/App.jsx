@@ -17,8 +17,10 @@ import React from 'react';
 
 // import DefaultPropsFather from './test/DefaultProps';
 
-import PropTypesComp from './test/PropTypes'
-import TypeCompTS from './test/TypeCompTS.tsx';
+// import PropTypesComp from './test/PropTypes'
+// import TypeCompTS from './test/TypeCompTS.tsx';
+
+import HOCApp from './test/HOC/App'
 
 const el = (
     // 写在 组件中间{ }中的 会自动传入到 props.children
@@ -41,11 +43,13 @@ const el = (
     // />
 
     // <Timer />
-    <>
-        <PropTypesComp />
-        <TypeCompTS att={666}/>
-    </>
+    // <>
+    //     <PropTypesComp />
+    //     <TypeCompTS att={666}/>
+    // </>
     // TS 的话 App 也得是用 TS 才能报错
+
+    <HOCApp />
 )
 
 
