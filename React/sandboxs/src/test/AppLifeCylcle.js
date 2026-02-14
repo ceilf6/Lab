@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import OldLifeCylcle from "./OldLifeCylcle"
 import NewLifeCycle from './NewLifeCycle'
+import AntiPartternCWRP from './AntiPartternCWRP'
 
 export default class App extends Component {
     state = {
@@ -11,7 +12,7 @@ export default class App extends Component {
 
         return (
             <div>
-                <NewLifeCycle n={this.state.number} />
+                <AntiPartternCWRP n={this.state.number} />
                 <p>
                     <button onClick={() => {
                         console.log("=== 父组件状态变更")
