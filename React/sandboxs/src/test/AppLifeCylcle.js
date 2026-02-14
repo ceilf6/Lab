@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import OldLifeCylcle from "./OldLifeCylcle"
+import NewLifeCycle from './NewLifeCycle'
 
 export default class App extends Component {
     state = {
@@ -10,7 +11,7 @@ export default class App extends Component {
 
         return (
             <div>
-                <OldLifeCylcle n={this.state.number} />
+                <NewLifeCycle n={this.state.number} />
                 <p>
                     <button onClick={() => {
                         console.log("=== 父组件状态变更")

@@ -9,7 +9,7 @@ import React from 'react';
 
 // import ListKey from './test/ListKey';
 
-import AppOldLifeCycle from './test/AppOldLifeCylcle'
+import AppLifeCylcle from './test/AppLifeCylcle'
 
 const el = (
     // 写在 组件中间{ }中的 会自动传入到 props.children
@@ -32,7 +32,7 @@ const el = (
     // />
 
     // <Timer />
-    <AppOldLifeCycle />
+    <AppLifeCylcle />
 )
 
 
