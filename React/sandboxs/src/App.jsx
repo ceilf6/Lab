@@ -15,7 +15,10 @@ import React from 'react';
 
 // import FormTest from './test/FormTest';
 
-import DefaultPropsFather from './test/DefaultProps';
+// import DefaultPropsFather from './test/DefaultProps';
+
+import PropTypesComp from './test/PropTypes'
+import TypeCompTS from './test/TypeCompTS.tsx';
 
 const el = (
     // 写在 组件中间{ }中的 会自动传入到 props.children
@@ -38,7 +41,11 @@ const el = (
     // />
 
     // <Timer />
-    <DefaultPropsFather />
+    <>
+        <PropTypesComp />
+        <TypeCompTS att={666}/>
+    </>
+    // TS 的话 App 也得是用 TS 才能报错
 )
 
 
