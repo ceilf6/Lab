@@ -1,11 +1,13 @@
 import React from 'react'
-import {CheckBoxGroupText,SelectText ,RadioBoxGroupText} from './components'
+// import {CheckBoxGroupText,SelectText ,RadioBoxGroupText} from './components'
+import Comp from './test/RefTest copy'
 
 const el = (
     <>
-        <CheckBoxGroupText />
+        {/* <CheckBoxGroupText />
         <SelectText />
-        <RadioBoxGroupText />
+        <RadioBoxGroupText /> */}
+        <Comp />
     </>
 )
 
