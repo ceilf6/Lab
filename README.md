@@ -129,3 +129,4 @@
 - [React - defaultProps 混合assign](https://github.com/ceilf6/Lab/commit/18e8530f3cddf091e09d3260888d8cf0b4b46745)
 - [TS 直接用 interface 编译期强制规定即可 老项目 JS 的话得用 prop-type 库 ，那么只能在运行时报错 链式调用添加一个 isRequired 函数进行检查](https://github.com/ceilf6/Lab/commit/5a09de9646cb077fa49b82b7ee0d83a28bbfcae4)
 - [通过HOC高阶组件关注横切关注点实现日志记录、登录 别忘记下放props 还能在中间额外修饰等等、玩法很多](https://github.com/ceilf6/Lab/commit/efb94f04876edd8ce0f0781b9852a151bd292a74)
+- [装饰器模式重构 - 抽象横向关注点、抽离重复渲染事情给 HOC，不用重复书写渲染](https://github.com/ceilf6/Lab/commit/56569ad627e3d34650861e3a5b63d56a0336bf4f)
