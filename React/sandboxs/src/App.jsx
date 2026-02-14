@@ -11,7 +11,9 @@ import React from 'react';
 
 // import AppLifeCylcle from './test/AppLifeCylcle'
 
-import CheckedBox from './test/CheckedBox';
+// import CheckedBox from './test/CheckedBox';
+
+import FormTest from './test/FormTest';
 
 const el = (
     // 写在 组件中间{ }中的 会自动传入到 props.children
@@ -34,7 +36,7 @@ const el = (
     // />
 
     // <Timer />
-    <CheckedBox />
+    <FormTest />
 )
 
 
