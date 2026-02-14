@@ -122,3 +122,4 @@
 - [利用 live-server 启动的服务器 + 文件路径 => 访问本地资源模拟API请求](https://github.com/ceilf6/Lab/commit/20915a8d46f9374977affe5e4db02e774875f6f6)
 - [利用 Vue3 的 reactive API 模拟 vuex 全局的响应式数据、对外暴露的是只读的以及API接口 接口兜底 闭包隐藏 userState](https://github.com/ceilf6/Lab/commit/09a4447ddbb3299d562eb3a531d1bcc86f0b3590)
 - [React 旧版生命周期（仅类组件有）](https://github.com/ceilf6/Lab/commit/24c7bca885d22fa00b1574e40127489045518593)
+- [React 新版生命周期（同理仅类组件用）](https://github.com/ceilf6/Lab/commit/44f9cb2b6c20b495f61594208b7558a6e0d10a57)
