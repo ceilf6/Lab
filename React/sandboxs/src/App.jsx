@@ -5,9 +5,11 @@ import React from 'react';
 // import Father from './test/Father';
 // import Form from './components/Form';
 // import { FileUpload } from './components';
-import Timer from './test/Timer';
+// import Timer from './test/Timer';
 
-import ListKey from './test/ListKey';
+// import ListKey from './test/ListKey';
+
+import AppOldLifeCycle from './test/AppOldLifeCylcle'
 
 const el = (
     // 写在 组件中间{ }中的 会自动传入到 props.children
@@ -30,7 +32,7 @@ const el = (
     // />
 
     // <Timer />
-    <ListKey />
+    <AppOldLifeCycle />
 )
 
 

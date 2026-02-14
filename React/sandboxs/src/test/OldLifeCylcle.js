@@ -53,6 +53,7 @@ export default class OldLifeCycle extends Component {
                 <h2>属性n: {this.props.n}</h2>
                 <h2>状态n：{this.state.n}</h2>
                 <button onClick={() => {
+                    console.log("=== 自身状态变更")
                     this.setState({
                         n: this.state.n + 1
                     })
