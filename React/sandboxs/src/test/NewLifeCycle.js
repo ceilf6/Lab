@@ -8,13 +8,15 @@ export default class NewLifeCycle extends Component {
         n: this.props.n
     }
 
-    // static getDerivedStateFromProps(props, state) {
-    //     console.log("getDerivedStateFromProps");
-    //     // return null;//不改变当前状态
-    //     return { //用新的对象替换掉之前的状态
-    //         n: props.n
-    //     }
-    // }
+    static getDerivedStateFromProps(props, state) {
+        console.log("getDerivedStateFromProps");
+        // return null; // 不改变当前状态
+        return { // 返回对象时用新的对象替换掉之前的状态
+            n: props.n
+        }
+        // 然后会发现子组件自身属性完全变成了父组件状态的映像，
+        // 因为每次更新组件都会调用 GDSFP 这个生命周期钩子、变成父组件状态
+    }
 
     getSnapshotBeforeUpdate = (prevProps, prevState) => {
         console.log("getSnapshotBeforeUpdate");
