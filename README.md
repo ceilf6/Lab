@@ -135,3 +135,4 @@
 - [通过 函数ref={el => this.txt = el;} 创建 ref 不再需要 .current 如果不是通过 外部的getRef 那么每次 render 都会重新创建一个新函数，函数会调用两次、旧的函数返回null 现代函数组件推荐使用 useRef() ref 这种直接操作的思想其实是和 React 背道相驰的](https://github.com/ceilf6/Lab/commit/039c17430c5409f185ab6bf49ee8469925144838)
 - [forwardRef => 从函数组件中拿到目标的 ref 是高阶组件，拿到新组件后，在使用时声明了 ref ，那么就会作为第二个参数传入到forwardRef的入参函数组件A中](https://github.com/ceilf6/Lab/commit/7f9cd2d5e1b1ed187617cec8d5f9c92d8a0a6983)
 - [forwardRef 不能直接用于类组件，直接用函数包装一下，然后通过属性接续传递](https://github.com/ceilf6/Lab/commit/fd0f993a4b22253adc54ee10754085b90f59a0af)
+- [通过 ref 转发解决 HOC 导致的 ref 错误 如果不加处理，外层 ref 会在 HOC 的包装层上，如果想用最内层的方法需要在 HOC 中间层转发](https://github.com/ceilf6/Lab/commit/fd93e66e2e5da7b5a776d388d78326a81d473ad1)
