@@ -1,7 +1,7 @@
 import React from 'react'
 // import {CheckBoxGroupText,SelectText ,RadioBoxGroupText} from './components'
 // import Comp from './test/RefTestFunc'
-import ForwardRefTest from './test/ForwardRefTest'
+import ForwardRefTest from './test/ForwardRefTest copy'
 
 const el = (
     <>
