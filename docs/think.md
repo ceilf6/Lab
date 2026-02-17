@@ -4,4 +4,4 @@
 
 UI = f(state)
     Hook => state
-        framework like React is f which parse the Hook-state change
+        framework like React is f which parse the Hook-state change, really apply API in host environment
