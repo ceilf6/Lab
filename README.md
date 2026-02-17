@@ -142,3 +142,4 @@
 - [通过上下文实现组件之间的联动 - 基础功能的表单组件Form Form.Input Form.Button](https://github.com/ceilf6/Lab/commit/b35672fc29d1b873bb9f0172a13452b3bb29ad88)
 - [componentDidMount => 执行队列](https://github.com/ceilf6/Lab/commit/380b19a7d008f3f090e8f05b25f4302de8635fd6)
 - [react渲染 - React元素 在 执行React Component 后得到 虚拟DOM树 React Element => 执行React Component => Reconciler diff(Fiber) => Commit => Real DOM 手动模拟实现递归渲染](https://github.com/ceilf6/Lab/commit/ea7fde3bebc4b946ad4d50ff72118fde2fb4ecfb)
+- [虚拟DOM编程思想 => 框架在内存中实现为JS对象, 如React17之前的createElement和17之后的jsx-runtime方法返回的对象](https://github.com/ceilf6/Lab/commit/fb2fd3b0287f22fff529e270c5dbf8f783e44098)
