@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="module">
+        // 人机研究报告 => 屏幕没有刷新时 50ms（正常 1000/60 = 16.6ms）
+        // function callback(IdleDeadline) {
+        //     console.log("=== 当前帧绘制完毕后剩余时间: ", IdleDeadline.timeRemaining())
+        //     window.requestIdleCallback(callback)
+        // }
+        // window.requestIdleCallback(callback);
+
+        import { notSyncDelay, randomInt } from '../../../utils/index.js'
+        const taskList = [] // 优先级的话用堆实现，这里就先用队列模拟
+        for (let i = 1; i <= 20; ++i) {
+            const needTime = randomInt(10, 20)
+            taskList.push([() => {
+                notSyncDelay(needTime)
+                console.log(`执行任务${i}`)
+            }, needTime])
+        }
+        // 在每一帧渲染完毕后的剩余时间
+        // 如果时间充足，我们就执行任务
+        // 如果时间不充足，那么就在下一帧渲染后再接着执行
+        function callback(IdleDeadline) {
+            console.log("=== 当前帧绘制完毕后剩余时间: ", IdleDeadline.timeRemaining())
+            while (taskList.length && IdleDeadline.timeRemaining() > taskList[0][1]) {
+                const task = taskList.shift()[0]
+                task()
+            }
+            // 退出循环有两种可能 1. 任务列表空 2. 剩余时间不够
+            if (taskList.length) {
+                // 如果仍然有任务，就递归 => 在下一帧继续执行
+                window.requestIdleCallback(callback);
+            }
+        }
+        // 启动
+        window.requestIdleCallback(callback)
+    </script>
+</body>
+
+</html>
