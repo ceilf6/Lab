@@ -1,6 +1,7 @@
 function workLoopConcurrent{
     // 如果还有任务，并且时间切片还有剩余的时间
     while (workInProgress !== null && !shouldYield()) {
+        // 新版本是 shouldYieldToHost() 调用的是来自 Scheduler.shouldYield()
         performUnitOfWork(workInProgress);
     }
 }
