@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <input type="text" id="content" placeholder="请输入消息">
+    </div>
+    <div>
+        <button id="btn1">给 port1 发消息</button>
+        <button id="btn2">给 port2 发消息</button>
+    </div>
+    <script>
+        const channel = new MessageChannel()
+        console.log(channel)
+
+        const port1 = channel.port1
+        const port2 = channel.port2
+
+        btn1.onclick = function () {
+            port2.postMessage(content.value)
+        }
+        port1.onmessage = function (event) {
+            console.log(`port1 收到了来自 port2 的消息：${event.data}`);
+        }
+
+        btn2.onclick = function () {
+            port1.postMessage(content.value)
+        }
+        port2.onmessage = function (event) {
+            console.log(`port2 收到了来自 port1 的消息：${event.data}`);
+        }
+    </script>
+</body>
+
+</html>
