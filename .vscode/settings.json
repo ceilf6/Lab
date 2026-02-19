@@ -15,5 +15,7 @@
   },
   "git.pullBeforePush": true,
   "git.autofetch": true,
-  "git.rebaseWhenSync": false
+  "git.rebaseWhenSync": false,
+  "javascript.validate.enable": false,
+  "flow.enabled": true
 }
