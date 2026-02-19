@@ -2,6 +2,8 @@
 # 子模块 push 后，自动同步父仓库 Lab 的子模块指针并推送
 # 通过 core.hooksPath 配置加载，脚本本身受 Lab 仓库版本控制
 
+set -e
+
 # 获取子模块最新一条 commit 信息
 COMMIT_MSG=$(git log -1 --pretty=%B)
 
@@ -11,6 +13,9 @@ PARENT_DIR=$(cd "$(git rev-parse --show-toplevel)/../.." && pwd)
 echo "[post-push] 同步父仓库 Lab 子模块指针..."
 
 cd "$PARENT_DIR" || exit 1
+
+# 先拉取远端最新，避免 non-fast-forward 推送失败（merge 保留历史）
+git pull --no-rebase
 
 # 更新子模块指针
 git add React/source
@@ -22,6 +27,10 @@ if git diff --cached --quiet; then
 fi
 
 git commit -m "$COMMIT_MSG"
-git push
 
-echo "[post-push] 父仓库 Lab 已同步推送，commit: $COMMIT_MSG"
+if git push; then
+  echo "[post-push] 父仓库 Lab 已同步推送，commit: $COMMIT_MSG"
+else
+  echo "[post-push] ERROR: 父仓库推送失败，请手动执行: cd $PARENT_DIR && git push" >&2
+  exit 1
+fi
