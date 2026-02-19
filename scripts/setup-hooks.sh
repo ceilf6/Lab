@@ -1,23 +1,44 @@
 #!/bin/sh
-# 初始化本地 git hooks 配置
+# 初始化本地 git 钩子配置
 # 克隆仓库后执行一次: sh scripts/setup-hooks.sh
 #
-# 注意：git 没有 post-push 钩子，因此改用 git alias.push 实现：
-#   git push 成功后自动调用 .githooks/submodule/post-push 同步父仓库指针。
+# 因 git 不允许 alias 覆盖内置命令（push/commit 等），
+# 改用 zsh 函数包装 git，在 React/source push 成功后自动同步父仓库 Lab。
 
 set -e
 
 REPO_ROOT=$(cd "$(dirname "$0")/.." && pwd)
+ZSHRC="$HOME/.zshrc"
+HOOK_SCRIPT="$REPO_ROOT/.githooks/submodule/post-push"
+MARKER="# >>> Lab submodule post-push sync <<<"
 
-echo ">>> 配置子模块 React/source 的 git alias.push..."
+echo ">>> 检查 ~/.zshrc 是否已配置..."
 
-cd "$REPO_ROOT/React/source"
+if grep -qF "$MARKER" "$ZSHRC" 2>/dev/null; then
+  echo ">>> 已存在，跳过写入。"
+else
+  cat >> "$ZSHRC" << ZSHEOF
 
-# alias.push: 用 git -c alias.push="" 避免递归，push 成功后执行同步脚本
-git config --local alias.push \
-  '!f() { git -c alias.push="" push "$@" && sh "$(git rev-parse --show-toplevel)/../../.githooks/submodule/post-push"; }; f'
+$MARKER
+# 当在 React/source 子模块中执行 git push 成功后，自动同步父仓库 Lab 的子模块指针
+git() {
+  command git "\$@"
+  local _exit=\$?
+  if [ "\$1" = "push" ] && [ \$_exit -eq 0 ]; then
+    local _toplevel
+    _toplevel=\$(command git rev-parse --show-toplevel 2>/dev/null)
+    local _hook="\$_toplevel/../../.githooks/submodule/post-push"
+    if [ -f "\$_hook" ]; then
+      sh "\$_hook"
+    fi
+  fi
+  return \$_exit
+}
+# <<< Lab submodule post-push sync <<<
+ZSHEOF
+  echo ">>> 已写入 ~/.zshrc"
+fi
 
-# 确保同步脚本有执行权限
-chmod +x "$REPO_ROOT/.githooks/submodule/post-push"
-
-echo ">>> 完成！后续在 React/source 执行 git push 会自动同步 Lab 父仓库。"
+chmod +x "$HOOK_SCRIPT"
+echo ">>> 完成！请重新打开终端或执行 source ~/.zshrc 使配置生效。"
+echo ">>> 之后在 React/source 执行 git push 会自动同步 Lab 父仓库。"
