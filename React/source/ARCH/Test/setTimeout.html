@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // setTimeout=>macrotask嵌套导致4ms延时
+        let count = 0; // 计数器
+        let startTime = new Date(); // 获取当前的时间戳
+        console.log("start time:", 0, 0);
+        function fn() {
+            setTimeout(function () {
+                console.log("exec time:", ++count, new Date() - startTime);
+                if (count === 50) {
+                    return;
+                }
+                fn();
+            }, 0)
+        }
+        fn();
+    </script>
+</body>
+
+</html>

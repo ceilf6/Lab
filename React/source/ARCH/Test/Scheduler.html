@@ -20,6 +20,7 @@
         const taskList = [] // 优先级的话用堆实现，这里就先用队列模拟
         for (let i = 1; i <= 20; ++i) {
             const needTime = randomInt(10, 20)
+            // 后面想了想这里的 needTime 其实不合理，因为任务的时间是无法预期的
             taskList.push([() => {
                 notSyncDelay(needTime)
                 console.log(`执行任务${i}`)
@@ -29,10 +30,12 @@
         // 如果时间充足，我们就执行任务
         // 如果时间不充足，那么就在下一帧渲染后再接着执行
         function callback(IdleDeadline) {
-            console.log("=== 当前帧绘制完毕后剩余时间: ", IdleDeadline.timeRemaining())
-            while (taskList.length && IdleDeadline.timeRemaining() > taskList[0][1]) {
-                const task = taskList.shift()[0]
-                task()
+            let curTime = IdleDeadline.timeRemaining()
+            console.log("=== 当前帧绘制完毕后剩余时间: ", curTime)
+            while (taskList.length && curTime > 0) { //  > taskList[0][1]) {
+                const task = taskList.shift()
+                curTime -= task[1]
+                task[0]()
             }
             // 退出循环有两种可能 1. 任务列表空 2. 剩余时间不够
             if (taskList.length) {
