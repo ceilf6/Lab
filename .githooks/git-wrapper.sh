@@ -3,6 +3,10 @@
 # push 成功后自动同步父仓库 Lab 的子模块指针
 
 REAL_GIT="/usr/bin/git"
+LOG="/tmp/git-wrapper.log"
+
+# 记录所有调用（用于调试）
+echo "[$(date '+%H:%M:%S')] args: $*   CWD: $PWD" >> "$LOG"
 
 # 执行真实 git 命令
 "$REAL_GIT" "$@"
