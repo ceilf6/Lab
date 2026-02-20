@@ -157,3 +157,4 @@
 - [Scheduler 源码分析: shouldYieldToHost 判断任务执行阻塞时间是否会导致丢帧、需要归还主线程](https://github.com/ceilf6/Lab/commit/e44e012f2f6a97a4f152a6282318213fe58a8d71)
 - [Scheduler 源码分析: advanceTimers 遍历 timerQueue 判断是否有已经到期的任务，如果有、将这个任务放入到 taskQueue](https://github.com/ceilf6/Lab/commit/9d197a8e06513b4ad56e59411629a293f0622008)
 - [Scheduler 源码分析: 延时任务调度 unstable_scheduleCallback => requestHostTimeout](https://github.com/ceilf6/Lab/commit/28e81a470f6807c26d9730495ef7b1b7b313fc03)
+- [Scheduler 源码分析: => handleTimeout](https://github.com/ceilf6/Lab/commit/496b0ee7b847175381a79872cb9ee7945d0c2512)
