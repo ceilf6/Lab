@@ -5,14 +5,15 @@ import React from 'react'
 // import AppHOC from './test/HOC/App'
 // import ForceReRender from './test/Context/ForceReRender'
 // import FormTest from './components/Form/Test'
-import EventTest from './Source-Event/Test'
+// import EventTest from './Source-Event/Test'
+import UseReducerText from './test/UseReducerText'
 
 const el = (
     <>
         {/* <CheckBoxGroupText />
         <SelectText />
         <RadioBoxGroupText /> */}
-        <EventTest />
+        <UseReducerText />
     </>
 )
 
