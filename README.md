@@ -173,3 +173,4 @@
 - [Hooks 源码分析: hook对象 => 链表 执行流程](https://github.com/ceilf6/Lab/commit/fcaa3aad117f02515b4fab201b2a5166d1918818)
 - [useReducer - 同 Redux 都是可预测状态容器](https://github.com/ceilf6/Lab/commit/f2e797d2183d3de16f88fee411f0a6934e51b392)
 - [GSAP ScrollTrigger 的 scrub 实现滚动条映射到动画进度 用户滚动   → ScrollTrigger 计算 [0, 1] 进度   → 驱动 GSAP Tween 更新 o.value (0 → 120)   → onUpdate 回调调用 canvas.upData(frameIndex)   → Canvas drawImage() 绘制对应帧   → 视觉上形成"滚动控制动画"](https://github.com/ceilf6/Lab/commit/150e17629469e088cb3a0959a12cedb53f47351c)
+- [useState, useReducer 源码分析: useState 的本质就是 useReducer 的一个简化版 - 其 reducer 是内置的基础版而不是用户传入的](https://github.com/ceilf6/Lab/commit/5cab75de958338108935cd8e0f066e3c361ff2e0)
