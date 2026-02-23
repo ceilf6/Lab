@@ -1,0 +1,70 @@
+<mxfile host="65bd71144e">
+    <diagram name="Fiber Effect Structure" id="0">
+        <mxGraphModel dx="713" dy="1384" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="hook1" value="hook1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="100" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="hook2" value="hook2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="250" y="100" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="hook3" value="hook3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="100" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="hook4" value="hook4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="550" y="100" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="hook5" value="hook5" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="700" y="100" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="effect1" value="effect" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+                    <mxGeometry x="150" y="250" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="effect2" value="effect" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+                    <mxGeometry x="550" y="250" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="effect3" target="effect1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="750" y="370"/>
+                            <mxPoint x="480" y="370"/>
+                            <mxPoint x="200" y="370"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="effect3" value="effect" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+                    <mxGeometry x="700" y="250" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="e1" style="endArrow=block;html=1;" parent="1" source="hook1" target="hook2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" style="endArrow=block;html=1;" parent="1" source="hook2" target="hook3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" style="endArrow=block;html=1;" parent="1" source="hook3" target="hook4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e4" style="endArrow=block;html=1;" parent="1" source="hook4" target="hook5" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e5" style="endArrow=block;dashed=1;html=1;" parent="1" source="hook1" target="effect1" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e6" style="endArrow=block;dashed=1;html=1;" parent="1" source="hook4" target="effect2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e7" style="endArrow=block;dashed=1;html=1;" parent="1" source="hook5" target="effect3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e8" style="endArrow=block;html=1;" parent="1" source="effect1" target="effect2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e9" style="endArrow=block;html=1;" parent="1" source="effect2" target="effect3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
