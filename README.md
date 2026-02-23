@@ -181,3 +181,4 @@
 - [update, UpdateQueue 源码分析](https://github.com/ceilf6/Lab/commit/4e701d52bbf27ca3b15996ad6f0d6d596b7a04c2)
 - [eagerState策略 源码分析](https://github.com/ceilf6/Lab/commit/359eec8d4d5251fd94d0c4984c76527c006e5de3)
 - [bailout策略 源码分析: update阶段后立马进行一次判断](https://github.com/ceilf6/Lab/commit/24e74ea1035f7586faa88b86b6fa53d2ab315218)
+- [bailout策略 源码分析: 第二次命中机会 开发者使用性能优化API实质就是放宽bailou策略的命中条件 - React.memo - PureComponent - markWorkInProgressReceivedUpdate()](https://github.com/ceilf6/Lab/commit/f16dfea507988b85de21c0b1b5f38a8d887363dc)
