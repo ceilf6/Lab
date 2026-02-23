@@ -178,3 +178,4 @@
 - [useCallback 源码分析](https://github.com/ceilf6/Lab/commit/c3fe8dd723e67f29b88e143a6034dd01e9782f3f)
 - [useMemo 源码分析](https://github.com/ceilf6/Lab/commit/46d1513d93c1198255891a15f3fa13ae19576501)
 - [useRef 源码分析](https://github.com/ceilf6/Lab/commit/e88418fc2036b2587122ded9fa255726416c8fd5)
+- [update, UpdateQueue 源码分析](https://github.com/ceilf6/Lab/commit/4e701d52bbf27ca3b15996ad6f0d6d596b7a04c2)
