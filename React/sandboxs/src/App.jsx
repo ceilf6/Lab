@@ -6,18 +6,20 @@ import React,{useState} from 'react'
 // import ForceReRender from './test/Context/ForceReRender'
 // import FormTest from './components/Form/Test'
 // import EventTest from './Source-Event/Test'
-import UseReducerText from './test/UseReducerText'
 
-const UseStateText = (props) => {
-    const {initialData} = props
+// import UseReducerText from './test/UseReducerText'
+// const UseStateText = (props) => {
+//     const {initialData} = props
 
-    const [state,setState] = useState(() => 666*initialData)
-    return (
-        <button onClick={() => setState(state*10)}>
-            {state}
-        </button>
-    )
-}
+//     const [state,setState] = useState(() => 666*initialData)
+//     return (
+//         <button onClick={() => setState(state*10)}>
+//             {state}
+//         </button>
+//     )
+// }
+
+import RefLoseControl from './test/RefLoseControl'
 
 const el = (
     <>
@@ -25,8 +27,10 @@ const el = (
         <SelectText />
         <RadioBoxGroupText /> */}
         
-        <UseReducerText />
-        <UseStateText initialData={1}/>
+        {/* <UseReducerText />
+        <UseStateText initialData={1}/> */}
+    
+        <RefLoseControl />
     </>
 )
 
