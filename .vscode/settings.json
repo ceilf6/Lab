@@ -13,7 +13,7 @@
   "[vue]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "git.pullBeforePush": true,
+  "git.pullBeforePush": false,
   "git.autofetch": true,
   "git.rebaseWhenSync": false,
   "javascript.validate.enable": false,
