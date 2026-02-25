@@ -7,7 +7,8 @@ set -e
 # 获取子模块最新一条 commit 信息
 COMMIT_MSG=$(git log -1 --pretty=%B)
 
-# 父仓库根目录：子模块工作目录是 Lab/React/source，往上两级即 Lab
+# 父仓库根目录：子模块均位于 Lab/<dir>/<name>，往上两级即 Lab
+# 适用于所有两级深度的子模块（React/source、JS/engine-source 等）
 PARENT_DIR=$(cd "$(git rev-parse --show-toplevel)/../.." && pwd)
 
 echo "[post-push] 同步父仓库 Lab 子模块指针..."
@@ -15,7 +16,8 @@ echo "[post-push] 同步父仓库 Lab 子模块指针..."
 cd "$PARENT_DIR" || exit 1
 
 # 先拉取远端最新，避免 non-fast-forward 推送失败（merge 保留历史）
-git pull --no-rebase
+# --no-edit: 非交互式环境下禁止打开编辑器，自动使用默认 merge commit message
+git pull --no-rebase --no-edit
 
 # 暂存 Lab 中所有变更（包括子模块指针及其他未提交内容）
 git add -A
@@ -41,5 +43,5 @@ while [ $PUSH_RETRY -gt 0 ]; do
     exit 1
   fi
   echo "[post-push] 推送冲突，正在重新拉取后重试（剩余 $PUSH_RETRY 次）..."
-  git pull --no-rebase
+  git pull --no-rebase --no-edit
 done
