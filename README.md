@@ -192,3 +192,4 @@
 - [V8 源码分析 词法环境 1. 编译期 — 决定哪些变量需要进 Context](https://github.com/ceilf6/Lab/commit/ad920ab4546cfb5db033f237063ebab663cbccf4)
 - [V8 源码分析 词法环境 2. 字节码生成期 — 何时创 新Context](https://github.com/ceilf6/Lab/commit/ad920ab4546cfb5db033f237063ebab663cbccf4)
 - [V8 源码分析 词法环境 3. 运行时 Context 链 — ContextScope 管理 outer 引用](https://github.com/ceilf6/Lab/commit/2d4ff28dc5a100d1c7d8cf8f0e49f97306c326d0)
+- [V8 源码分析 词法环境 4. 变量读取 — 沿 Context 链查找](https://github.com/ceilf6/Lab/commit/25641cb0784053ea41c369730715e1a4dac53804)
