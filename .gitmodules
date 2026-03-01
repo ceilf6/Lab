@@ -4,3 +4,6 @@
 [submodule "JS/V8engine-source"]
         path = JS/V8engine-source
 	url = https://github.com/ceilf6/v8
+[submodule "Browser/Chromium-source"]
+	path = Browser/Chromium-source
+	url = https://github.com/ceilf6/chromium
