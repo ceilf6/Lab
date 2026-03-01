@@ -13,3 +13,6 @@
 [submodule "Vue2/Vue2-source"]
 	path = Vue2/Vue2-source
 	url = https://github.com/ceilf6/vue
+[submodule "Vue3/Vue3-source"]
+	path = Vue3/Vue3-source
+	url = https://github.com/ceilf6/core
