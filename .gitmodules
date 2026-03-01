@@ -7,3 +7,6 @@
 [submodule "Browser/Chromium-source"]
 	path = Browser/Chromium-source
 	url = https://github.com/ceilf6/chromium
+[submodule "NodeJS/Libuv-source"]
+	path = NodeJS/Libuv-source
+	url = https://github.com/ceilf6/libuv
