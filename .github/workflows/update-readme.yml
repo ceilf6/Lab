@@ -60,7 +60,7 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
           REPO_URL: ${{ github.server_url }}/${{ github.repository }}
           BEFORE_SHA: ${{ github.event.before }}
-        run: node scripts/update-readme.js
+        run: node scripts/update-readme.mjs
       
       - name: Commit changes
         if: steps.check_ptr.outputs.has_ptr == 'true'
