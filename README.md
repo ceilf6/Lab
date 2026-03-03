@@ -212,3 +212,4 @@
 
 - [Chromium 源码分析 浏览器决定携带cookie](https://github.com/ceilf6/Lab/commit/943abcd1735e16850054276d2f1ead0509cf19d5)
 
+- [V8 源码分析 新生代 Minor GC 的处理细节 新生代的复制 GC 是以空间换时间，且时间代价与存活量成正比。老生代存活量大、体积大，两个维度都不划算](https://github.com/ceilf6/Lab/commit/1b07f1c0e29ce967585c35ddfa143fcc55efd9a3)
