@@ -19,3 +19,6 @@
 [submodule "React/ahooks"]
 	path = React/Ahooks-source
 	url = https://github.com/ceilf6/hooks
+[submodule "AI/3-Application/FrontAgent-app"]
+	path = AI/3-Application/FrontAgent-app
+	url = https://github.com/ceilf6/FrontAgent
