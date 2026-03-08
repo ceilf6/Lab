@@ -21,4 +21,8 @@ const app = createApp(App)
 import router from './router'
 app.use(router) // 使用插件
 
+import { createPinia } from 'pinia'
+const pinia = createPinia()
+app.use(pinia)
+
 app.mount('#app')
