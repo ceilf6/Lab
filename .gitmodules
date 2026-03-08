@@ -28,6 +28,6 @@
 [submodule "Vue3/Pinia"]
 	path = Vue3/Pinia-source
 	url = https://github.com/ceilf6/pinia
-[submodule "React/mini-React-app"]
-	path = React/mini-React-app
-	url = https://github.com/ceilf6/mini-React
+[submodule "React/mini-react-app"]
+	path = React/mini-react-app
+	url = https://github.com/ceilf6/mini-react
