@@ -25,3 +25,6 @@
 [submodule "AI/2-AI-infra/LLM-SDK/Langchain-source"]
 	path = AI/2-AI-infra/LLM-SDK/Langchain-source
 	url = https://github.com/ceilf6/langchain
+[submodule "Vue3/Pinia"]
+	path = Vue3/Pinia-source
+	url = https://github.com/ceilf6/pinia
