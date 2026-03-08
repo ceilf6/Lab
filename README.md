@@ -223,3 +223,4 @@
 - [pinia🍍 源码分析 defineStore, storeToRefs setup风格效率更高](https://github.com/ceilf6/Lab/commit/b441616c31502eaf93decc066081024598dc542d)
 - [子模块管理 在源码分析达成当前阶段好奇后，可以先通过 git.ignoredRepositories 暂时收起，以免太多仓库展开导致的混乱](https://github.com/ceilf6/Lab/commit/a7d3918d451beb34345e423cfbafa5e76b4ab053)
 - [React 源码思想实现 createFiber 创造 vnode 的运行时实例对象 FiberNode](https://github.com/ceilf6/mini-react/commit/a48006861d688f1775ce55fd9ce0274794eb6464)
+- [React 源码思想实现 WorkLoop 深度优先](https://github.com/ceilf6/Lab/commit/be90f09f5f67da2d9e225e0374033ca1b1679b0e)
