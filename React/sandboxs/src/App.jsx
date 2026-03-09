@@ -24,6 +24,8 @@ import React,{useState} from 'react'
 import CountDown from './pages/CountDown.jsx'
 import { Modal } from './components/index.js'
 
+import This from './test/This.js'
+
 const el = (
     <>
         {/* <CheckBoxGroupText />
@@ -37,6 +39,8 @@ const el = (
         <Modal>
             <CountDown time={5}/>
         </Modal>
+
+        <This/>
     </>
 )
 
