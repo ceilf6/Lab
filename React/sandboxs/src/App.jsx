@@ -22,6 +22,7 @@ import React,{useState} from 'react'
 // import RefLoseControl from './test/RefLoseControl'
 
 import CountDown from './pages/CountDown.jsx'
+import { Modal } from './components/index.js'
 
 const el = (
     <>
@@ -33,7 +34,9 @@ const el = (
         <UseStateText initialData={1}/> */}
     
         {/* <RefLoseControl /> */}
-        <CountDown time={5}/>
+        <Modal>
+            <CountDown time={5}/>
+        </Modal>
     </>
 )
 
