@@ -25,6 +25,7 @@ import CountDown from './pages/CountDown.jsx'
 import { Modal } from './components/index.js'
 
 import This from './test/This.js'
+import Num from './test/Num.js'
 
 const el = (
     <>
@@ -41,6 +42,7 @@ const el = (
         </Modal>
 
         <This/>
+        <Num/>
     </>
 )
 
