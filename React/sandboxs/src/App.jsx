@@ -19,7 +19,9 @@ import React,{useState} from 'react'
 //     )
 // }
 
-import RefLoseControl from './test/RefLoseControl'
+// import RefLoseControl from './test/RefLoseControl'
+
+import CountDown from './pages/CountDown.jsx'
 
 const el = (
     <>
@@ -30,7 +32,8 @@ const el = (
         {/* <UseReducerText />
         <UseStateText initialData={1}/> */}
     
-        <RefLoseControl />
+        {/* <RefLoseControl /> */}
+        <CountDown time={5}/>
     </>
 )
 
