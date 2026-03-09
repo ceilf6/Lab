@@ -38,11 +38,11 @@ const el = (
     
         {/* <RefLoseControl /> */}
         <Modal>
-            <CountDown time={5}/>
+            <CountDown time={5} interval={600}/>
         </Modal>
 
         <This/>
-        <Num/>
+        {/* <Num/> */}
     </>
 )
 
