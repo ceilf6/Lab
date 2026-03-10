@@ -228,3 +228,4 @@
 - [React 源码思想实现 beginWork 中，根据 FiberNode 对象的 tag 值，调用不同的方法进行处理](https://github.com/ceilf6/Lab/commit/67f35407e64f4aa9ca1b638e03ebc21ff51daf8e)
 - [React 源码思想实现 首次渲染子节点处理-diff、Fiber链表串联](https://github.com/ceilf6/Lab/commit/8f39b488e2a4e8aff997d39b9c393c4c442bc1b2)
 - [封装私有属性的三种实现方式 通过函数+闭包模拟实现](https://github.com/ceilf6/Lab/commit/c8db932f09dcf4d4691848f0d60792f0d01f3f4f)
+- [单调栈记录引用实现 tab parser: md; Python AST; yaml; CLI tree](https://github.com/ceilf6/Lab/commit/99c78093416570a4184ecc3b2799164a28ffbb28)
