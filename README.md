@@ -231,3 +231,4 @@
 - [单调栈记录引用实现 tab parser: md; Python AST; yaml; CLI tree](https://github.com/ceilf6/Lab/commit/99c78093416570a4184ecc3b2799164a28ffbb28)
 - [TS常用类型](https://github.com/ceilf6/Lab/commit/190331a647bc789421769234df99e88aeee27ca1)
 - [TS常用类型](https://github.com/ceilf6/Lab/commit/9edb26be4f29a4858a27f76a97e874b0ce0d60f7)
+- [没有类型声明文件的第三方库解决方案](https://github.com/ceilf6/Lab/commit/014f918445ad9d2319b629f02990d5d7440220d1)
