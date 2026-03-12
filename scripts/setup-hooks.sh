@@ -27,9 +27,13 @@ git() {
   if [ "\$1" = "push" ] && [ \$_exit -eq 0 ]; then
     local _toplevel
     _toplevel=\$(command git rev-parse --show-toplevel 2>/dev/null)
-    local _hook="\$_toplevel/../../.githooks/submodule/post-push"
-    if [ -f "\$_hook" ]; then
-      sh "\$_hook"
+    local _parent
+    _parent=\$(command git -C "\$_toplevel" rev-parse --show-superproject-working-tree 2>/dev/null)
+    if [ -n "\$_parent" ]; then
+      local _hook="\$_parent/.githooks/submodule/post-push"
+      if [ -f "\$_hook" ]; then
+        sh "\$_hook"
+      fi
     fi
   fi
   return \$_exit

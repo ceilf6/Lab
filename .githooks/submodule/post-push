@@ -7,8 +7,12 @@ set -e
 
 # 子模块根目录 & 父仓库根目录
 SUB_DIR=$(git rev-parse --show-toplevel)
-# 适用于所有两级深度的子模块（React/source、JS/engine-source 等）
-PARENT_DIR=$(cd "$SUB_DIR/../.." && pwd)
+# 动态定位父仓库，适用于任意深度的子模块
+PARENT_DIR=$(git -C "$SUB_DIR" rev-parse --show-superproject-working-tree 2>/dev/null)
+if [ -z "$PARENT_DIR" ]; then
+  echo "[post-push] ERROR: 无法找到父仓库（非子模块环境）" >&2
+  exit 1
+fi
 
 # 子模块相对于父仓库的路径，例如 React/Ahooks-source
 SUB_REL=$(realpath --relative-to="$PARENT_DIR" "$SUB_DIR" 2>/dev/null \
