@@ -31,3 +31,6 @@
 [submodule "React/mini-react-app"]
 	path = React/mini-react-app
 	url = https://github.com/ceilf6/mini-react
+[submodule "AI/3-Application/Openclaw-source"]
+	path = AI/3-Application/Openclaw-source
+	url = https://github.com/ceilf6/openclaw
