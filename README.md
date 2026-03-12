@@ -235,3 +235,4 @@
 - [TS 配合 React + vite 开发](https://github.com/ceilf6/Lab/commit/709e2c55454dd36eb2e120518c19de0dd9e193ea)
 - [发布订阅模式](https://github.com/ceilf6/Lab/commit/1eb71d86d18389766f0760675c5b2e96ce9fd5cb)
 - [观察者模式-TS](https://github.com/ceilf6/Lab/commit/83718f7de6197d0663ec7a19892ad9165081893a)
+- [文档开发 skil : 提供模版、脚本支持](https://github.com/ceilf6/Lab/commit/aa312dbfdf97735385cbda7eda84985e1562cd7f)
