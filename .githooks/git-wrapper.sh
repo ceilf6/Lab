@@ -1,7 +1,7 @@
 #!/bin/sh
 # Git 包装脚本：供 VS Code 通过 git.path 配置使用
 # push 成功后自动同步父仓库 Lab 的子模块指针
-# 适用于所有两级深度的子模块（Lab/<dir>/<name>）
+# 适用于任意深度的子模块（通过 --show-superproject-working-tree 动态定位父仓库）
 
 REAL_GIT="/usr/bin/git"
 LOG="/tmp/git-wrapper.log"
@@ -16,9 +16,12 @@ _exit=$?
 # 仅在 push 成功时触发同步
 if [ "$1" = "push" ] && [ $_exit -eq 0 ]; then
   _toplevel=$("$REAL_GIT" rev-parse --show-toplevel 2>/dev/null)
-  _hook="$_toplevel/../../.githooks/submodule/post-push"
-  if [ -f "$_hook" ]; then
-    sh "$_hook"
+  _parent=$("$REAL_GIT" -C "$_toplevel" rev-parse --show-superproject-working-tree 2>/dev/null)
+  if [ -n "$_parent" ]; then
+    _hook="$_parent/.githooks/submodule/post-push"
+    if [ -f "$_hook" ]; then
+      sh "$_hook"
+    fi
   fi
 fi
 
