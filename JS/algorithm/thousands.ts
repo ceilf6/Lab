@@ -5,7 +5,7 @@ function localeAPI(num: number): string {
 console.log(localeAPI(1234567890))
 
 
-function formatThousands(num) {
+function formatThousands(num: number): string {
     const str = String(num)
     const [intPart, decimalPart] = str.split('.')
     // 小数处理
