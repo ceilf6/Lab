@@ -54,4 +54,6 @@ const targetStr = `-1
         b
     bb
 3`
-console.log(tabParser(targetStr))
+// console.log(tabParser(targetStr))
+const util = require('util')
+console.log(util.inspect(tabParser(targetStr), { depth: null }))
