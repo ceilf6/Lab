@@ -234,6 +234,7 @@
 - [没有类型声明文件的第三方库解决方案](https://github.com/ceilf6/Lab/commit/014f918445ad9d2319b629f02990d5d7440220d1)
 - [TS 配合 React + vite 开发](https://github.com/ceilf6/Lab/commit/709e2c55454dd36eb2e120518c19de0dd9e193ea)
 - [发布订阅模式](https://github.com/ceilf6/Lab/commit/1eb71d86d18389766f0760675c5b2e96ce9fd5cb)
+- [通过 NodeJS 进程隔离 配合a2a协议 实现SubAgent分割上下文](https://github.com/ceilf6/FrontAgent/tree/develop/packages/core/src/sub-agents)
 - [观察者模式-TS](https://github.com/ceilf6/Lab/commit/83718f7de6197d0663ec7a19892ad9165081893a)
 - [文档开发 skil : 提供模版、脚本支持](https://github.com/ceilf6/Lab/commit/aa312dbfdf97735385cbda7eda84985e1562cd7f)
 - [Transformer 论文 注意力机制](https://arxiv.org/html/1706.03762)
