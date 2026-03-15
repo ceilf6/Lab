@@ -245,3 +245,4 @@
 - [顺序架构 - 手写 DAG 实现调度](https://github.com/ceilf6/Lab/commit/ca3239a4c5ef199e26589ccba26f1cbeaa615b82)
 - [风险隔离+平滑迁移 添加LangGraph架构 控制顺序](https://github.com/ceilf6/Lab/commit/fd3f5dc25dd71ea3246bd66d8502cea954f87fe2)
 - [事件总线实现上的一些细节问题](https://github.com/ceilf6/Lab/commit/105dffe3a786bd849465e91c583261844f95f17e)
+- [设计问题 数组一般维护都是同一类型数据，标志位最好专门开个对象属性存储](https://github.com/ceilf6/Lab/commit/5ed0dc62144906b66e5d426a9e05c38b072468c9)
