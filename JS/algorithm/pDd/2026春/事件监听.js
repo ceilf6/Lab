@@ -1,12 +1,77 @@
 // 1. 事件监听机制
+
 function createEventBus() {
+    this.listeners = new Map()
+}
+
+createEventBus.prototype._add = function (event, handler, once) {
+    if (!this.listeners.has(event)) {
+        this.listeners.set(event, {
+            maxId: 0, // 专门字段存储
+            handlers: []
+        })
+    }
+
+    const record = this.listeners.get(event)
+    const id = ++record.maxId
+
+    record.handlers.push({
+        id,
+        handler,
+        once
+    })
+
+    return id
+}
+
+createEventBus.prototype._delete = function (event, id) {
+    const record = this.listeners.get(event)
+    if (!record) return false
+
+    const idx = record.handlers.findIndex(item => item.id === id)
+    if (idx === -1) return false
+
+    record.handlers.splice(idx, 1)
+    return true
+}
+
+createEventBus.prototype.on = function (event, handler) {
+    if (typeof handler !== 'function') return false
+    const id = this._add(event, handler, false)
+    return () => this._delete(event, id)
+}
+
+createEventBus.prototype.once = function (event, handler) {
+    if (typeof handler !== 'function') return false
+    const id = this._add(event, handler, true)
+    return () => this._delete(event, id)
+}
+
+createEventBus.prototype.emit = function (event, ...args) {
+    const record = this.listeners.get(event)
+    if (!record) return
+
+    for (const item of [...record.handlers]) {
+        item.handler(...args)
+        if (item.once) {
+            this._delete(event, item.id)
+        }
+    }
+}
+
+const bus1 = new createEventBus()
+bus1.on('click', name => console.log(`你好 ${name}`))
+bus1.emit('click', 'ceilf6')
+
+
+function createEventBus2() {
     this.listeners = new Map()
 }
 
 // 只有_内部函数才能操作 listeners
 // 在内部用于添加回调函数的工具函数
 // 通过单调递增的 id 确保不会因为删除而有重复 id
-createEventBus.prototype._add = function (event, handler, once) {
+createEventBus2.prototype._add = function (event, handler, once) {
     if (!this.listeners.has(event)) { // 初始化
         this.listeners.set(event, [0])
     }
@@ -24,7 +89,7 @@ createEventBus.prototype._add = function (event, handler, once) {
 }
 
 // 在内部用于删除回调函数的工具函数
-createEventBus.prototype._delete = function (event, id) {
+createEventBus2.prototype._delete = function (event, id) {
     const cur = this.listeners.get(event)
     if (cur[0] < id) return false // 如果最大的 id 都比当前输入的小，那么肯定输错了
     let targetIdx = -1
@@ -41,19 +106,19 @@ createEventBus.prototype._delete = function (event, id) {
     return true // 删除成功
 }
 
-createEventBus.prototype.on = function (event, handler) {
+createEventBus2.prototype.on = function (event, handler) {
     if (!handler) return false // 特殊情况处理，防止执行空导致报错
     const newId = this._add(event, handler, false)
     return () => this._delete(event, newId)
 }
 
-createEventBus.prototype.once = function (event, handler) {
+createEventBus2.prototype.once = function (event, handler) {
     if (!handler) return false
     const newId = this._add(event, handler, true)
     return () => this._delete(event, newId)
 }
 
-createEventBus.prototype.emit = function (event, ...args) {
+createEventBus2.prototype.emit = function (event, ...args) {
     const arr = this.listeners.get(event)
     if (!arr) return // 防空处理
     // for (const item of arr) {
@@ -71,6 +136,6 @@ createEventBus.prototype.emit = function (event, ...args) {
 // 通过单调递增的 id 确保不会因为删除而有重复 id
 
 
-const bus = new createEventBus()
+const bus = new createEventBus2()
 bus.on('click', name => console.log(`你好 ${name}`))
 bus.emit('click', 'ceilf6')
