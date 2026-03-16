@@ -252,3 +252,4 @@
 - [将规划者的可复用能力全部技能化，planner 通过技能注册表选择执行skill，不再直接硬编码 ( resolve #2 )](https://github.com/ceilf6/Lab/commit/16b11dae9d6dfd84fda53dbd2d688d49fd859d3d)
 - [openclaw 网关-统一鉴权 应用层协议 http 和 WebSocket 都只是薄封装，具体区别只是提取凭证方式不同](https://github.com/ceilf6/Lab/commit/6e10c4117404517427efc95d953d5d489e26e9ec)
 - [将执行者executor可复用能力技能化](https://github.com/ceilf6/Lab/commit/4705f912c9f8a877d94abd327e8a1e37e9b92135)
+- [RAG - 以 Lab 的 README 作为根节点，展开知识图谱，README中每个链接都是一条边，用于获取目标知识](https://github.com/ceilf6/Lab/commit/bc89bc8310db5c586f8558bcd2437ecd809eeeb5)
