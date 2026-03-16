@@ -249,3 +249,4 @@
 - [新旧数组对比diff算法实现上的一些细节问题](https://github.com/ceilf6/Lab/commit/6f55cf34468eea0bd475bd9739ce4f1212aa10c0)
 - [缓存、超时...的请求包装函数中的一些细节问题](https://github.com/ceilf6/Lab/commit/accde32068d0aa8c35a80a6d8d167c11060ad7a9)
 - [请求包装函数 - 大道至简](https://github.com/ceilf6/Lab/commit/aea79958974385e1a4738868781b09bbb8e0581b)
+- [将规划者的可复用能力全部技能化，planner 通过技能注册表选择执行skill，不再直接硬编码 ( resolve #2 )](https://github.com/ceilf6/Lab/commit/16b11dae9d6dfd84fda53dbd2d688d49fd859d3d)
