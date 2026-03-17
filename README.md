@@ -254,3 +254,4 @@
 - [将执行者executor可复用能力技能化](https://github.com/ceilf6/Lab/commit/4705f912c9f8a877d94abd327e8a1e37e9b92135)
 - [RAG - 以 Lab 的 README 作为根节点，展开知识图谱，README中每个链接都是一条边，用于获取目标知识](https://github.com/ceilf6/Lab/commit/bc89bc8310db5c586f8558bcd2437ecd809eeeb5)
 - [如果 README-only 可能会过滤有用知识，升级为基于整个Lab(除子模块外)的 hybrid search](https://github.com/ceilf6/Lab/commit/71d93c628089cd33e5b0f6b65a3ed2f871f21bb2)
+- [嵌入模型服务来源默认走LLM的配置](https://github.com/ceilf6/Lab/commit/99390c8ff23c4932dc2516ab8d6631695b6c45d5)
