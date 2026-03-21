@@ -1,5 +1,5 @@
-import { IServer } from "./01-Interface";
-import { Server } from "./02-Server";
+import { IServer } from "./base/01-Interface";
+import { Server } from "./base/02-Server";
 
 export default class Proxy implements IServer {
     // 真实服务引用
