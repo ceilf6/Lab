@@ -269,3 +269,5 @@
 - [模版模式抽象基类规定框架后子类特异化步骤](https://github.com/ceilf6/Lab/commit/61e72525b420ba782a1ba1869b6b4aa4de1f1502)
 - [通过策略模式实现表单字段校验算法的实现与使用的解耦](https://github.com/ceilf6/Lab/commit/f481eae7733b681b3335f8ea12785492303e601e)
 - [通过策略模式实现国际化支持](https://github.com/ceilf6/Lab/commit/b29db9d3d168eefd4eea0dee2fe168045159e0f7)
+- [通过 ES6 Proxy API 实现代理模式，减少一层代理类](https://github.com/ceilf6/Lab/commit/aac333150a0d3b9e7d989df19cd086e8093455f9)
+- [通过 generator API 实现迭代器模式](https://github.com/ceilf6/Lab/commit/4474fedcbad86227a6997763274c568d354fe5c0)
