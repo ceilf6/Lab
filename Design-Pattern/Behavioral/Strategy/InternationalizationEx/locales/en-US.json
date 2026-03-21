@@ -1,0 +1,5 @@
+{
+  "welcome": "Welcome, {name}!",
+  "loginSuccess": "Login successful",
+  "itemCount": "You have {count} items"
+}
