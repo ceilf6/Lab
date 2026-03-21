@@ -13,7 +13,8 @@ export default class Proxy implements IServer {
 
     // 代理层中间可以做很多事情
     private proxyCheck() {
-        if (this._permission & 1 === 1)
+        // 需要 () 因为 === 的优先级比 位运算 优先级高
+        if ((this._permission & 1) === 1)
             return true
         return false
     }
