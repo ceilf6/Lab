@@ -1,0 +1,5 @@
+{
+  "welcome": "欢迎你，{name}！",
+  "loginSuccess": "登录成功",
+  "itemCount": "你有 {count} 件商品"
+}
