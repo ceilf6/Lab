@@ -35,8 +35,18 @@ if [ "$OLD_SHA" = "$NEW_SHA" ]; then
   exit 0
 fi
 
-# 按时间顺序列出 OLD_SHA..NEW_SHA 之间的每一个提交（从旧到新）
-COMMITS=$(git -C "$SUB_DIR" log --reverse --pretty="%H" "${OLD_SHA}..${NEW_SHA}")
+# 某些大体量/高频同步子模块只需要在父仓库记录最终指针，
+# 避免为同一次 push 中的每个子提交都生成一条父仓库提交。
+case "$SUB_REL" in
+  "AI/3-Application/Openclaw-source")
+    echo "[post-push] $SUB_REL 使用最终指针模式（只提交最新 SHA）..."
+    COMMITS="$NEW_SHA"
+    ;;
+  *)
+    # 按时间顺序列出 OLD_SHA..NEW_SHA 之间的每一个提交（从旧到新）
+    COMMITS=$(git -C "$SUB_DIR" log --reverse --pretty="%H" "${OLD_SHA}..${NEW_SHA}")
+    ;;
+esac
 
 COUNT=0
 for SHA in $COMMITS; do
