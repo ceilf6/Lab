@@ -272,3 +272,5 @@
 - [通过 ES6 Proxy API 实现代理模式，减少一层代理类](https://github.com/ceilf6/Lab/commit/aac333150a0d3b9e7d989df19cd086e8093455f9)
 - [通过 generator API 实现迭代器模式](https://github.com/ceilf6/Lab/commit/4474fedcbad86227a6997763274c568d354fe5c0)
 - [飞书开发者平台配置机器人后对接龙虾跑通示例](https://github.com/ceilf6/Lab/commit/1f4e69ede0b8bd82dde7e1789231954b165819a6)
+- [将嵌入模型输出的知识向量导入 weaviate向量数据库 实现知识库的增量更新、提高生成、检索效率](https://github.com/ceilf6/Lab/commit/b4c2fc1d1117ebd58a02627b7b2e1eddb3ed8cff)
+- [召回失败解决 - 规划器把知识库结果误当成了当前工作区里的本地文件，所以生成了“读取知识库文件”的步骤 - 提示词逻辑修补](https://github.com/ceilf6/Lab/commit/a0a6bc29afcd47805e684d5f01f5310ff55560db)
