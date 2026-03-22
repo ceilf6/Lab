@@ -275,3 +275,4 @@
 - [将嵌入模型输出的知识向量导入 weaviate向量数据库 实现知识库的增量更新、提高生成、检索效率](https://github.com/ceilf6/Lab/commit/b4c2fc1d1117ebd58a02627b7b2e1eddb3ed8cff)
 - [召回失败解决 - 规划器把知识库结果误当成了当前工作区里的本地文件，所以生成了“读取知识库文件”的步骤 - 提示词逻辑修补](https://github.com/ceilf6/Lab/commit/a0a6bc29afcd47805e684d5f01f5310ff55560db)
 - [向量数据库优化 - 通过大模型以前端领域专业翻译用户需求，以更好进行向量检索](https://github.com/ceilf6/Lab/commit/e1fae5de2ffd11c8d6c402d13e1d47635cff5315)
+- [向量数据库优化 - 优化分块器进行特殊字符分块（未来token便宜之后可以直接让LLM分块） 由于知识库内容过多，语义分块相似度计算代价过高](https://github.com/ceilf6/Lab/commit/7f1eb04cbb8a8bb215b547afb4885ab276d67d6a)
