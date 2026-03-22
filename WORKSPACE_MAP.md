@@ -1,4 +1,4 @@
-| from openclaw
+> from openclaw
 
 # WORKSPACE_MAP
 
