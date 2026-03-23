@@ -12,7 +12,7 @@ export default function useBatch(fn, time) {
         fnRef.current = fn
     }, [fn])
 
-    // 别忘记清理计时器！
+    // 别忘记通过 useEffect 的 return 清理计时器！
     useEffect(() => {
         return () => {
             if (timer.current) {
