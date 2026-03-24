@@ -280,3 +280,4 @@
 - [基于 ai-sdk 打通 FrontAgent CLI 暴露支持 LLM 随机生成相关 API 方便使用者进行采样策略控制](https://github.com/ceilf6/Lab/commit/92d1fcdc953dbfcf1c343175fbe306317395661f)
 - [Clean Architecture 示范 - 让内层的业务逻辑独立于外层框架和基础设施存在 1. 核心业务规则 2. 业务逻辑 3. 接口适配层 4. 实现细节](https://github.com/ceilf6/Lab/commit/8b0e6a73df51f4a05de163aa5b826c97eb1f28a2)
 - [Agent Skill 模式 实现可分发、可复用、面向具体库的 skill 包装层](https://github.com/ceilf6/Lab/commit/cffde000e7dc4edb37b49bb1ea479f6b485af732)
+- [Promise.all 注意串行阻塞问题](https://github.com/ceilf6/Lab/commit/df97f51a3b9aaeed4d08aeb1c42e71f29a505e6a)
