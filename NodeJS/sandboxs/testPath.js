@@ -1,3 +1,5 @@
+// https://nodejs.org/docs/latest/api/path.html
+
 const path = require('path')
 
 console.log(path.basename("a1/a2/a3/ceilf6.xxxxx", ".xxxxx")) // ceilf6

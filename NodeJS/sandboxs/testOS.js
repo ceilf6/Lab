@@ -1,3 +1,5 @@
+// https://nodejs.org/docs/latest/api/os.html
+
 const os = require('os')
 
 console.log('ceil6', os.EOL, 'hello')
