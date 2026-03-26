@@ -1,3 +1,5 @@
+// https://nodejs.org/docs/latest/api/url.html
+
 const URL = require("url")
 
 // URL对象
