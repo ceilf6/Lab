@@ -7,6 +7,7 @@ set -e
 
 # 子模块根目录 & 父仓库根目录
 SUB_DIR=$(git rev-parse --show-toplevel)
+LATEST_MSG=$(git -C "$SUB_DIR" log -1 --pretty=%B)
 # 动态定位父仓库，适用于任意深度的子模块
 PARENT_DIR=$(git -C "$SUB_DIR" rev-parse --show-superproject-working-tree 2>/dev/null)
 if [ -z "$PARENT_DIR" ]; then
@@ -25,38 +26,54 @@ cd "$PARENT_DIR" || exit 1
 # 先拉取远端最新，避免 non-fast-forward 推送失败
 git pull --no-rebase --no-edit
 
+# 默认把 Lab 父仓库当前工作区的所有改动一起带上，
+# 避免子模块同步时漏掉同批次的父仓库修改。
+git add -A
+
 # 父仓库当前记录的子模块指针（旧 SHA）
 OLD_SHA=$(git ls-tree HEAD "$SUB_REL" | awk '{print $3}')
 # 子模块当前 HEAD（新 SHA）
 NEW_SHA=$(git -C "$SUB_DIR" rev-parse HEAD)
 
 if [ "$OLD_SHA" = "$NEW_SHA" ]; then
-  echo "[post-push] 父仓库无需更新（指针未变化）"
-  exit 0
+  if git diff --cached --quiet; then
+    echo "[post-push] 父仓库无需更新（指针未变化且工作区无变更）"
+    exit 0
+  fi
+  echo "[post-push] 子模块指针未变化，改为提交 Lab 工作区改动..."
+  COMMITS="$NEW_SHA"
+else
+  # 某些大体量/高频同步子模块只需要在父仓库记录最终指针，
+  # 避免为同一次 push 中的每个子提交都生成一条父仓库提交。
+  case "$SUB_REL" in
+    "AI/3-Application/Openclaw-source")
+      echo "[post-push] $SUB_REL 使用最终指针模式（只提交最新 SHA）..."
+      COMMITS="$NEW_SHA"
+      ;;
+    *)
+      # 按时间顺序列出 OLD_SHA..NEW_SHA 之间的每一个提交（从旧到新）
+      COMMITS=$(git -C "$SUB_DIR" log --reverse --pretty="%H" "${OLD_SHA}..${NEW_SHA}")
+      ;;
+  esac
 fi
-
-# 某些大体量/高频同步子模块只需要在父仓库记录最终指针，
-# 避免为同一次 push 中的每个子提交都生成一条父仓库提交。
-case "$SUB_REL" in
-  "AI/3-Application/Openclaw-source")
-    echo "[post-push] $SUB_REL 使用最终指针模式（只提交最新 SHA）..."
-    COMMITS="$NEW_SHA"
-    ;;
-  *)
-    # 按时间顺序列出 OLD_SHA..NEW_SHA 之间的每一个提交（从旧到新）
-    COMMITS=$(git -C "$SUB_DIR" log --reverse --pretty="%H" "${OLD_SHA}..${NEW_SHA}")
-    ;;
-esac
 
 COUNT=0
 for SHA in $COMMITS; do
-  MSG=$(git -C "$SUB_DIR" log -1 --pretty=%B "$SHA")
+  MSG=$(git -C "$SUB_DIR" log -1 --pretty=%B "$SHA" 2>/dev/null || printf '%s' "$LATEST_MSG")
   # 将父仓库 index 中的子模块指针拨到该 SHA，无需实际 checkout 子模块
   git update-index --cacheinfo "160000,${SHA},${SUB_REL}"
+  if git diff --cached --quiet; then
+    continue
+  fi
   git commit -m "$MSG"
   COUNT=$((COUNT + 1))
   echo "[post-push] [$COUNT] 已提交父仓库：${SHA} - $(echo "$MSG" | head -1)"
 done
+
+if [ "$COUNT" -eq 0 ]; then
+  echo "[post-push] 父仓库无需更新（没有新的已暂存改动）"
+  exit 0
+fi
 
 echo "[post-push] 共创建 $COUNT 条父仓库提交，开始推送..."
 
