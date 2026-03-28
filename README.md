@@ -296,3 +296,4 @@
 - [NodeJS 递归读取文件信息 静态工厂处理构造函数无法异步问题 用静态 Map 做全局缓存 通过缓存Promises防止缓存击穿/重复缓存](https://github.com/ceilf6/Lab/commit/2a2570c9d392e552bd480e5d989b9c4d324b9cb3)
 - [注意和关键词区分 - MyFile](https://github.com/ceilf6/Lab/commit/2e31e9c13c8e999270a71a2dd09162df2180b28e)
 - [NodeJS 可读文件流](https://github.com/ceilf6/Lab/commit/d15d3f5e6c245e7f946e28c7374d138dde773ce6)
+- [NodeJS 可写文件流 背压问题](https://github.com/ceilf6/Lab/commit/2b16adc651371e52f36fc4baf86b75f9d107ba14)
