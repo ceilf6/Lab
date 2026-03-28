@@ -293,3 +293,4 @@
 - [NodeJS API stat读物文件状态信息 isDirectory/mode判断是普通文件还是目录文件](https://github.com/ceilf6/Lab/commit/cdb3a21a87f914e8d64d1e14b0e11449058d8aed)
 - [NodeJS API readdir读取目录状态 mkdir创建目录](https://github.com/ceilf6/Lab/commit/f61720e1169b6fd5bbdb530d841fbab88f6fb008)
 - [NodeJS API 文件不存在相关处理 不推荐原先的exists API先判断再处理，而是推荐用 stat 等API先操作再检查抓取错误](https://github.com/ceilf6/Lab/commit/288efc632736137910fbb38f33c3c8bd23e399da)
+- [NodeJS 递归读取文件信息 静态工厂处理构造函数无法异步问题 用静态 Map 做全局缓存 通过缓存Promises防止缓存击穿/重复缓存](https://github.com/ceilf6/Lab/commit/2a2570c9d392e552bd480e5d989b9c4d324b9cb3)
