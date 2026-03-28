@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-class File {
+class MyFile {
     constructor(options) {
         // 传入一个对象自动将所有属性自动赋值
         Object.assign(this, options);
@@ -17,9 +17,9 @@ class File {
         const stat = await fs.promises.stat(dir);
 
         const parsed = path.parse(dir)
-        return new File({
+        return new MyFile({
             dir,
-            filename: path.basename(dir),
+            filename: parsed.base,
             name: parsed.name,
             ext: parsed.ext,
             size: stat.size,
@@ -37,22 +37,22 @@ class File {
 
         // 利用缓存
         // if (this.children !== undefined) {
-        if (File.childNamesProsCache.has(this.dir)) {
+        if (MyFile.childNamesProsCache.has(this.dir)) {
             console.log('命中全局缓存')
             // return this.children
-            return File.childNamesProsCache.get(this.dir)
+            return MyFile.childNamesProsCache.get(this.dir)
         }
 
         const childNamesPro = fs.promises
             .readdir(this.dir)
             .catch(e => {
                 // 如果碰到错误，那么在上抛之前先将缓存处理了
-                File.childNamesProsCache.delete(this.dir)
+                MyFile.childNamesProsCache.delete(this.dir)
                 throw e
             })
 
         // 缓存层和方法返回值设计统一：只在内部维护缓存
-        File.childNamesProsCache.set(this.dir, childNamesPro)
+        MyFile.childNamesProsCache.set(this.dir, childNamesPro)
         return childNamesPro
     }
 
@@ -61,23 +61,23 @@ class File {
         if (!this.isFile) return null;
 
         // 注意 '' 这个假值也算是缓存
-        if (File.contentProsCache.has(this.dir))
-            return File.contentProsCache.get(this.dir)
+        if (MyFile.contentProsCache.has(this.dir))
+            return MyFile.contentProsCache.get(this.dir)
 
         const contentPro = fs.promises
             .readFile(this.dir)
             .catch(err => {
-                File.contentProsCache.delete(this.dir);
+                MyFile.contentProsCache.delete(this.dir);
                 throw err;
             });
 
-        File.contentProsCache.set(this.dir, contentPro)
+        MyFile.contentProsCache.set(this.dir, contentPro)
         return contentPro
     }
 
     // 静态类方法
     static async fsDFSread(dir) {
-        const curFile = await File.create(dir);
+        const curFile = await MyFile.create(dir);
 
         if (curFile.isDirectory) {
             // getChildren只负责获取子文件数组
@@ -87,7 +87,7 @@ class File {
             // 通过 map 中调用 async 获得 多个异步任务Promise
             // 然后外层包一个 Promise.all 并行处理
             const children = await Promise.all(
-                childNames.map(name => File.fsDFSread(path.resolve(curFile.dir, name)))
+                childNames.map(name => MyFile.fsDFSread(path.resolve(curFile.dir, name)))
             );
             curFile.children = children
         } else if (curFile.isFile) {
@@ -101,10 +101,10 @@ class File {
 
 const test = async () => {
     const testPath = path.resolve(__dirname, './testFiles')
-    const res = await File.fsDFSread(testPath)
+    const res = await MyFile.fsDFSread(testPath)
     console.dir(res, { depth: null });
 
-    const file = await File.create(testPath)
-    const childs = await file.getChildren() // 命中全局缓存
+    const MyFile = await MyFile.create(testPath)
+    const childs = await MyFile.getChildren() // 命中全局缓存
 }
 test()
