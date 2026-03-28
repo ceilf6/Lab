@@ -32,4 +32,6 @@ console.log('1. ', fs.readFileSync(absPath, "utf-8")); // 注意分号，和IIFE
     // 2. 先 read 再 write(二进制)
     const fileContent = fs.readFileSync("/Users/a86198/Desktop/Lab/assetsForTest/cat.jpg")
     await fs.promises.writeFile(path.resolve(absPath, "../copyPic.jpg"), fileContent)
+
+    await fs.promises.unlink(absPath) // 删除文件
 })()
