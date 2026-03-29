@@ -20,8 +20,7 @@ const requestObj = http.request(
         res.on("data", chunk => {
             console.log(chunk)
         })
-        res.on("end", chunk => {
-            console.log(chunk)
+        res.on("end", () => {
             console.log("响应体读取结束")
         })
     }
