@@ -5,6 +5,23 @@ const url = require("url")
 const path = require("path")
 const fs = require("fs")
 
+const mimeTypes = {
+    ".css": "text/css; charset=utf-8",
+    ".gif": "image/gif",
+    ".html": "text/html; charset=utf-8",
+    ".jpeg": "image/jpeg",
+    ".jpg": "image/jpeg",
+    ".js": "text/javascript; charset=utf-8",
+    ".json": "application/json; charset=utf-8",
+    ".png": "image/png",
+    ".svg": "image/svg+xml; charset=utf-8",
+    ".txt": "text/plain; charset=utf-8",
+}
+
+function getMimeType(filePath) {
+    return mimeTypes[path.extname(filePath).toLowerCase()] ?? "application/octet-stream"
+}
+
 /**
  * 目标文件信息
  */
@@ -38,6 +55,9 @@ async function handler(req, res) {
             finalPath = urlPath
         }
         res.statusCode = 200
+        // 设置 MIME 类型 规范浏览器正确处理响应
+        res.setHeader("Content-Type", getMimeType(finalPath))
+
         // const fileContent = await fs.promises.readFile(finalPath)
         // res.write(fileContent)
         const rs = fs.createReadStream(finalPath)
