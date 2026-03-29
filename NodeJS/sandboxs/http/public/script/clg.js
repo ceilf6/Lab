@@ -1,0 +1,1 @@
+console.log("这是JS脚本资源")
