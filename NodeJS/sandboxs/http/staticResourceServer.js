@@ -1,6 +1,6 @@
 // 静态资源服务器测试
 
-const http = require("http")
+const https = require("https")
 // const url = require("url")
 const path = require("path")
 const fs = require("fs")
@@ -29,7 +29,7 @@ function getMimeType(filePath) {
  */
 function req2path(req) {
     // 无脑 resolve 可能会导致穿透 public 目录
-    const urlObj = new URL(req.url, `http://${req.headers.host ?? "localhost"}`)
+    const urlObj = new URL(req.url, `https://${req.headers.host ?? "localhost"}`)
     const pathname = decodeURIComponent(urlObj.pathname)
     const safePath = path.resolve(publicRoot, `.${pathname}`)
 
@@ -79,6 +79,14 @@ async function handler(req, res) {
     }
 }
 
-const server = http.createServer(handler)
+const server = https.createServer(
+    {
+        key: fs.readFileSync(path.resolve(__dirname, "../https/serverTest/server-key.pem")),
+        // 服务器私钥
+        cert: fs.readFileSync(path.resolve(__dirname, "../https/serverTest/server-cert.crt")),
+        // 服务器拿到的CA机构颁发的证书
+    }
+    , handler
+)
 server.on("listening", () => console.log("listening 666"))
 server.listen(666)
