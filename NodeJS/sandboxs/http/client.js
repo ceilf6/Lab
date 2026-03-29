@@ -4,7 +4,7 @@ const http = require("http")
 // 拿到 ClientRequest 对象，后续可以监听事件 / 执行方法
 // https://nodejs.org/docs/latest/api/http.html#class-httpclientrequest
 const requestObj = http.request(
-    "http://127.0.0.1:80",
+    "http://127.0.0.1:80/api?name=ceilf6",
     {
         // method: "GET",
         method: "POST"
