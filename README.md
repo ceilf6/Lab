@@ -310,3 +310,4 @@
 - [openssl 1024 参数会被 https 报错"key too small" 至少需要 2048 参数](https://github.com/ceilf6/Lab/commit/c1ab26cd7557709020c66f9f612a01cbc8353362)
 - [模拟 CA 机构进行钥匙生成](https://github.com/ceilf6/Lab/commit/26c43f7fe505251d48fed5c6f8cfb1c6c8d73b00)
 - [NodeJS事件循环 poll阶段执行其他回调函数阻塞计时器回调的执行](https://github.com/ceilf6/Lab/commit/250942bcadd5d955af5961619f329abfc122f7c4)
+- [setImmediate 比 setTimeout 性能高 因为后者会在timer阶段事件队列（排序过的）中一个个计时器取出来看 但是前者是check阶段的、立即执行](https://github.com/ceilf6/Lab/commit/3a5beda41ae7051bc3565a5b8f5810117c3256a2)
