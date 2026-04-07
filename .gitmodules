@@ -43,3 +43,6 @@
 [submodule "AI/3-Application/Claude-Code-source"]
 	path = AI/3-Application/Claude-Code-source
 	url = https://github.com/ceilf6/cc-source
+[submodule "AI/2-AI-infra/ceilf6-skills-app"]
+	path = AI/2-AI-infra/ceilf6-skills-app
+	url = https://github.com/ceilf6/skills
