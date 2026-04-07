@@ -315,3 +315,4 @@
 - [setTimeout & setImmediate order 注意 setTimeout 最小也是 1 所以二者的顺序是不一定的 假如到 timers 时大于1了那么就先执行 setTimeout 否则 check 时执行 setImmediate 等到第二圈的时候再执行 timeout](https://github.com/ceilf6/Lab/commit/c4dfbd1be9568653f42b8ffd12bc50aff991bd9d)
 - [claude code源码指针 - 封装大模型的智能体分层体系](https://github.com/ceilf6/cc-source/commit/ac812e268f5051a5d9b64c3379b04ffafec67361)
 
+- [agent-memory-optimizer 一个用于优化智能体记忆能力的skill](https://github.com/ceilf6/Lab/commit/0d08c9a3870104d34f76d3ceab4b185e8da91163)
