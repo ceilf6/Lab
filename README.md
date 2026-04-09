@@ -318,3 +318,6 @@
 - [agent-memory-optimizer 一个用于优化智能体记忆能力的skill](https://github.com/ceilf6/Lab/commit/0d08c9a3870104d34f76d3ceab4b185e8da91163)
 - 抽离自 [FrontAgent](https://github.com/ceilf6/FrontAgent) 的[可复用skills skill-lifecycle 一个通过二元分析在全生命周期优化、迭代skill的skill frontend-design 用于提高智能体审美的skill requirement-interviewer 用于将用户的输入转为大模型更能理解的需求，从而提高大模型的输出质量 frontend-reviewer 前端侧的代码和UI审计skill](https://github.com/ceilf6/Lab/commit/b4273b4a240d044a200f8aeedb470f50addd377a)
 - 使用 [agent-memory-optimizer](https://github.com/ceilf6/skills/tree/main/agent-memory-optimizer) skill [实现了跨会话记忆体系](https://github.com/ceilf6/Lab/commit/9db44c2e6810daf5fb30df81f33a90d402c0adb4)
+- [agent-cli-architect 审计和设计 AI Agent CLI 的多模式入口架构：快路径检测、生命周期钩子、入口收敛复用、可扩展命令注册表](https://github.com/ceilf6/ceilf6-skills/tree/main/agent-cli-architect)
+- [tui-render-optimizer 审计和优化 React-based 终端 UI 渲染管线：HostConfig 适配器、脏标记+块拷贝增量渲染、终端 I/O 原子性防闪烁](https://github.com/ceilf6/ceilf6-skills/tree/main/tui-render-optimizer)
+- [agent-state-architect 设计流式 AI Agent 界面的分层状态架构：三级状态分层(全局/本地/外部)、集中式副作用处理器、跨 React/非React 边界状态桥接](https://github.com/ceilf6/ceilf6-skills/tree/main/agent-state-architect)
