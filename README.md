@@ -327,3 +327,4 @@
 - [Shell 添加最后修改时间到文件开头 通过系统目录树中 /tmp 存储临时文件实现添加开头 通过 ls -l 拿到最后修改时间](https://github.com/ceilf6/Lab/commit/88e2b975b61159d51b7b3ea1c66c3c968aa6be57)
 - [Shell 通过 while do done 逐行读取文件; IFS划分 - 通过 set 分割一个个参数然后用 # 获取参数个数 或 read存储到数组中用 #arr[@]](https://github.com/ceilf6/Lab/commit/7e5b6c9f7fb119ac03943832a57c87500125697c)
 - [通过递归实现 Shell tree 命令 - local 存储传下的缩进数等、防止污染; basename 拿到文件名; ""防止空白折叠](https://github.com/ceilf6/Lab/commit/31e33f331961345ca1f075dfedd0916954578be8)
+- [awk 中不能用回溯引用 \1，那么就只能先判断格式再 单独判断回溯](https://github.com/ceilf6/Lab/commit/c6d7461c29d9697f8a1d604e36b08be1aaa058f3)
