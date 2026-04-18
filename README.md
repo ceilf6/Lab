@@ -330,3 +330,5 @@
 - [awk 中不能用回溯引用 \1，那么就只能先判断格式再 单独判断回溯](https://github.com/ceilf6/Lab/commit/c6d7461c29d9697f8a1d604e36b08be1aaa058f3)
 - [bit最小单位 Byte基本存储单位 Word处理单位](https://github.com/ceilf6/Lab/commit/58586ac4d4d0d4af7ae80a976ba4bb847e56678f)
 - [实现监听热更新](https://github.com/ceilf6/Lab/commit/a7c87aecd75a599b7b227617c9682fca46c16ffe)
+
+- [md文件转网站页面的热更新开发模版框架 ./operating-system-app](https://github.com/ceilf6/operating-system)
