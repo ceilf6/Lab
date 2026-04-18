@@ -332,3 +332,4 @@
 - [实现监听热更新](https://github.com/ceilf6/Lab/commit/a7c87aecd75a599b7b227617c9682fca46c16ffe)
 
 - [md文件转网站页面的热更新开发模版框架 ./operating-system-app](https://github.com/ceilf6/operating-system)
+- [添加埋点进行流量分析 Cloudflare web-analytics](https://github.com/ceilf6/Lab/commit/4c14a15cbd221f06c90aae66df3ffdff53eb10c8)
