@@ -176,6 +176,11 @@
       "bases:新建数据库": false
     }
   },
-  "active": "fd28b4cb5759222b",
-  "lastOpenFiles": []
+  "active": "a29600508846a9de",
+  "lastOpenFiles": [
+    "docs/WORKSPACE_MAP.md",
+    "Schema.md",
+    "Map.md",
+    "Entry.md"
+  ]
 }
