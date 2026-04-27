@@ -1,4 +1,4 @@
-# Obsidian + Notion + Lab pointers <=> LLM 
+# Obsidian + Notion + Wiki pointers <=> LLM 
 
 ## hybrid > key search: ``` Ctrl + F ``` => target pointer
 
