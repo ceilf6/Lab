@@ -1,4 +1,6 @@
-# hybrid > key search: ``` Ctrl + F ``` => target pointer
+# Obsidian + Notion + Lab pointers <=> LLM 
+
+## hybrid > key search: ``` Ctrl + F ``` => target pointer
 
 - [CSS/box/index.html](https://github.com/ceilf6/Lab/blob/main/CSS/box/index.html)
     - macOS强制显示滚动条 [#2](https://github.com/ceilf6/Lab/issues/2)
