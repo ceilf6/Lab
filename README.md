@@ -336,3 +336,4 @@
 
 - [md文件转网站页面的热更新开发模版框架 ./operating-system-app](https://github.com/ceilf6/operating-system)
 - [添加埋点进行流量分析 Cloudflare web-analytics](https://github.com/ceilf6/Wiki/commit/4c14a15cbd221f06c90aae66df3ffdff53eb10c8)
+- [根据 proxyman 抓包分析 claude code 后的结论，引入 “先观察，再操作” 以及 “渐进式探索的思想：面对不确定的文件系统状态，像二分一样逐步缩小范围，先 Glob 全局搜索，再 Bash 精确确认，最终才执行写入操作“](https://github.com/ceilf6/Wiki/commit/f87072fba2174e30fa461f643632c71db7e74ae0)
