@@ -1,0 +1,25 @@
+{
+  "name": "proxy-server",
+  "version": "1.0.0",
+  "description": "Node.js HTTP/HTTPS 代理服务器，支持 WebSocket",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "proxy",
+    "http-proxy",
+    "websocket",
+    "node"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "http-proxy": "^1.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
