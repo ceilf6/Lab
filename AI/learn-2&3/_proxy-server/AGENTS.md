@@ -81,6 +81,7 @@ request-0-反向时间排序键-YYYY-MM-DD-HHmmss-UUID.log
 npm install    # 安装依赖
 npm start      # 启动服务
 npm run dev    # 开发模式（nodemon）
+npm run stop:proxy # 停止 start:claude 残留的代理进程
 ```
 
 ## 注意事项

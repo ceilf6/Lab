@@ -68,10 +68,17 @@ TARGET_URL=http://localhost:8080 npm start
 npm run start:claude
 ```
 
+如果外层 `npm run start:claude` 进程被强制杀掉，后台代理进程可能没有机会执行清理。可以用下面的命令兜底停止：
+
+```bash
+npm run stop:proxy
+```
+
 这个入口会：
 
 - 启动本地 `proxy-server`
 - 等待 `127.0.0.1:3000` 就绪
+- 写入 `logs/proxy-server.pid`，供 `npm run stop:proxy` 精确停止残留进程
 - 仅为新开的 Claude Code 会话设置 `NO_PROXY/no_proxy=localhost,127.0.0.1`
 - 保留原有 `http_proxy`、`https_proxy`、`all_proxy`，因此非本地地址仍按现有 Clash 配置走
 - 在 Claude Code 退出后自动关闭后台 `proxy-server`

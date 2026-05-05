@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "start:claude": "./start-claude-with-proxy.sh"
+    "start:claude": "./start-claude-with-proxy.sh",
+    "stop": "bash ./stop-proxy.sh",
+    "stop:proxy": "bash ./stop-proxy.sh"
   },
   "keywords": [
     "proxy",

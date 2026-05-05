@@ -7,6 +7,7 @@ cd "$SCRIPT_DIR"
 PORT=3000
 NO_PROXY_VALUE="localhost,127.0.0.1"
 LAUNCHER_LOG="$SCRIPT_DIR/logs/start-claude-with-proxy.log"
+PID_FILE="$SCRIPT_DIR/logs/proxy-server.pid"
 PROXY_PID=""
 
 cleanup() {
@@ -17,6 +18,10 @@ cleanup() {
   if [[ -n "$PROXY_PID" ]] && kill -0 "$PROXY_PID" 2>/dev/null; then
     kill "$PROXY_PID" 2>/dev/null || true
     wait "$PROXY_PID" 2>/dev/null || true
+  fi
+
+  if [[ -f "$PID_FILE" ]] && [[ "$(cat "$PID_FILE" 2>/dev/null || true)" == "$PROXY_PID" ]]; then
+    rm -f "$PID_FILE"
   fi
 
   exit "$exit_code"
@@ -34,6 +39,7 @@ trap cleanup EXIT INT TERM
 
 node index.js >>"$LAUNCHER_LOG" 2>&1 &
 PROXY_PID=$!
+printf '%s\n' "$PROXY_PID" > "$PID_FILE"
 
 ready=0
 for _ in $(seq 1 30); do
