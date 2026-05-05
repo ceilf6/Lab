@@ -52,6 +52,42 @@ npm run dev
 TARGET_URL=http://localhost:8080 npm start
 ```
 
+## 通过 Claude Code 使用
+
+这台机器的 shell 环境在 [~/.zshrc](/Users/a86198/.zshrc) 中导出了：
+
+- `http_proxy=http://127.0.0.1:7890`
+- `https_proxy=http://127.0.0.1:7890`
+- `all_proxy=socks5://127.0.0.1:7891`
+
+如果直接从这个环境启动 `claude`，访问 `http://localhost:3000` 的请求可能仍会经过外部代理，表现为 `502 status code (no body)`。
+
+推荐使用下面的命令启动：
+
+```bash
+npm run start:claude
+```
+
+这个入口会：
+
+- 启动本地 `proxy-server`
+- 等待 `127.0.0.1:3000` 就绪
+- 仅为新开的 Claude Code 会话设置 `NO_PROXY/no_proxy=localhost,127.0.0.1`
+- 保留原有 `http_proxy`、`https_proxy`、`all_proxy`，因此非本地地址仍按现有 Clash 配置走
+- 在 Claude Code 退出后自动关闭后台 `proxy-server`
+
+说明：
+
+- 这个入口假设你的 Claude Code 仍然指向 `http://localhost:3000`
+- 这个绕行只作用于 `localhost` / `127.0.0.1`
+- 启动日志写入 `logs/start-claude-with-proxy.log`
+
+如果仍然需要单独启动代理，继续使用：
+
+```bash
+npm start
+```
+
 ## 日志说明
 
 日志文件保存在 `LOG_DIR` 目录下，文件命名格式：
@@ -64,6 +100,8 @@ request-YYYY-MM-DD-HHmmss-UUID.log
 - 请求方法、URL、Headers、Body
 - 响应状态码、Headers、Body
 - 请求耗时
+
+当前版本会直接记录响应原始字节。如果上游返回 gzip 压缩内容或 SSE 流，日志中的响应体可能出现乱码。这是当前日志实现的已知限制，不影响代理转发本身。
 
 **自动清理**：当日志文件超过20个时，会自动删除最旧的文件。
 
