@@ -52,3 +52,6 @@
 [submodule "Obsidion"]
 	path = Obsidion
 	url = https://github.com/ceilf6/Obsidion
+[submodule "AI/3-Application/GitNexus-source"]
+	path = AI/3-Application/GitNexus-source
+	url = https://github.com/ceilf6/GitNexus
