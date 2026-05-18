@@ -58,3 +58,6 @@
 [submodule "machine-learning"]
 	path = AI/1-LLM/machine-learning
 	url = https://github.com/ceilf6/machine-learning
+[submodule "AI/AI-assists/Filesense-app"]
+	path = AI/AI-assists/Filesense-app
+	url = https://github.com/ceilf6/filesense
