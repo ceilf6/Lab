@@ -1,0 +1,27 @@
+{
+  "storage": {
+    "workspace": "./.openviking-data",
+    "vectordb": {
+      "name": "context",
+      "backend": "local"
+    },
+    "agfs": {
+      "backend": "local"
+    }
+  },
+  "embedding": {
+    "dense": {
+      "api_base": "<embedding-api-endpoint>",
+      "api_key": "<embedding-api-key>",
+      "provider": "<volcengine|openai|jina|...>",
+      "dimension": 1024,
+      "model": "<embedding-model-name>"
+    }
+  },
+  "vlm": {
+    "api_base": "<vlm-api-endpoint>",
+    "api_key": "<vlm-api-key>",
+    "provider": "<volcengine|openai|openai-codex|kimi|glm>",
+    "model": "<vlm-model-name>"
+  }
+}

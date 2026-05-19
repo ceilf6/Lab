@@ -1,0 +1,28 @@
+- 源码阅读技巧 [#8](https://github.com/ceilf6/Wiki/discussions/8)
+- [V8 源码分析 执行上下文Context - VariableEnvironment var穿透块](https://github.com/ceilf6/Wiki/commit/2943b794cd2a1f467f1b5619f84e09882438b79b)
+- [V8 源码分析 变量提升 "变量提升"在 V8 里根本没有一个叫 Hoist 的运行时操作——它是编译期 DeclareVariable 时选择作用域的静态决策，配合 InitializationFlag 控制运行时是否允许访问](https://github.com/ceilf6/Wiki/commit/5830d47512ddd9eb56eb66195a17f558dfb4b579)
+- [V8 源码分析 词法环境 1. 编译期 — 决定哪些变量需要进 Context](https://github.com/ceilf6/Wiki/commit/ad920ab4546cfb5db033f237063ebab663cbccf4)
+- [V8 源码分析 词法环境 2. 字节码生成期 — 何时创 新Context](https://github.com/ceilf6/Wiki/commit/ad920ab4546cfb5db033f237063ebab663cbccf4)
+- [V8 源码分析 词法环境 3. 运行时 Context 链 — ContextScope 管理 outer 引用](https://github.com/ceilf6/Wiki/commit/2d4ff28dc5a100d1c7d8cf8f0e49f97306c326d0)
+- [V8 源码分析 词法环境 4. 变量读取 — 沿 Context 链查找](https://github.com/ceilf6/Wiki/commit/25641cb0784053ea41c369730715e1a4dac53804)
+- [V8 源码分析 词法环境 作用域链 静态编译期 & 动态运行时](https://github.com/ceilf6/Wiki/commit/1e124d00cd8ce9000a306c8445fb8384da763bde)
+- [V8 源码分析 ThisBinding this全局数据流向 四条绑定规则的底层字节码](https://github.com/ceilf6/Wiki/commit/633867a28243d7f6dd8912d7c7f283d73c634eee)
+- [V8 源码分析 闭包 - 让变量的生命周期独立于调用栈 的底层实现细节](https://github.com/ceilf6/Wiki/commit/145239aa9571618ec46f8693e486615aa61b73ee)
+- [V8 源码分析 垃圾回收GC 新老生代的分代处理( 内存页标志位 )，大多数对象出生在新生代 Minor GC，在存活超过一轮之后晋升为老生代 Major GC](https://github.com/ceilf6/Wiki/commit/f587d8310896b380f6a5d1810087345dc14b7b71)
+- [em 在是 font-size 相对父元素字体大小，非font-size 属性相对当前自身元素字体大小](https://github.com/ceilf6/Wiki/commit/0d76ef2f8d3a3728d637ffe93512967933ca2553)
+- [现代 CSS3 flex / grid 快速实现布局](https://github.com/ceilf6/Wiki/commit/29c88b7bdc586a188cbd2b1a32e504ed76a10d9f)
+- [transition / animation 配合 transform 实现翻转效果动画](https://github.com/ceilf6/Wiki/commit/f509b08017963200729ecf6967116cf36236df3d)
+- [箭头函数特性](https://github.com/ceilf6/Wiki/commit/da09debd21b20ddea999a9cc374db8b0a126264f)
+- [V8 源码分析 启动注册内置全局对象Function Function 的 constructor, prototype ...](https://github.com/ceilf6/Wiki/commit/4d158024688aaf793b98ae4136445d96623bcb71)
+- [V8 源码分析 老生代Major GC-三色标记](https://github.com/ceilf6/Wiki/commit/705449071d4b33f52d7f82c57cf90016fb1c5b5e)
+- [ESM 会在静态编译阶段就分析依赖，不要在条件循环代码块中进行导入导出](https://github.com/ceilf6/Wiki/commit/9f9832160164d299e88deb43168a1303177f8ebd)
+- [V8 源码分析 V8引擎只负责了微任务的调度，宏任务相关是纯虚函数让宿主环境覆盖](https://github.com/ceilf6/Wiki/commit/5987ee361893be3a42db7652a4fd25a9fe1d143c)
+- [Chromium 源码分析 事件循环 for( ; ; ) 并不会空转，而是根据是否有延时任务有两种休眠和唤醒方式](https://github.com/ceilf6/Wiki/commit/d39823089b24a4cf3ee937672b25f508b7ff3104)
+
+
+- [Chromium 源码分析 浏览器决定携带cookie](https://github.com/ceilf6/Wiki/commit/943abcd1735e16850054276d2f1ead0509cf19d5)
+
+- [V8 源码分析 新生代 Minor GC 的处理细节 新生代的复制 GC 是以空间换时间，且时间代价与存活量成正比。老生代存活量大、体积大，两个维度都不划算](https://github.com/ceilf6/Wiki/commit/1b07f1c0e29ce967585c35ddfa143fcc55efd9a3)
+- [useFetch useRef 创建在渲染期间持久存在、修改不触发重渲染的容器 AbortController 浏览器原生API用于取消异步操作 useEffect副作用清理函数会 在组件卸载时 以及 依赖项更新副作用下次执行之前 两种情况执行，常用于 AJAX请求、定时器、事件监听、WebSocket 的清理 不用 useCallback 的话，reFetch 每次渲染都会创建一个新的函数引用](https://github.com/ceilf6/Wiki/commit/6d3dbcefa6db709010caa1fd82e0174877725111)
+
+- [Ahooks 源码分析 useRequest 通过 计数器取消异步，没有用 AbortController ，因为 service 可以是任意的异步函数](https://github.com/ceilf6/hooks/commit/dc7ade661005f2a7353f21e72a79f095774206f1)
