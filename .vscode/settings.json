@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": true,
+  "terminal.integrated.gpuAcceleration": "off",
   "editor.defaultFormatter": "vscode.html-language-features",
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
