@@ -42,3 +42,16 @@ memory/
 .obsidian/workspace.json
 
 .frontagent/
+
+# OpenViking private config, virtualenv, and non-portable runtime state.
+.openviking-local/
+.openviking-data/.openviking.pid
+.openviking-data/_system/
+.openviking-data/temp/
+.openviking-data/usage_audit.sqlite3*
+.openviking-data/viking/default/agent/
+.openviking-data/viking/default/session/
+.openviking-data/viking/default/temp/
+.openviking-data/viking/default/user/
+.openviking-data/vectordb/**/store/LOCK
+.openviking-data/vectordb/**/store/LOG

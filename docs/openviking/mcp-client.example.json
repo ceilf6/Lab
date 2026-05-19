@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "openviking": {
+      "url": "http://localhost:1933/mcp",
+      "headers": {
+        "Authorization": "Bearer ${OPENVIKING_API_KEY}"
+      }
+    }
+  }
+}
