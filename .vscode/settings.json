@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": true,
+  // 防止 claude code 在 vscode 中的乱码问题
   "terminal.integrated.gpuAcceleration": "off",
   "editor.defaultFormatter": "vscode.html-language-features",
   "[html]": {
