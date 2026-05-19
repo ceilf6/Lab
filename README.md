@@ -352,3 +352,4 @@
 - [session 带上了 context 上下文 - “记忆”](https://github.com/ceilf6/Wiki/commit/978900319d0a2dabf83a93d099a7fe71183b6f16)
 - [蒸馏 MCP 服务支持，方便外部大模型调用功能](https://github.com/ceilf6/Wiki/commit/f6d5c50219516ca78dab1ee63a328bc9d1be5d44)
 - [将 OpenViking 引入 Wiki ，方便 LLM 进行渐进式探索](https://github.com/ceilf6/Wiki/commit/5865f83e3f9c51fce4dd1821e76ca41d4505251b)
+- [通过冷、暖启动减少知识库导致的耗时](https://github.com/ceilf6/Wiki/commit/73f3fede3b307da2156d9fb6e589141e11934f58)
