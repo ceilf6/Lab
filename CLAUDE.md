@@ -41,3 +41,26 @@ This project is indexed by GitNexus as **Lab** (286820 symbols, 800402 relations
 | Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus/gitnexus-cli/SKILL.md` |
 
 <!-- gitnexus:end -->
+
+<!-- cgc:start -->
+# CodeGraphContext — Code Quality & Visualization
+
+CGC runs as a parallel MCP server (KuzuDB backend) providing dead code detection, cyclomatic complexity analysis, live file watching, and interactive graph visualization.
+
+## Always Do
+
+- Use CGC for dead code detection and complexity analysis — GitNexus does not provide these.
+- When caller/callee results from GitNexus seem incomplete, cross-validate with CGC.
+- Use `--viz` flag to generate interactive HTML graphs for architecture reviews.
+
+## Never Do
+
+- NEVER use CGC as a substitute for GitNexus impact analysis, execution flow tracing, or safe renames.
+- NEVER skip GitNexus `detect_changes()` before committing just because CGC watch is running.
+
+## CLI
+
+| Task | Read this skill file |
+|------|---------------------|
+| Dead code, complexity, visualization, cross-validation | `.claude/skills/cgc/cgc-usage/SKILL.md` |
+<!-- cgc:end -->
