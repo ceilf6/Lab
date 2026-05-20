@@ -61,3 +61,6 @@
 [submodule "AI/2-AI-infra/Filesense-app"]
 	path = AI/2-AI-infra/Filesense-app
 	url = https://github.com/ceilf6/filesense
+[submodule "AI/2-AI-infra/open-memory-gateway"]
+	path = AI/2-AI-infra/open-memory-gateway
+	url = https://github.com/ceilf6/open-memory-gateway.git
