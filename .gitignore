@@ -43,6 +43,9 @@ memory/
 
 .frontagent/
 
+# CodeGraphContext local index (KuzuDB)
+.cgc/
+
 # OpenViking private config, virtualenv, and non-portable runtime state.
 .openviking-local/
 .openviking-data/.openviking.pid

@@ -54,3 +54,50 @@ This project is indexed by GitNexus as **Lab** (286820 symbols, 800402 relations
 | Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus/gitnexus-cli/SKILL.md` |
 
 <!-- gitnexus:end -->
+
+<!-- cgc:start -->
+## CodeGraphContext — Code Quality & Visualization
+
+CGC complements GitNexus with capabilities it lacks: dead code detection, cyclomatic complexity analysis, live file watching with auto-reindex, and interactive graph visualization.
+
+### Routing Rules
+
+| Scenario | Tool | Notes |
+|----------|------|-------|
+| Impact analysis / blast radius | GitNexus | CGC has no equivalent |
+| Execution flow tracing / processes | GitNexus | CGC has no equivalent |
+| Safe rename / refactor | GitNexus | CGC has no equivalent |
+| Pre-commit change detection | GitNexus | `detect_changes()` |
+| Dead code detection | CGC | GitNexus has no equivalent |
+| Cyclomatic complexity analysis | CGC | GitNexus has no equivalent |
+| Interactive graph visualization | CGC | GitNexus has no equivalent |
+| Caller/callee queries | Both | Default GitNexus; add CGC for cross-validation |
+
+### Always Do
+
+- Use CGC for dead code detection: `codegraphcontext analyze dead-code`
+- Use CGC for complexity analysis: `codegraphcontext analyze complexity --threshold 10`
+- When cross-validating caller/callee results, query both GitNexus and CGC and compare
+
+### Never Do
+
+- NEVER use CGC for impact analysis or execution flow tracing — use GitNexus
+- NEVER use CGC for safe renames — use `gitnexus_rename`
+- NEVER skip GitNexus impact analysis just because CGC shows no callers (CGC may have a stale index)
+
+### CLI
+
+| Task | Command |
+|------|---------|
+| Dead code detection | `codegraphcontext analyze dead-code` |
+| Complexity analysis | `codegraphcontext analyze complexity --threshold 10` |
+| Visualize call graph | `codegraphcontext analyze calls <function> --viz` |
+| Visualize class tree | `codegraphcontext analyze tree <class> --viz` |
+| Re-index | `codegraphcontext index .` |
+| Start live watcher | `codegraphcontext watch .` |
+| Start MCP server | `codegraphcontext mcp start` |
+
+| Task | Read this skill file |
+|------|---------------------|
+| Dead code, complexity, visualization | `.claude/skills/cgc/cgc-usage/SKILL.md` |
+<!-- cgc:end -->

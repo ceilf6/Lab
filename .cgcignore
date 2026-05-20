@@ -1,0 +1,5 @@
+# Huge upstream source mirrors (mirrors .gitnexusignore)
+/JS/V8engine-source/
+/NodeJS/Node-source/
+/NodeJS/Libuv-source/
+/Browser/Chromium-source/

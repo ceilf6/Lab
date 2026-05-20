@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "cgc": {
+      "type": "stdio",
+      "command": "codegraphcontext",
+      "args": ["mcp", "start"]
+    }
+  }
+}
