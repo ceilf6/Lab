@@ -3,3 +3,14 @@
 /NodeJS/Node-source/
 /NodeJS/Libuv-source/
 /Browser/Chromium-source/
+
+# Runtime data / virtualenvs (not user code)
+.openviking-local/
+.openviking-data/
+.frontagent/
+node_modules/
+
+# Large source-reading submodules
+/AI/3-Application/GitNexus-source/
+/AI/2-AI-infra/LLM-SDK/Langchain-source/
+/React/sandboxs/React/source/
