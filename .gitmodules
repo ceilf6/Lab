@@ -64,3 +64,6 @@
 [submodule "AI/2-AI-infra/open-memory-gateway"]
 	path = AI/2-AI-infra/open-memory-gateway
 	url = https://github.com/ceilf6/open-memory-gateway.git
+[submodule "AI/3-Application/repo-guard-app"]
+	path = AI/3-Application/repo-guard-app
+	url = https://github.com/ceilf6/repo-guard
