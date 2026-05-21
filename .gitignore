@@ -58,3 +58,4 @@ memory/
 .openviking-data/viking/default/user/
 .openviking-data/vectordb/**/store/LOCK
 .openviking-data/vectordb/**/store/LOG
+.codegraphcontext/
