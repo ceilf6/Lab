@@ -4,6 +4,10 @@
       "type": "stdio",
       "command": "codegraphcontext",
       "args": ["mcp", "start"]
+    },
+    "deepwiki": {
+      "type": "streamable-http",
+      "serverUrl": "https://mcp.deepwiki.com/mcp"
     }
   }
 }
