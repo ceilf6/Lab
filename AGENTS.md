@@ -101,3 +101,46 @@ CGC complements GitNexus with capabilities it lacks: dead code detection, cyclom
 |------|---------------------|
 | Dead code, complexity, visualization | `.claude/skills/cgc/cgc-usage/SKILL.md` |
 <!-- cgc:end -->
+
+<!-- deepwiki:start -->
+## DeepWiki — External Repo Documentation & Q&A
+
+DeepWiki provides instant AI-generated documentation and conversational Q&A for any public GitHub/GitLab/Bitbucket repository. No local clone or indexing required.
+
+### Scope
+
+- **ONLY for external/unfamiliar public repositories** — never for local Lab content
+- Use when researching a new library, framework, or open-source project
+- Use to get high-level architectural understanding before cloning and using GitNexus for deep analysis
+
+### MCP Tools
+
+| Tool | Usage |
+|------|-------|
+| `read_wiki_structure` | Get documentation topic tree for a repo |
+| `read_wiki_contents` | Get specific documentation content |
+| `ask_question` | Natural language Q&A grounded in the repo's code |
+
+### Always Do
+
+- Use DeepWiki as the first step when exploring an unfamiliar external project
+- After getting high-level understanding from DeepWiki, clone the repo and use GitNexus for symbol-level analysis if needed
+
+### Never Do
+
+- NEVER use DeepWiki for questions about the local Lab repository — use OpenViking + GitNexus
+- NEVER use DeepWiki as a substitute for GitNexus impact analysis or code modification workflows
+- NEVER rely solely on DeepWiki for implementation details — it provides high-level documentation, not precise symbol relationships
+
+### Workflow: Researching a New Library
+
+```
+1. mcp__deepwiki__read_wiki_structure({repo: "owner/repo"})  → Get topic overview
+2. mcp__deepwiki__ask_question({repo: "owner/repo", question: "How does X work?"})  → High-level answer
+3. If deeper analysis needed: clone repo → gitnexus index → gitnexus_query/context
+```
+
+| Task | Read this skill file |
+|------|---------------------|
+| Query external repos, research libraries | `.claude/skills/deepwiki/deepwiki-usage/SKILL.md` |
+<!-- deepwiki:end -->

@@ -64,3 +64,25 @@ CGC runs as a parallel MCP server (KuzuDB backend) providing dead code detection
 |------|---------------------|
 | Dead code, complexity, visualization, cross-validation | `.claude/skills/cgc/cgc-usage/SKILL.md` |
 <!-- cgc:end -->
+
+<!-- deepwiki:start -->
+# DeepWiki — External Repo Documentation & Q&A
+
+DeepWiki is a hosted MCP service that generates documentation and answers questions about any public repository. It requires no local setup.
+
+## Always Do
+
+- Use DeepWiki when researching external open-source projects you haven't cloned locally.
+- Use `ask_question` for high-level "how does this work" questions about external repos.
+
+## Never Do
+
+- NEVER use DeepWiki for questions about the local Lab repository — use OpenViking + GitNexus.
+- NEVER treat DeepWiki answers as authoritative for implementation — verify with source code.
+
+## CLI
+
+| Task | Read this skill file |
+|------|---------------------|
+| Query external repos, research libraries | `.claude/skills/deepwiki/deepwiki-usage/SKILL.md` |
+<!-- deepwiki:end -->
